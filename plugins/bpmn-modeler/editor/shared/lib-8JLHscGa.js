@@ -1,4 +1,4 @@
-import { D as createReviver } from "./reporting-CwIb-OB4.js";
+import { O as createReviver } from "./reporting-2F_WO5Yt.js";
 // ../../node_modules/bpmn-js-create-append-anything/dist/index.es.js
 var nativeToString$2 = Object.prototype.toString;
 var nativeHasOwnProperty$2 = Object.prototype.hasOwnProperty;
@@ -2103,4 +2103,4 @@ var lib_default = {
 };
 export { index$1 as i, RemoveTemplatesModule as n, index as r, lib_default as t };
 
-//# sourceMappingURL=lib-CHaSAubE.js.map
+//# sourceMappingURL=lib-8JLHscGa.js.map

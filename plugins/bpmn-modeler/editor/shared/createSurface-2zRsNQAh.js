@@ -1,7 +1,7 @@
 import { a as __toESM, r as __exportAll, t as __commonJSMin } from "./rolldown-runtime-DQp2zzRu.js";
-import { l as createFlushableDebounceInput, m as _defineProperty } from "./editorLayout-DZwh-cxt.js";
+import { _ as _defineProperty, d as focusCanvasFromKeystroke, f as createFlushableDebounceInput } from "./editorLayout-BNwn-014.js";
 import { $ as Diagram, C as outline_default$1, Dt as getBBox, Gt as BaseRenderer, Ht as create, It as append, Jt as all, Kt as e, Lt as appendTo, Mt as selfAndChildren, Nt as componentsToPath, P as movecanvas_default, Pt as createLine, Q as Text, Qt as clear, R as zoomscroll_default, Rt as attr, T as keyboard_move_default, U as selection_default, Ut as innerSVG, V as overlays_default, Wt as remove$1, Yt as assign, Z as translate_default, Zt as classes, _n as observeCanvasSize, an as Reader, ct as asTRBL, dn as fitCanvasToContent, dt as getMid, en as delegate, et as rotate, fn as isCanvasSized, gn as isUsableViewbox, gt as isLabel$3, in as remove, k as CommandInterceptor, ln as ThemeController, mn as MutableDisposable, nt as translate, on as Writer, pn as DisposableStore, qt as Ids, rn as query, sn as Moddle, st as asBounds, tn as event, tt as transform, un as installFitViewportButton, vn as NoModelerError, w as change_support_default, zt as classes$1 } from "./jsxRuntime.module-awBdvHUy.js";
-import { n as parseEditableMode, r as surfaceModeSupports } from "../bpmn/main.js";
+import { a as surfaceModeSupports, i as parseEditableMode } from "../bpmn/main.js";
 import { C as isObject, D as map, P as some, S as isNumber, _ as init_dist, g as has, i as assign$1, k as omit, l as filter, n as escapeHTML, o as debounce, p as forEach, r as domify, u as find, w as isString } from "./EscapeUtil-B1jzPlMc.js";
 import { a as is$1, i as init_ModelUtil, n as getBusinessObject, o as isAny$1, r as getDi } from "./ModelUtil-BGe9jbj7.js";
 // ../../libs/modeler-types/src/referenceKind.ts
@@ -21,13 +21,6 @@ var REFERENCE_KIND_CAPABILITIES = {
 };
 function referenceKindSupports(kind, capability) {
 	return REFERENCE_KIND_CAPABILITIES[kind][capability];
-}
-// ../../libs/modeler-types/src/focusCanvasFromKeystroke.ts
-function focusCanvasFromKeystroke(focusCanvas) {
-	focusCanvas();
-	setTimeout(() => {
-		if (document.activeElement === null || document.activeElement === document.body) focusCanvas();
-	});
 }
 // ../../node_modules/bpmn-moddle/dist/index.js
 var dist_exports = __exportAll({ BpmnModdle: () => SimpleBpmnModdle });
@@ -6636,10 +6629,8 @@ var outline_default = {
 	__init__: ["outlineProvider"],
 	outlineProvider: ["type", OutlineProvider]
 };
-// ../../libs/properties-panel/src/debounceInput/flushableDebounceInput.ts
-var PANEL_INPUT_DEBOUNCE_MS = 600;
 function debounceInputFactory() {
-	return createFlushableDebounceInput(PANEL_INPUT_DEBOUNCE_MS);
+	return createFlushableDebounceInput(600);
 }
 var FlushableDebounceInputModule = { debounceInput: ["factory", debounceInputFactory] };
 // ../../libs/properties-panel/src/modeFilter/engineGroupData.ts
@@ -10828,8 +10819,13 @@ function namespaceBoundTo(prefix, element) {
 	}
 }
 // ../../libs/model-navigation/src/extractReference.ts
+init_ModelUtil();
+function isNoneStartEventOfProcess(businessObject) {
+	return !businessObject.eventDefinitions?.length && is$1(businessObject.$parent, "bpmn:Process");
+}
 var REFERENCE_SOURCES = {
 	process: {
+		holders: [{ elementType: "bpmn:CallActivity" }],
 		attribute: "calledElement",
 		extensionElement: {
 			type: "zeebe:CalledElement",
@@ -10838,6 +10834,7 @@ var REFERENCE_SOURCES = {
 		qualifiedName: true
 	},
 	decision: {
+		holders: [{ elementType: "bpmn:BusinessRuleTask" }],
 		attribute: "camunda:decisionRef",
 		extensionElement: {
 			type: "zeebe:CalledDecision",
@@ -10846,6 +10843,10 @@ var REFERENCE_SOURCES = {
 		qualifiedName: false
 	},
 	form: {
+		holders: [{ elementType: "bpmn:UserTask" }, {
+			elementType: "bpmn:StartEvent",
+			holdsReference: isNoneStartEventOfProcess
+		}],
 		extensionElement: {
 			type: "zeebe:FormDefinition",
 			property: "formId"
@@ -10853,6 +10854,12 @@ var REFERENCE_SOURCES = {
 		qualifiedName: false
 	}
 };
+var REFERENCE_KINDS = Object.keys(REFERENCE_SOURCES);
+function referenceKindOf(element) {
+	if (element.type === "label") return;
+	const businessObject = element.businessObject ?? element;
+	return REFERENCE_KINDS.find((kind) => REFERENCE_SOURCES[kind].holders.some((holder) => is$1(element, holder.elementType) && (!holder.holdsReference || holder.holdsReference(businessObject))));
+}
 function findExtensionElement(businessObject, type) {
 	const values = businessObject.extensionElements?.values;
 	if (!values) return;
@@ -11001,7 +11008,6 @@ function reduceFormPreview(state, event) {
 	};
 }
 // ../../libs/model-navigation/src/FormPreviewController.ts
-init_ModelUtil();
 var _FormPreviewController;
 var FormPreviewController = class {
 	constructor(eventBus, selection, canvas, contextPad, port, status) {
@@ -11057,9 +11063,9 @@ var FormPreviewController = class {
 	}
 	update() {
 		if (this.disposed || !this.port.formPreview) return;
-		const elements = this.selection.get();
-		const target = elements.length === 1 && is$1(elements[0], "bpmn:UserTask") ? elements[0] : void 0;
-		const reference = target && extractReference(target.businessObject, "form");
+		const selected = this.selectedPreviewTarget();
+		const target = selected?.element;
+		const reference = selected && extractReference(selected.element.businessObject, selected.kind);
 		this.transition({
 			kind: "selection",
 			automatic: this.port.formPreview.isAutomaticEnabled?.() ?? true,
@@ -11068,6 +11074,15 @@ var FormPreviewController = class {
 			available: this.port.isReferenceAvailabilityKnown?.() === false ? void 0 : !!reference && this.status.isResolved(reference),
 			visible: this.visible
 		});
+	}
+	selectedPreviewTarget() {
+		const elements = this.selection.get();
+		if (elements.length !== 1) return void 0;
+		const kind = referenceKindOf(elements[0]);
+		return kind && referenceKindSupports(kind, "preview") ? {
+			element: elements[0],
+			kind
+		} : void 0;
 	}
 	transition(event) {
 		const decision = reduceFormPreview(this.state, event);
@@ -11136,7 +11151,6 @@ _FormPreviewController.$inject = [
 	"formReferenceStatusClient"
 ];
 // ../../libs/model-navigation/src/NavigateContextPadProvider.ts
-init_ModelUtil();
 var _NavigateContextPadProvider;
 var NAVIGATE_ICON_SVG = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>`;
 var NavigateContextPadProvider = class {
@@ -11148,7 +11162,7 @@ var NavigateContextPadProvider = class {
 		contextPad.registerProvider(this);
 	}
 	getContextPadEntries(element) {
-		const kind = this.detectKind(element);
+		const kind = referenceKindOf(element);
 		if (!kind) return {};
 		const reference = extractModelReference(element.businessObject, kind);
 		if (!reference || !this.isAvailable(reference)) return {};
@@ -11177,11 +11191,6 @@ var NavigateContextPadProvider = class {
 	}
 	isAvailable(reference) {
 		return !referenceKindSupports(reference.kind, "availabilityStatus") || this.formReferenceStatusClient.isResolved(reference.id);
-	}
-	detectKind(element) {
-		if (is$1(element, "bpmn:CallActivity")) return "process";
-		if (is$1(element, "bpmn:BusinessRuleTask")) return "decision";
-		if (is$1(element, "bpmn:UserTask")) return "form";
 	}
 };
 _NavigateContextPadProvider = NavigateContextPadProvider;
@@ -11379,6 +11388,15 @@ function centreOf(element) {
 		};
 	}
 }
+function viewboxCentredOn(centre, size) {
+	const { width, height } = size;
+	return {
+		x: centre.x - width / 2,
+		y: centre.y - height / 2,
+		width,
+		height
+	};
+}
 // ../../packages/bpmn-modeler/src/viewport.ts
 var MIN_FOCUS_ZOOM = .75;
 var CanvasViewportManager = class {
@@ -11449,12 +11467,10 @@ var CanvasViewportManager = class {
 		const scale = viewbox.width > 0 ? viewbox.outer.width / viewbox.width : MIN_FOCUS_ZOOM;
 		const width = scale < MIN_FOCUS_ZOOM ? viewbox.outer.width / MIN_FOCUS_ZOOM : viewbox.width;
 		const height = scale < MIN_FOCUS_ZOOM ? viewbox.outer.height / MIN_FOCUS_ZOOM : viewbox.height;
-		canvas.viewbox({
-			x: centre.x - width / 2,
-			y: centre.y - height / 2,
+		canvas.viewbox(viewboxCentredOn(centre, {
 			width,
 			height
-		});
+		}));
 		this.latch.markDecided();
 		return true;
 	}
@@ -11502,12 +11518,15 @@ var SurfaceView = class {
 		_defineProperty(this, "selection", void 0);
 		_defineProperty(this, "rootElement", void 0);
 		_defineProperty(this, "initialFitObserver", new MutableDisposable());
+		_defineProperty(this, "shown", false);
+		_defineProperty(this, "disposed", false);
 		this.getService = getService;
 		this.viewport = new CanvasViewportManager(getService);
 		this.selection = new ElementSelectionManager(getService);
 		this.rootElement = new CanvasRootElementManager(getService);
 	}
 	diagramLoaded() {
+		this.shown = true;
 		this.initialFitObserver.set(armInitialViewportPolicy(this.getService("canvas"), this.viewport));
 	}
 	capture() {
@@ -11522,7 +11541,16 @@ var SurfaceView = class {
 		this.viewport.setViewport(state.viewport);
 		this.selection.selectElementsByIds(state.selectedElementIds);
 	}
+	async keepAcross(reimport) {
+		const snapshot = this.shown ? this.capture() : void 0;
+		try {
+			return await reimport();
+		} finally {
+			if (snapshot && !this.disposed) this.apply(snapshot);
+		}
+	}
 	dispose() {
+		this.disposed = true;
 		this.initialFitObserver.dispose();
 	}
 };
@@ -11617,6 +11645,9 @@ var SurfaceCore = class {
 	applyViewState(state) {
 		this.liveView().apply(state);
 	}
+	async keepViewAcross(reimport) {
+		return this.liveView().keepAcross(reimport);
+	}
 	hasPendingInput() {
 		return this.panelInput()?.hasPending() ?? false;
 	}
@@ -11660,4 +11691,4 @@ async function createSurface(allocate, applyInitialOptions) {
 }
 export { hasExternalLabel as A, isInterrupting$1 as B, getCirclePath as C, DEFAULT_LABEL_SIZE as D, getElementAnnotations as E, hasEscalationEventDefinition as F, SimpleBpmnModdle as H, hasEventDefinition as I, isEventSubProcess$1 as L, setLabel as M, hasCompensateEventDefinition as N, getExternalLabelMid as O, hasErrorEventDefinition as P, isExpanded as R, toPlaneId as S, collectElementsAnnotations as T, dist_exports as U, BaseViewer as V, keep_selection_visible_default as _, exportSvg as a, getShapeIdFromPlane as b, base_default as c, TOGGLE_MODE_EVENT as d, CustomGroupsModule as f, NavigatedViewer as g, outline_default as h, exportFormattedXml as i, isLabelExternal as j, getLabel as k, ToggleOffIcon as l, FlushableDebounceInputModule as m, SurfaceCore as n, importDiagram as o, ModeFilterModule as p, DrilldownFitModule as r, createModelNavigationModule as s, createSurface as t, ToggleOnIcon as u, Viewer as v, getRoundRectPath as w, isPlane as x, getPlaneIdFromShape as y, isHorizontal as z };
 
-//# sourceMappingURL=createSurface-DyHVIhQM.js.map
+//# sourceMappingURL=createSurface-2zRsNQAh.js.map

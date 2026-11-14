@@ -2,6 +2,23 @@
     box-sizing: border-box;
 }
 
+.djs-container svg {
+    user-select: none;
+}
+
+.djs-container svg:focus {
+    outline: none;
+}
+/*
+ * The editor page `mountPanelChrome` and `mountEditorCanvas` build: the canvas,
+ * the divider and the properties panel. Each page that mounts them imports this
+ * sheet; the modeler packages' dark themes recolour it.
+ */
+
+* {
+    box-sizing: border-box;
+}
+
 body,
 html {
     color: #1f1f1f;
@@ -14,12 +31,16 @@ html {
     margin: 0;
 }
 
-#js-properties-panel {
-    width: 400px;
-}
-
 a:link {
     text-decoration: none;
+}
+
+.editor-page {
+    height: 100%;
+}
+
+#js-properties-panel {
+    width: 400px;
 }
 
 .content {
@@ -29,47 +50,12 @@ a:link {
     display: flex;
 }
 
-.content > .message {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    display: table;
-    font-size: 16px;
-    color: #111;
-}
-
-.content > .message .note {
-    vertical-align: middle;
-    text-align: center;
-    display: table-cell;
-}
-
-.content > .message.error .details {
-    max-width: 500px;
-    font-size: 12px;
-    margin: 20px auto;
-    text-align: left;
-    color: #bd2828;
-}
-
-.content > .message.error pre {
-    border: solid 1px #bd2828;
-    background: #fefafa;
-    padding: 10px;
-    color: #bd2828;
-}
-
-/* Scope to the import-error message box (`<div class="message error">`).
- * A bare `.error` also matches descendants like bpmnlint's `<li class="error">`
- * issue rows, which hid their text on hover. */
-.content:not(.with-error) .message.error,
-.content.with-error .intro,
-.content.with-diagram .intro {
-    display: none;
-}
-
 .content .canvas {
     width: 100%;
+}
+
+.content .canvas:has(.dmn-decision-table-container) {
+    padding: 16px 20px;
 }
 
 .content .canvas,
@@ -84,12 +70,10 @@ a:link {
     display: block;
 }
 
-.djs-container svg {
-    user-select: none;
-}
-
-.djs-container svg:focus {
-    outline: none;
+/* A DMN view the properties panel does not serve leaves the panel and its divider out. */
+.content.with-diagram .panel-resizer[hidden],
+.content.with-diagram .properties-panel-parent[hidden] {
+    display: none;
 }
 
 .panel-resizer {
@@ -100,10 +84,8 @@ a:link {
     border-left: 1px solid #e0e0e0;
     transition: background-color 0.15s ease, width 0.15s ease;
     position: relative;
-    /* Default accent colors for the collapsed-state line segments. Declared
-     * at `.panel-resizer` (specificity 0,1,0) so that a theme override placed
-     * on `.panel-resizer.collapsed` (specificity 0,2,0) always wins,
-     * regardless of stylesheet load order. */
+    /* Declared here (0,1,0) so a theme override on `.panel-resizer.collapsed`
+     * (0,2,0) wins whatever the stylesheet order. */
     --panel-resizer-accent-color: rgba(0, 120, 212, 0.4);
     --panel-resizer-accent-hover-color: rgba(0, 120, 212, 0.8);
 }
@@ -113,41 +95,23 @@ a:link {
     border-left-color: rgba(0, 120, 212, 0.6);
 }
 
-/* When the pointer is over the toggle button the button supplies its own hover
- * styling. Suppress the resizer's hover tint so the two do not stack into a
- * halo around the protruding pill. The collapsed state has a more specific
- * variant of this rule below. */
+/* The button supplies its own hover styling; suppress the resizer's tint so
+ * the two don't stack into a halo around the pill. */
 .panel-resizer:has(.panel-resizer-toggle:hover) {
     background-color: transparent;
     border-left-color: #e0e0e0;
 }
 
+/* The accent line is two pseudo-element segments around the toggle button
+ * instead of `border-left`: Chromium can paint a border above the button's
+ * background. The width is zeroed, not made transparent, so no hover rule can
+ * recolour a border back into view. */
 .panel-resizer.collapsed {
     width: 8px;
-    /* The blue accent line is drawn by the `::before` / `::after`
-     * pseudo-elements below instead of `border-left`. A real border is
-     * rendered at the parent's border-box edge, and the absolutely-
-     * positioned toggle button inside the resizer does not reliably cover
-     * it (Chromium paints the border above the button's background in some
-     * layer configurations). Splitting the line into two pseudo-element
-     * segments that physically stop above and resume below the button
-     * guarantees a clean interruption without relying on stacking/compositing
-     * behavior.
-     *
-     * The accent colors are themed via `--panel-resizer-accent-color` and
-     * `--panel-resizer-accent-hover-color`, which are declared on
-     * `.panel-resizer` above.
-     *
-     * Zero the border width outright instead of just setting the color to
-     * transparent — otherwise the generic `.panel-resizer:hover` rule (here
-     * or in the dark theme) can recolor a still-present 1 px border back to
-     * a visible value on hover, reintroducing the through-button bleed. */
     border-left-width: 0;
 }
 
-/* Two segments of the blue accent line: one above the toggle button, one
- * below. The gap between them is calculated from the button's fixed 40 px
- * height (20 px half-height + 2 px visual breathing room). */
+/* The gap comes from the button's 40px height: 20px half-height plus 2px. */
 .panel-resizer.collapsed::before,
 .panel-resizer.collapsed::after {
     content: "";
@@ -177,9 +141,6 @@ a:link {
     background-color: var(--panel-resizer-accent-hover-color);
 }
 
-/* When the pointer is over the toggle button the button supplies its own
- * hover styling. Suppress the resizer's collapsed-hover tint so the two do
- * not stack into a halo effect around the button. */
 .panel-resizer.collapsed:has(.panel-resizer-toggle:hover) {
     background-color: transparent;
 }
@@ -189,20 +150,14 @@ a:link {
     background-color: var(--panel-resizer-accent-color);
 }
 
-/* Toggle button shown in both panel states: it offers a one-click "open"
- * affordance while the panel is collapsed and a "close" affordance while it is
- * open (the chevron direction is flipped from JavaScript). The button sits in
- * the middle of the resizer bar and protrudes slightly to the left over the
- * canvas, mirroring the Camunda Modeler pattern. */
+/* Always visible: "open" while collapsed, "close" while open (the chevron is
+ * flipped from JavaScript). It juts slightly left over the canvas. */
 .panel-resizer-toggle {
     display: flex;
     position: absolute;
-    /* Vertical centering via top + margin instead of `transform: translateY(-50%)`.
-     * A transform places the button in its own compositor layer, which in
-     * Chromium causes the resizer's `border-left` to bleed through the
-     * button's opaque background. Plain top + negative margin keeps the
-     * button in the parent's paint layer so the background correctly
-     * interrupts the resizer's blue accent line where the pill sits. */
+    /* Not `transform: translateY(-50%)`: a transform gives the button its own
+     * compositor layer, and Chromium then paints the resizer's border through
+     * the button's background. */
     top: 50%;
     margin-top: -20px;
     right: 0;
@@ -238,6 +193,12 @@ a:link {
     user-select: none;
 }
 
+/* dmn-js-properties-panel's `height:100%` container needs a definite height to
+ * scroll inside itself; a `.panel-host` flex column sizes the mount instead. */
+.properties-panel-parent:not(.panel-host) > .panel-mount {
+    height: 100%;
+}
+
 .properties-panel-parent.collapsed {
     overflow: hidden;
     border-left-width: 0;
@@ -249,16 +210,7 @@ a:link {
     user-select: text;
 }
 
-.properties-panel-parent:empty {
-    display: none;
-}
-
-.properties-panel-parent > .djs-properties-panel {
-    padding-bottom: 70px;
-    min-height: 100%;
-}
-
-/* see issue https://github.com/microsoft/vscode/issues/213045 */
+/* VS Code webviews inherit a scrollbar-color that hides the native scrollbar. */
 @supports selector(::-webkit-scrollbar) {
     html {
         scrollbar-color: unset;
@@ -330,22 +282,6 @@ a:link {
 .djs-container .djs-minimap {
     right: 65px;
 }
-html,
-body,
-#app {
-    height: 100%;
-    margin: 0;
-}
-
-.content .canvas:has(.dmn-decision-table-container) {
-    padding: 16px 20px;
-}
-
-.content.with-diagram .panel-resizer[hidden],
-.content.with-diagram .properties-panel-parent[hidden] {
-    display: none;
-}
-
 .orca-read-only-notice {
     position: fixed;
     top: 12px;

@@ -2,8 +2,8 @@ import { i as __toCommonJS, t as __commonJSMin } from "./rolldown-runtime-DQp2zz
 import { a as is, i as init_ModelUtil, n as getBusinessObject, o as isAny, t as ModelUtil_exports } from "./ModelUtil-BGe9jbj7.js";
 import { C as isObject$1, O as matchPattern, P as some, T as isUndefined$1, _ as init_dist, g as has$1, u as find, y as isDefined } from "./EscapeUtil-B1jzPlMc.js";
 import { Ct as add, Tt as remove, k as CommandInterceptor } from "./jsxRuntime.module-awBdvHUy.js";
-import { c as TooltipProvider, h as removeExtensionElements, m as getExtensionElementsList, n as colors_default, o as index$2, p as DeleteParticipantBehaviour, r as CamundaVariableResolverModule, t as composeUpstreamModules, u as index } from "./sharedModules-BzDoO-Q2.js";
-import { i as index$1, n as RemoveTemplatesModule, r as index$3 } from "./lib-CHaSAubE.js";
+import { c as TooltipProvider, h as removeExtensionElements, m as getExtensionElementsList, n as colors_default, o as index$2, p as DeleteParticipantBehaviour, r as CamundaVariableResolverModule, t as composeUpstreamModules, u as index } from "./sharedModules-CXHmOeSF.js";
+import { i as index$1, n as RemoveTemplatesModule, r as index$3 } from "./lib-8JLHscGa.js";
 var camunda_default = {
 	name: "Camunda",
 	uri: "http://camunda.org/schema/1.0/bpmn",
@@ -1785,4 +1785,4 @@ var c7Stack = {
 };
 export { c7Stack };
 
-//# sourceMappingURL=c7-B_oJpiuj.js.map
+//# sourceMappingURL=c7-BnIEhxZ8.js.map
