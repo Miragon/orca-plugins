@@ -12736,6 +12736,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "Das gespeicherte Formular ist ungültig oder wird nicht unterstützt. Öffnen Sie es im Formulareditor.",
 		"The form preview could not be loaded. Refresh to try again.": "Die Formularvorschau konnte nicht geladen werden. Aktualisieren Sie die Vorschau.",
 		"Changes": "Änderungen",
+		"No changes": "Keine Änderungen",
+		"Show all": "Alle anzeigen",
+		"Show XML changes": "XML-Änderungen anzeigen",
+		"Old version": "Alte Version",
+		"New version": "Neue Version",
 		"Not in this version": "Nicht in dieser Version",
 		"It was removed. The version on the left shows it.": "Es wurde entfernt. Die Version links zeigt es.",
 		"It is new. The version on the right shows it.": "Es ist neu. Die Version rechts zeigt es.",
@@ -12964,6 +12969,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "The saved form is invalid or unsupported. Open it in the form editor.",
 		"The form preview could not be loaded. Refresh to try again.": "The form preview could not be loaded. Refresh to try again.",
 		"Changes": "Changes",
+		"No changes": "No changes",
+		"Show all": "Show all",
+		"Show XML changes": "Show XML changes",
+		"Old version": "Old version",
+		"New version": "New version",
 		"Not in this version": "Not in this version",
 		"It was removed. The version on the left shows it.": "It was removed. The version on the left shows it.",
 		"It is new. The version on the right shows it.": "It is new. The version on the right shows it.",
@@ -13192,6 +13202,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "El formulario guardado no es válido o no es compatible. Ábralo en el editor de formularios.",
 		"The form preview could not be loaded. Refresh to try again.": "No se pudo cargar la vista previa. Actualice para reintentar.",
 		"Changes": "Cambios",
+		"No changes": "Sin cambios",
+		"Show all": "Mostrar todo",
+		"Show XML changes": "Mostrar cambios en el XML",
+		"Old version": "Versión anterior",
+		"New version": "Versión nueva",
 		"Not in this version": "No está en esta versión",
 		"It was removed. The version on the left shows it.": "Se eliminó. La versión de la izquierda lo muestra.",
 		"It is new. The version on the right shows it.": "Es nuevo. La versión de la derecha lo muestra.",
@@ -13420,6 +13435,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "Le formulaire enregistré est invalide ou non pris en charge. Ouvrez-le dans l’éditeur de formulaires.",
 		"The form preview could not be loaded. Refresh to try again.": "Impossible de charger l’aperçu du formulaire. Actualisez pour réessayer.",
 		"Changes": "Modifications",
+		"No changes": "Aucune modification",
+		"Show all": "Tout afficher",
+		"Show XML changes": "Afficher les modifications XML",
+		"Old version": "Ancienne version",
+		"New version": "Nouvelle version",
 		"Not in this version": "Absent de cette version",
 		"It was removed. The version on the left shows it.": "Il a été supprimé. La version de gauche l'affiche.",
 		"It is new. The version on the right shows it.": "Il est nouveau. La version de droite l'affiche.",
@@ -13648,6 +13668,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "Il modulo salvato non è valido o supportato. Aprilo nell’editor di moduli.",
 		"The form preview could not be loaded. Refresh to try again.": "Impossibile caricare l’anteprima del modulo. Aggiorna per riprovare.",
 		"Changes": "Modifiche",
+		"No changes": "Nessuna modifica",
+		"Show all": "Mostra tutto",
+		"Show XML changes": "Mostra modifiche XML",
+		"Old version": "Versione precedente",
+		"New version": "Nuova versione",
 		"Not in this version": "Non presente in questa versione",
 		"It was removed. The version on the left shows it.": "È stato rimosso. La versione a sinistra lo mostra.",
 		"It is new. The version on the right shows it.": "È nuovo. La versione a destra lo mostra.",
@@ -13876,6 +13901,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "保存済みフォームが無効か未対応です。フォームエディターで開いてください。",
 		"The form preview could not be loaded. Refresh to try again.": "フォームのプレビューを読み込めませんでした。更新して再試行してください。",
 		"Changes": "変更",
+		"No changes": "変更なし",
+		"Show all": "すべて表示",
+		"Show XML changes": "XML の変更を表示",
+		"Old version": "旧バージョン",
+		"New version": "新バージョン",
 		"Not in this version": "このバージョンにはありません",
 		"It was removed. The version on the left shows it.": "削除されました。左側のバージョンに表示されています。",
 		"It is new. The version on the right shows it.": "新しく追加されました。右側のバージョンに表示されています。",
@@ -14104,6 +14134,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "저장된 양식이 유효하지 않거나 지원되지 않습니다. 양식 편집기에서 여세요.",
 		"The form preview could not be loaded. Refresh to try again.": "양식 미리보기를 불러올 수 없습니다. 새로 고침하여 다시 시도하세요.",
 		"Changes": "변경 사항",
+		"No changes": "변경 사항 없음",
+		"Show all": "모두 표시",
+		"Show XML changes": "XML 변경 사항 표시",
+		"Old version": "이전 버전",
+		"New version": "새 버전",
 		"Not in this version": "이 버전에 없음",
 		"It was removed. The version on the left shows it.": "제거되었습니다. 왼쪽 버전에 표시됩니다.",
 		"It is new. The version on the right shows it.": "새로 추가되었습니다. 오른쪽 버전에 표시됩니다.",
@@ -14332,6 +14367,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "Het opgeslagen formulier is ongeldig of niet ondersteund. Open het in de formuliereditor.",
 		"The form preview could not be loaded. Refresh to try again.": "Het formuliervoorbeeld kon niet worden geladen. Vernieuw om opnieuw te proberen.",
 		"Changes": "Wijzigingen",
+		"No changes": "Geen wijzigingen",
+		"Show all": "Alles tonen",
+		"Show XML changes": "XML-wijzigingen tonen",
+		"Old version": "Oude versie",
+		"New version": "Nieuwe versie",
 		"Not in this version": "Niet in deze versie",
 		"It was removed. The version on the left shows it.": "Het is verwijderd. De versie links toont het.",
 		"It is new. The version on the right shows it.": "Het is nieuw. De versie rechts toont het.",
@@ -14560,6 +14600,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "O formulário salvo é inválido ou não suportado. Abra-o no editor de formulários.",
 		"The form preview could not be loaded. Refresh to try again.": "Não foi possível carregar a prévia do formulário. Atualize para tentar novamente.",
 		"Changes": "Alterações",
+		"No changes": "Nenhuma alteração",
+		"Show all": "Mostrar tudo",
+		"Show XML changes": "Mostrar alterações no XML",
+		"Old version": "Versão antiga",
+		"New version": "Versão nova",
 		"Not in this version": "Não está nesta versão",
 		"It was removed. The version on the left shows it.": "Foi removido. A versão à esquerda o mostra.",
 		"It is new. The version on the right shows it.": "É novo. A versão à direita o mostra.",
@@ -14788,6 +14833,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "Сохранённая форма недопустима или не поддерживается. Откройте её в редакторе форм.",
 		"The form preview could not be loaded. Refresh to try again.": "Не удалось загрузить предпросмотр формы. Обновите для повторной попытки.",
 		"Changes": "Изменения",
+		"No changes": "Нет изменений",
+		"Show all": "Показать все",
+		"Show XML changes": "Показать изменения XML",
+		"Old version": "Старая версия",
+		"New version": "Новая версия",
 		"Not in this version": "Нет в этой версии",
 		"It was removed. The version on the left shows it.": "Элемент удалён. Он показан в версии слева.",
 		"It is new. The version on the right shows it.": "Элемент новый. Он показан в версии справа.",
@@ -15016,6 +15066,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "已保存的表单无效或不受支持。请在表单编辑器中打开。",
 		"The form preview could not be loaded. Refresh to try again.": "无法加载表单预览。请刷新重试。",
 		"Changes": "更改",
+		"No changes": "无更改",
+		"Show all": "显示全部",
+		"Show XML changes": "显示 XML 更改",
+		"Old version": "旧版本",
+		"New version": "新版本",
 		"Not in this version": "此版本中不存在",
 		"It was removed. The version on the left shows it.": "它已被删除。左侧版本中可以看到它。",
 		"It is new. The version on the right shows it.": "它是新增的。右侧版本中可以看到它。",
@@ -15244,6 +15299,11 @@ var extras = {
 		"The saved form is invalid or unsupported. Open it in the form editor.": "已儲存的表單無效或不受支援。請在表單編輯器中開啟。",
 		"The form preview could not be loaded. Refresh to try again.": "無法載入表單預覽。請重新整理後再試。",
 		"Changes": "變更",
+		"No changes": "無變更",
+		"Show all": "顯示全部",
+		"Show XML changes": "顯示 XML 變更",
+		"Old version": "舊版本",
+		"New version": "新版本",
 		"Not in this version": "此版本中不存在",
 		"It was removed. The version on the left shows it.": "它已被刪除。左側版本中可以看到它。",
 		"It is new. The version on the right shows it.": "它是新增的。右側版本中可以看到它。",
@@ -15746,6 +15806,12 @@ function createFlushableDebounceInput(delayMs) {
 	});
 }
 // ../../libs/modeler-types/src/diffVocabulary.ts
+var DIFF_CATEGORIES = [
+	"added",
+	"removed",
+	"changed",
+	"layoutChanged"
+];
 var DIFF_LEGEND_TEXTS = {
 	changes: "Changes",
 	added: "Added",
@@ -15754,11 +15820,237 @@ var DIFF_LEGEND_TEXTS = {
 	moved: "Moved",
 	previous: "Prev change",
 	next: "Next change",
-	swap: "Swap sides"
+	swap: "Swap sides",
+	none: "No changes",
+	showAll: "Show all"
 };
-DIFF_LEGEND_TEXTS.added, DIFF_LEGEND_TEXTS.removed, DIFF_LEGEND_TEXTS.changed, DIFF_LEGEND_TEXTS.moved;
+var DIFF_CATEGORY_LABELS = {
+	added: DIFF_LEGEND_TEXTS.added,
+	removed: DIFF_LEGEND_TEXTS.removed,
+	changed: DIFF_LEGEND_TEXTS.changed,
+	layoutChanged: DIFF_LEGEND_TEXTS.moved
+};
+// ../../libs/modeler-types/src/dom.ts
+function createElement(tag, className, text) {
+	const node = document.createElement(tag);
+	node.className = className;
+	if (text !== void 0) node.textContent = text;
+	return node;
+}
+function createButton(className, onClick, text) {
+	const node = createElement("button", className, text);
+	node.type = "button";
+	node.addEventListener("click", onClick);
+	return node;
+}
+// ../../libs/modeler-types/src/diffLegendView.ts
+var _DiffLegendView;
+var SLOT_MODIFIERS = {
+	added: "added",
+	removed: "removed",
+	changed: "changed",
+	layoutChanged: "layout"
+};
+_DiffLegendView = class DiffLegendView {
+	constructor(parent, actions, translator) {
+		this.actions = actions;
+		this.translator = translator;
+		this.element = createElement("div", "diff-legend");
+		this.filename = createElement("div", "diff-legend__filename");
+		this.countsRow = createElement("div", "diff-legend__counts");
+		this.countSlots = DIFF_CATEGORIES.map((category) => DiffLegendView.countSlot(category));
+		this.none = createElement("span", "diff-legend__none");
+		this.position = createElement("span", "diff-legend__position");
+		this.swapGroup = createElement("div", "diff-legend__swap-group");
+		this.previousButton = DiffLegendView.iconButton("diff-legend__prev-btn", DiffLegendView.CHEVRON_LEFT, actions.onPrevious);
+		this.nextButton = DiffLegendView.iconButton("diff-legend__next-btn", DiffLegendView.CHEVRON_RIGHT, actions.onNext);
+		this.showAllButton = createButton("diff-legend__nav-btn diff-legend__show-all-btn", () => this.actions.onShowAll?.());
+		this.swapButton = createButton("diff-legend__nav-btn diff-legend__swap-btn", () => this.actions.onSwap?.(), "⇄");
+		this.assemble();
+		parent.append(this.element);
+		this.renderWords();
+		this.stopTranslating = translator.onChange(() => this.renderWords());
+	}
+	update(state) {
+		this.state = state;
+		this.element.hidden = false;
+		this.countsRow.hidden = state.showChanges === false;
+		this.enableStepping(state.canStep);
+		this.swapGroup.hidden = !(state.showSwap && this.actions.onSwap);
+		this.filename.hidden = !state.filename;
+		this.filename.textContent = state.filename ?? "";
+		this.showStatus(state.status);
+		this.showCounts(state.counts);
+		this.showPosition(state.position);
+		this.renderWords();
+	}
+	reserveRoomOn(target) {
+		if (typeof ResizeObserver === "undefined") return;
+		this.sizeObserver?.disconnect();
+		this.sizeObserver = new ResizeObserver(() => {
+			const height = this.element.offsetHeight;
+			if (height > 0) target.style.setProperty("--diff-legend-height", `${height}px`);
+		});
+		this.sizeObserver.observe(this.element);
+	}
+	destroy() {
+		this.stopTranslating();
+		this.sizeObserver?.disconnect();
+		this.element.remove();
+	}
+	assemble() {
+		this.element.setAttribute("role", "toolbar");
+		this.element.hidden = true;
+		this.none.hidden = true;
+		this.position.hidden = true;
+		this.showAllButton.hidden = !this.actions.onShowAll;
+		this.swapGroup.hidden = true;
+		this.swapGroup.append(this.swapButton);
+		const nav = createElement("div", "diff-legend__nav");
+		nav.append(this.previousButton, this.nextButton, this.position, this.showAllButton);
+		this.countsRow.append(...this.countSlots.map(({ slot }) => slot), this.none, nav, this.swapGroup);
+		this.element.append(this.filename, this.countsRow);
+	}
+	enableStepping(canStep) {
+		for (const button of [
+			this.previousButton,
+			this.nextButton,
+			this.showAllButton
+		]) button.disabled = !canStep;
+	}
+	showStatus(status) {
+		if (status) {
+			this.status ??= this.prependStatusSlot();
+			this.status.swatch.className = DiffLegendView.swatchClass(status);
+		}
+		if (this.status) this.status.slot.hidden = !status;
+	}
+	showCounts(counts) {
+		for (const { category, slot, count } of this.countSlots) {
+			const changes = counts?.[category] ?? 0;
+			slot.hidden = changes === 0;
+			count.textContent = String(changes);
+		}
+		this.none.hidden = !counts || DiffLegendView.hasChanges(counts);
+	}
+	showPosition(position) {
+		this.position.hidden = !position;
+		this.position.textContent = position ? `${position.index + 1}/${position.total}` : "";
+	}
+	prependStatusSlot() {
+		const status = DiffLegendView.statusSlot();
+		this.countsRow.prepend(status.slot);
+		return status;
+	}
+	renderWords() {
+		const translate = (key) => this.translator.translate(key);
+		this.element.setAttribute("aria-label", translate(DIFF_LEGEND_TEXTS.changes));
+		for (const { category, label } of this.countSlots) label.data = `${translate(DIFF_CATEGORY_LABELS[category])} `;
+		const status = this.state?.status;
+		if (this.status) this.status.label.data = status ? translate(DIFF_CATEGORY_LABELS[status]) : "";
+		this.none.textContent = translate(DIFF_LEGEND_TEXTS.none);
+		this.showAllButton.textContent = translate(DIFF_LEGEND_TEXTS.showAll);
+		DiffLegendView.nameIconButton(this.previousButton, translate(DIFF_LEGEND_TEXTS.previous));
+		DiffLegendView.nameIconButton(this.nextButton, translate(DIFF_LEGEND_TEXTS.next));
+		DiffLegendView.nameIconButton(this.swapButton, translate(DIFF_LEGEND_TEXTS.swap));
+	}
+	static hasChanges(counts) {
+		return DIFF_CATEGORIES.some((category) => counts[category] > 0);
+	}
+	static nameIconButton(button, label) {
+		button.title = label;
+		button.setAttribute("aria-label", label);
+	}
+	static iconButton(modifier, chevronPath, onClick) {
+		const button = createButton(`diff-legend__nav-btn ${modifier}`, onClick);
+		button.append(DiffLegendView.chevron(chevronPath));
+		return button;
+	}
+	static chevron(path) {
+		const svgNamespace = "http://www.w3.org/2000/svg";
+		const icon = document.createElementNS(svgNamespace, "svg");
+		icon.setAttribute("viewBox", "0 0 24 24");
+		icon.setAttribute("aria-hidden", "true");
+		icon.classList.add("diff-legend__icon");
+		const line = document.createElementNS(svgNamespace, "path");
+		line.setAttribute("d", path);
+		icon.append(line);
+		return icon;
+	}
+	static countSlot(category) {
+		const slot = createElement("div", `diff-legend__slot diff-legend__slot--${SLOT_MODIFIERS[category]}`);
+		const text = createElement("span", "diff-legend__label");
+		const label = document.createTextNode("");
+		const count = createElement("b", "diff-legend__count");
+		text.append(label, count);
+		slot.append(createElement("span", DiffLegendView.swatchClass(category)), text);
+		return {
+			category,
+			slot,
+			label,
+			count
+		};
+	}
+	static statusSlot() {
+		const slot = createElement("div", "diff-legend__slot diff-legend__slot--status");
+		const swatch = createElement("span", "diff-legend__swatch");
+		const text = createElement("span", "diff-legend__label");
+		const label = document.createTextNode("");
+		text.append(label);
+		slot.append(swatch, text);
+		return {
+			slot,
+			swatch,
+			label
+		};
+	}
+	static swatchClass(category) {
+		return `diff-legend__swatch diff-legend__swatch--${SLOT_MODIFIERS[category]}`;
+	}
+};
+_DiffLegendView.CHEVRON_LEFT = "m15 18-6-6 6-6";
+_DiffLegendView.CHEVRON_RIGHT = "m9 18 6-6-6-6";
+// ../../libs/modeler-types/src/focusCanvasFromKeystroke.ts
+function focusCanvasFromKeystroke(focusCanvas) {
+	focusCanvas();
+	setTimeout(() => {
+		if (document.activeElement === null || document.activeElement === document.body) focusCanvas();
+	});
+}
 // ../../libs/modeler-types/src/surfaceThemeMode.ts
 var DEFAULT_THEME_MODE = "automatic";
+// ../../libs/modeler-types/src/textEditingSurface.ts
+function isTextEditingSurface(el) {
+	if (el instanceof HTMLInputElement) return true;
+	if (el instanceof HTMLTextAreaElement) return true;
+	if (el instanceof HTMLElement && el.contentEditable === "true") return true;
+	return false;
+}
+// ../../libs/modeler-types/src/blankDocument.ts
+function isBlankDocument(text) {
+	return text === void 0 || text.trim() === "";
+}
+// ../../libs/shared/src/lib/diffPaneCommands.ts
+var DIFF_PANE_COMMAND_TYPES = [
+	"DiffReadyCommand",
+	"ViewportChangedCommand",
+	"CursorChangedCommand",
+	"SwapCompareSidesCommand",
+	"LogErrorCommand"
+];
+var BPMN_DIFF_PANE_COMMAND_TYPES = [
+	...DIFF_PANE_COMMAND_TYPES,
+	"DiffPlaneChangedCommand",
+	"ShowElementXmlChangesCommand",
+	"DiffSelectionChangedCommand"
+];
+var DIFF_PANE_HANDSHAKE_COMMAND_TYPES = [
+	"GetBpmnFileCommand",
+	"GetBpmnModelerSettingCommand",
+	"GetPropertiesPanelStateCommand"
+];
+[...DIFF_PANE_COMMAND_TYPES];
+[...DIFF_PANE_HANDSHAKE_COMMAND_TYPES, ...BPMN_DIFF_PANE_COMMAND_TYPES];
 var MAX_PANEL_WIDTH = 1600;
 function clampPanelWidth(width) {
 	return Math.max(200, Math.min(MAX_PANEL_WIDTH, width));
@@ -15767,7 +16059,7 @@ function restorablePanelWidth(saved) {
 	return saved !== void 0 && Number.isFinite(saved) ? clampPanelWidth(saved) : void 0;
 }
 // ../../libs/shared/src/lib/propertiesPanelResizer.ts
-var COLLAPSED_CLASS = "collapsed";
+var COLLAPSED_CLASS$1 = "collapsed";
 var CHEVRON_LEFT_SVG = `
     <svg xmlns="http://www.w3.org/2000/svg" width="10" height="14" viewBox="0 0 10 14" aria-hidden="true" focusable="false">
     <path d="M7.5 2 2 7l5.5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -15778,27 +16070,12 @@ var CHEVRON_RIGHT_SVG = `
     <path d="M2.5 2 8 7l-5.5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
 `;
-var NOOP_HANDLE = {
-	isVisible: () => true,
-	setVisible: () => void 0,
-	onVisibilityChanged: () => void 0,
-	setOpenWidth: () => void 0,
-	onOpenWidthChanged: () => void 0,
-	dispose: () => void 0
-};
 function initResizer(opts) {
-	const resizerEl = document.getElementById("js-panel-resizer");
-	const panelEl = document.getElementById("js-properties-panel");
-	if (!resizerEl || !panelEl) {
-		console.warn("[resizer] Required DOM elements not found — skipping resizer init.");
-		return NOOP_HANDLE;
-	}
-	const resizer = resizerEl;
-	const panel = panelEl;
+	const { resizer, panel } = opts;
 	let isResizing = false;
 	let lastX = 0;
 	let targetWidth = 0;
-	let isCollapsed = panel.classList.contains(COLLAPSED_CLASS);
+	let isCollapsed = panel.classList.contains(COLLAPSED_CLASS$1);
 	let openWidth = 400;
 	let widthAtDragStart = 0;
 	const visibilityListeners = [];
@@ -15847,15 +16124,15 @@ function initResizer(opts) {
 		if (isCollapsed) return;
 		isCollapsed = true;
 		panel.style.width = "0";
-		panel.classList.add(COLLAPSED_CLASS);
-		resizer.classList.add(COLLAPSED_CLASS);
+		panel.classList.add(COLLAPSED_CLASS$1);
+		resizer.classList.add(COLLAPSED_CLASS$1);
 		notifyVisibilityChange();
 	}
 	function expand() {
 		if (!isCollapsed) return;
 		isCollapsed = false;
-		panel.classList.remove(COLLAPSED_CLASS);
-		resizer.classList.remove(COLLAPSED_CLASS);
+		panel.classList.remove(COLLAPSED_CLASS$1);
+		resizer.classList.remove(COLLAPSED_CLASS$1);
 		notifyVisibilityChange();
 	}
 	function startResize(e) {
@@ -15924,9 +16201,57 @@ function initResizer(opts) {
 		}
 	};
 }
-// ../../libs/shared/src/lib/hostTheme.ts
-function applyPageThemeScope(attribute, kind) {
-	document.documentElement.setAttribute(attribute, kind);
+// ../../libs/shared/src/lib/propertiesPanelFocus.ts
+var FOCUSABLE = "input:not([disabled]):not([type=\"hidden\"]), select:not([disabled]), textarea:not([disabled]), [contenteditable=\"true\"], button:not([disabled])";
+function schedule(cb, opts) {
+	(opts.schedule ?? requestAnimationFrame)(cb);
+}
+function focusPropertiesPanel(handle, opts) {
+	const panel = opts.getPanelRoot();
+	if (!panel || panel.childElementCount === 0) return;
+	if (!handle.isVisible()) handle.setVisible(true);
+	schedule(() => {
+		const scrollContainer = panel.querySelector(".bio-properties-panel-scroll-container") ?? panel;
+		const candidates = scrollContainer.querySelectorAll(FOCUSABLE);
+		const target = Array.from(candidates).find((el) => el.offsetParent !== null) ?? candidates[0];
+		if (target) target.focus();
+		else {
+			scrollContainer.tabIndex = -1;
+			scrollContainer.focus();
+		}
+	}, opts);
+}
+function togglePropertiesPanel(handle, focusCanvas, opts) {
+	if (handle.isVisible()) {
+		const hadFocusInside = opts.getPanelRoot()?.contains(document.activeElement) ?? false;
+		handle.setVisible(false);
+		if (hadFocusInside) focusCanvas();
+	} else handle.setVisible(true);
+}
+function installPanelShortcuts(deps, opts) {
+	const listenerScope = new AbortController();
+	document.addEventListener("keydown", (e) => {
+		if (deps.isEnabled && !deps.isEnabled()) return;
+		if (e.key === "Escape" && deps.escapeToCanvas) {
+			if (e.defaultPrevented) return;
+			focusCanvasFromKeystroke(deps.focusCanvas);
+			return;
+		}
+		if (e.defaultPrevented) return;
+		if (e.metaKey || e.ctrlKey || e.altKey) return;
+		if (e.shiftKey && e.key === "P") {
+			if (isTextEditingSurface(document.activeElement)) return;
+			togglePropertiesPanel(deps.handle, deps.focusCanvas, opts);
+			e.preventDefault();
+			return;
+		}
+		if (!e.shiftKey && e.key === "p") {
+			if (!deps.isCanvasFocused()) return;
+			focusPropertiesPanel(deps.handle, opts);
+			e.preventDefault();
+		}
+	}, { signal: listenerScope.signal });
+	return () => listenerScope.abort();
 }
 // ../../libs/shared/src/lib/propertiesPanelVisibility.ts
 var UNDECIDED = { decided: false };
@@ -16008,6 +16333,73 @@ function bindPanelWidth(handle, store) {
 	const savedWidth = restorablePanelWidth(store.read()?.panelWidth);
 	if (savedWidth !== void 0) handle.setOpenWidth(savedWidth);
 	handle.onOpenWidthChanged((panelWidth) => store.merge({ panelWidth }));
+}
+var COLLAPSED_CLASS = "collapsed";
+function element(className, id) {
+	const node = document.createElement("div");
+	node.className = className;
+	node.id = id;
+	return node;
+}
+function mountEditorCanvas(root) {
+	const dropZone = element("content with-diagram", "js-drop-zone");
+	const canvas = element("canvas", "js-canvas");
+	dropZone.append(canvas);
+	root.classList.add("editor-page");
+	root.replaceChildren(dropZone);
+	return {
+		dropZone,
+		canvas
+	};
+}
+function mountPanelChrome(root, options) {
+	const { dropZone, canvas } = mountEditorCanvas(root);
+	const resizer = element("panel-resizer", "js-panel-resizer");
+	const panelHost = element("properties-panel-parent", "js-properties-panel");
+	const panelMount = element("panel-mount", "js-properties-panel-mount");
+	if (root.hasAttribute("data-panel-collapsed")) {
+		resizer.classList.add(COLLAPSED_CLASS);
+		panelHost.classList.add(COLLAPSED_CLASS);
+		panelHost.style.width = "0";
+	}
+	panelHost.append(panelMount);
+	dropZone.append(resizer, panelHost);
+	const panel = initResizer({
+		resizer,
+		panel: panelHost,
+		getToggleLabel: (state) => options.translate(state === "collapsed" ? "Open properties panel" : "Close properties panel") + " (Shift+P)",
+		onLabelChange: options.onLanguageChange
+	});
+	bindPanelWidth(panel, options.store);
+	const visibility = bindPanelVisibility(panel, options.store, (visible) => options.onVisibilityChosen?.(visible));
+	const removeShortcuts = installPanelShortcuts({
+		handle: panel,
+		focusCanvas: options.focusCanvas,
+		isCanvasFocused: options.isCanvasFocused,
+		isEnabled: options.isEnabled,
+		escapeToCanvas: options.escapeToCanvas
+	}, { getPanelRoot: () => panelMount });
+	return {
+		dropZone,
+		canvas,
+		resizer,
+		panelHost,
+		panelMount,
+		panel,
+		visibility,
+		hidePanel(hidden) {
+			panelHost.hidden = hidden;
+			resizer.hidden = hidden;
+		},
+		dispose() {
+			removeShortcuts();
+			panel.dispose();
+		}
+	};
+}
+// ../../libs/shared/src/lib/hostTheme.ts
+function applyPageThemeScope(attribute, kind) {
+	document.documentElement.setAttribute(attribute, kind);
 }
 // src/adapter/out/orcaFrame.ts
 function orcaFrame() {
@@ -16123,35 +16515,16 @@ function localPanelState(key) {
 	};
 }
 // src/composition/editorLayout.ts
-function mountEditorLayout(root, editorKind) {
-	root.innerHTML = `
-        <div class="content with-diagram" id="js-drop-zone">
-            <div class="canvas" id="js-canvas"></div>
-            <div class="panel-resizer" id="js-panel-resizer"></div>
-            <div class="properties-panel-parent" id="js-properties-panel">
-                <div class="panel-mount" id="js-properties-panel-mount"></div>
-            </div>
-        </div>`;
-	const panel = initResizer({
-		getToggleLabel: (state) => i18n.translate(state === "collapsed" ? "Open properties panel" : "Close properties panel") + " (Shift+P)",
-		onLabelChange: (apply) => i18n.onChange(apply)
+function mountEditorLayout(root, editorKind, focus) {
+	const chrome = mountPanelChrome(root, {
+		store: localPanelState(`miragon.bpmnModeler.${editorKind}.panel`),
+		translate: (key) => i18n.translate(key),
+		onLanguageChange: (apply) => i18n.onChange(apply),
+		...focus
 	});
-	const store = localPanelState(`miragon.bpmnModeler.${editorKind}.panel`);
-	bindPanelWidth(panel, store);
-	bindPanelVisibility(panel, store, () => void 0).hostDefaultSettled(void 0);
-	const panelHost = root.querySelector("#js-properties-panel");
-	const resizer = root.querySelector("#js-panel-resizer");
-	return {
-		canvas: root.querySelector("#js-canvas"),
-		panelHost,
-		panelMount: root.querySelector("#js-properties-panel-mount"),
-		panel,
-		hidePanel(hidden) {
-			panelHost.hidden = hidden;
-			resizer.hidden = hidden;
-		}
-	};
+	chrome.visibility.hostDefaultSettled(void 0);
+	return chrome;
 }
-export { openOrcaSession as a, DEFAULT_THEME_MODE as c, extras as d, TranslateModule as f, followOrcaTheme as i, createFlushableDebounceInput as l, _defineProperty as m, syncDocument as n, orcaLanguage as o, i18n as p, currentOrcaTheme as r, applyPageThemeScope as s, mountEditorLayout as t, asyncDebounce as u };
+export { _defineProperty as _, openOrcaSession as a, isBlankDocument as c, focusCanvasFromKeystroke as d, createFlushableDebounceInput as f, i18n as g, TranslateModule as h, followOrcaTheme as i, isTextEditingSurface as l, extras as m, syncDocument as n, orcaLanguage as o, asyncDebounce as p, currentOrcaTheme as r, applyPageThemeScope as s, mountEditorLayout as t, DEFAULT_THEME_MODE as u };
 
-//# sourceMappingURL=editorLayout-DZwh-cxt.js.map
+//# sourceMappingURL=editorLayout-BNwn-014.js.map

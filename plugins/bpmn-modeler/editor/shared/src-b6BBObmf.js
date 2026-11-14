@@ -1,10 +1,10 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./c7-B_oJpiuj.js","./rolldown-runtime-DQp2zzRu.js","./ModelUtil-BGe9jbj7.js","./EscapeUtil-B1jzPlMc.js","./jsxRuntime.module-awBdvHUy.js","./sharedModules-BzDoO-Q2.js","./editorLayout-DZwh-cxt.js","./editorLayout-ThHr9A18.css","./createSurface-DyHVIhQM.js","../bpmn/main.js","./bpmn-DUImDDdd.css","./clipboard-Bznk3d97.js","./index.esm-DgBSptNj.js","./dist-BWHN8Och.js","./moddle-utils-CKD1iZGs.js","./lib-CHaSAubE.js","./reporting-CwIb-OB4.js","./reporting-DXH2a9lW.css","./index.esm-CXJiDiAL.js","./c8-COBHyc91.js"])))=>i.map(i=>d[i]);
-import { d as extras, f as TranslateModule, m as _defineProperty, p as i18n } from "./editorLayout-DZwh-cxt.js";
-import { a as MODELER_NAMESPACE_URI, c as isEngine, i as ENGINE_EXECUTION_PLATFORM, o as engineSupports, r as surfaceModeSupports, s as executionPlatformAttributeNames, t as __vitePreload } from "../bpmn/main.js";
-import { C as templatePropertyDisplayText, E as modeler_default, O as Modeler, S as propertyDisplayLabel, T as templateIdOfEntryKey, _ as FlowNavigationModule, a as formatSurfaceDiagram, b as fallbackTranslate, c as subscribeFormatted, d as createPopupMenuAnnotationsModule, f as BPMN_TAB, g as createBpmnLayoutModule, h as createDefinitionSearchModule, i as createSurfaceLintHandle, l as wireContentSaved, m as buildLintModules, n as applyFavouriteBpmnElements, o as installClipboardSupport, p as ELEMENT_POPUP_MENUS, r as cleanupSurfaceDiagram, s as subscribeCommandStackChanged, t as createReporter, u as ReplaceTemplatesTabModule, v as AppendMenuModule, w as u, x as partitionVisibleProperties, y as extractImplementationDetail } from "./reporting-CwIb-OB4.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./c7-BnIEhxZ8.js","./rolldown-runtime-DQp2zzRu.js","./ModelUtil-BGe9jbj7.js","./EscapeUtil-B1jzPlMc.js","./jsxRuntime.module-awBdvHUy.js","./sharedModules-CXHmOeSF.js","./editorLayout-BNwn-014.js","./editorLayout-3p6pELEt.css","./createSurface-2zRsNQAh.js","../bpmn/main.js","./bpmn-BKnWBDxl.css","./clipboard-Bznk3d97.js","./index.esm-DgBSptNj.js","./dist-BWHN8Och.js","./moddle-utils-CKD1iZGs.js","./lib-8JLHscGa.js","./reporting-2F_WO5Yt.js","./reporting-DXH2a9lW.css","./index.esm-CXJiDiAL.js","./c8-o3zwbPyy.js"])))=>i.map(i=>d[i]);
+import { _ as _defineProperty, g as i18n, h as TranslateModule, m as extras } from "./editorLayout-BNwn-014.js";
+import { a as surfaceModeSupports, c as engineSupports, l as executionPlatformAttributeNames, o as ENGINE_EXECUTION_PLATFORM, s as MODELER_NAMESPACE_URI, t as __vitePreload, u as isEngine } from "../bpmn/main.js";
+import { C as templatePropertyDisplayText, D as modeler_default, E as templateIdOfEntryKey, S as propertyDisplayLabel, T as isTemplatePopupEntry, _ as FlowNavigationModule, a as formatSurfaceDiagram, b as fallbackTranslate, c as subscribeFormatted, d as createPopupMenuAnnotationsModule, f as BPMN_TAB, g as createBpmnLayoutModule, h as createDefinitionSearchModule, i as createSurfaceLintHandle, k as Modeler, l as wireContentSaved, m as buildLintModules, n as applyFavouriteBpmnElements, o as installClipboardSupport, p as ELEMENT_POPUP_MENUS, r as cleanupSurfaceDiagram, s as subscribeCommandStackChanged, t as createReporter, u as ReplaceTemplatesTabModule, v as AppendMenuModule, w as u, x as partitionVisibleProperties, y as extractImplementationDetail } from "./reporting-2F_WO5Yt.js";
 import { B as d, H as q, K as k, L as A, R as T, V as h, W as R } from "./clipboard-Bznk3d97.js";
 import { a as is, i as init_ModelUtil, n as getBusinessObject } from "./ModelUtil-BGe9jbj7.js";
-import { a as exportSvg, f as CustomGroupsModule, i as exportFormattedXml, m as FlushableDebounceInputModule, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, r as DrilldownFitModule, s as createModelNavigationModule, t as createSurface } from "./createSurface-DyHVIhQM.js";
+import { a as exportSvg, f as CustomGroupsModule, i as exportFormattedXml, m as FlushableDebounceInputModule, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, r as DrilldownFitModule, s as createModelNavigationModule, t as createSurface } from "./createSurface-2zRsNQAh.js";
 import { _ as S, hn as subscribe, pn as DisposableStore, t as u$1, yn as UnsupportedEngineError } from "./jsxRuntime.module-awBdvHUy.js";
 var VERSIONS = {
 	c7: [
@@ -18,6 +18,7 @@ var VERSIONS = {
 		"7.17.0"
 	],
 	c8: [
+		"8.10.0",
 		"8.9.0",
 		"8.8.0",
 		"8.7.0",
@@ -56,6 +57,13 @@ function isSameElementTemplateRef(ref, other) {
 }
 function isRecord(value) {
 	return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+// ../../libs/modeler-types/src/scripting.ts
+function listenerPosition(listenerIndex) {
+	return listenerIndex ?? 0;
+}
+function scriptIdentityKey({ elementId, kind, listenerIndex }) {
+	return `${elementId}::${kind}::${listenerPosition(listenerIndex)}`;
 }
 // ../../libs/modeler-types/src/scriptSurface.ts
 var SCRIPT_SURFACES = {
@@ -1811,9 +1819,6 @@ var ScriptEditorKeyboardModule = {
 // ../../libs/inline-scripting/src/openScriptEditorsStore.ts
 var _OpenScriptEditorsStore;
 var OPEN_SCRIPT_EDITORS_CHANGED_EVENT = "openScriptEditors.changed";
-function openScriptKey(elementId, kind, listenerIndex) {
-	return `${elementId}::${kind}::${listenerIndex ?? 0}`;
-}
 var OpenScriptEditorsStore = class {
 	constructor(eventBus) {
 		this.eventBus = eventBus;
@@ -1821,7 +1826,7 @@ var OpenScriptEditorsStore = class {
 	}
 	set(refs) {
 		this.openByKey.clear();
-		for (const ref of refs) this.openByKey.set(openScriptKey(ref.elementId, ref.kind, ref.listenerIndex), ref);
+		for (const ref of refs) this.openByKey.set(scriptIdentityKey(ref), ref);
 		this.eventBus.fire(OPEN_SCRIPT_EDITORS_CHANGED_EVENT);
 		this.eventBus.fire("propertiesPanel.providersChanged");
 	}
@@ -1829,7 +1834,11 @@ var OpenScriptEditorsStore = class {
 		return [...this.openByKey.values()];
 	}
 	get(elementId, kind, listenerIndex) {
-		return this.openByKey.get(openScriptKey(elementId, kind, listenerIndex));
+		return this.openByKey.get(scriptIdentityKey({
+			elementId,
+			kind,
+			listenerIndex
+		}));
 	}
 };
 _OpenScriptEditorsStore = OpenScriptEditorsStore;
@@ -1958,7 +1967,7 @@ var ScriptLockPropertiesProvider = class {
 		const bo = element?.businessObject;
 		if (!bo) return;
 		if (kind === "script-task") return scriptTaskOpenEvent(element.id, bo);
-		const listener = findListenerAt(bo, kind, listenerIndex ?? 0);
+		const listener = findListenerAt(bo, kind, listenerPosition(listenerIndex));
 		if (!listener?.script) return;
 		return listenerScriptOpenEvent(element.id, kind, listenerIndex, listener);
 	}
@@ -1992,13 +2001,17 @@ var ScriptSourceWatcher = class {
 		});
 	}
 	noteApplied(elementId, kind, listenerIndex, content) {
-		const key = openScriptKey(elementId, kind, listenerIndex);
+		const key = scriptIdentityKey({
+			elementId,
+			kind,
+			listenerIndex
+		});
 		if (this.lastKnown.has(key)) this.lastKnown.set(key, content);
 	}
 	rebaseline() {
 		const stillOpen = new Map();
 		for (const ref of this.store.all()) {
-			const key = openScriptKey(ref.elementId, ref.kind, ref.listenerIndex);
+			const key = scriptIdentityKey(ref);
 			if (this.lastKnown.has(key)) stillOpen.set(key, this.lastKnown.get(key));
 		}
 		this.lastKnown = stillOpen;
@@ -2006,7 +2019,7 @@ var ScriptSourceWatcher = class {
 	}
 	baselineNewlyOpened() {
 		for (const ref of this.store.all()) {
-			const key = openScriptKey(ref.elementId, ref.kind, ref.listenerIndex);
+			const key = scriptIdentityKey(ref);
 			if (this.lastKnown.has(key)) continue;
 			const current = this.read(ref);
 			if (current === void 0 && !this.diagramImported) continue;
@@ -2017,7 +2030,7 @@ var ScriptSourceWatcher = class {
 	detectChanges() {
 		this.baselineNewlyOpened();
 		for (const ref of this.store.all()) {
-			const key = openScriptKey(ref.elementId, ref.kind, ref.listenerIndex);
+			const key = scriptIdentityKey(ref);
 			const current = this.read(ref);
 			if (!this.lastKnown.has(key) || this.lastKnown.get(key) === current) continue;
 			this.lastKnown.set(key, current);
@@ -2287,11 +2300,11 @@ function executionPlatformAttributes(definitions) {
 // ../../packages/bpmn-modeler/src/engineStacks/index.ts
 var ENGINE_STACK_LOADERS = {
 	c7: async () => (await __vitePreload(async () => {
-		const { c7Stack } = await import("./c7-B_oJpiuj.js");
+		const { c7Stack } = await import("./c7-BnIEhxZ8.js");
 		return { c7Stack };
 	}, __vite__mapDeps([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]), import.meta.url)).c7Stack,
 	c8: async () => (await __vitePreload(async () => {
-		const { c8Stack } = await import("./c8-COBHyc91.js");
+		const { c8Stack } = await import("./c8-o3zwbPyy.js");
 		return { c8Stack };
 	}, __vite__mapDeps([19,4,3,1,2,5,6,7,8,9,10,11,12,13,14,15,16,17,18]), import.meta.url)).c8Stack
 };
@@ -2320,11 +2333,7 @@ var POPUP_MODE_FILTER_PRIORITY = 100;
 var TEMPLATE_SELECT_GUARD_PRIORITY = 1e4;
 function stripTemplateEntries(entries) {
 	const nonTemplateEntries = {};
-	for (const [key, entry] of Object.entries(entries)) {
-		if (templateIdOfEntryKey(key) !== void 0) continue;
-		if (entry?.group?.id === "templates") continue;
-		nonTemplateEntries[key] = entry;
-	}
+	for (const [key, entry] of Object.entries(entries)) if (!isTemplatePopupEntry(key, entry)) nonTemplateEntries[key] = entry;
 	return nonTemplateEntries;
 }
 var PopupMenuModeFilter = class {
@@ -2618,6 +2627,9 @@ var BpmnModeler = class {
 		this.refreshAfterImport();
 		return result;
 	}
+	reloadDiagram(xml) {
+		return this.core.keepViewAcross(() => this.loadDiagram(xml));
+	}
 	refreshAfterImport() {
 		this.showTransactionBoundariesIfEnabled();
 		this.applyEnginesFromDefinitions();
@@ -2748,4 +2760,4 @@ async function createModeler(container, options) {
 }
 export { createModeler };
 
-//# sourceMappingURL=src-ClSm-gG3.js.map
+//# sourceMappingURL=src-b6BBObmf.js.map

@@ -1,19 +1,12 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./createSurface-DyHVIhQM.js","./rolldown-runtime-DQp2zzRu.js","./editorLayout-DZwh-cxt.js","./editorLayout-ThHr9A18.css","./jsxRuntime.module-awBdvHUy.js","./EscapeUtil-B1jzPlMc.js","../bpmn/main.js","./bpmn-DUImDDdd.css","./ModelUtil-BGe9jbj7.js","./dist-CpxBSnUu.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./createSurface-2zRsNQAh.js","./rolldown-runtime-DQp2zzRu.js","./editorLayout-BNwn-014.js","./editorLayout-3p6pELEt.css","./jsxRuntime.module-awBdvHUy.js","./EscapeUtil-B1jzPlMc.js","../bpmn/main.js","./bpmn-BKnWBDxl.css","./ModelUtil-BGe9jbj7.js","./dist-YiDDltFL.js"])))=>i.map(i=>d[i]);
 import { r as __exportAll } from "./rolldown-runtime-DQp2zzRu.js";
-import { m as _defineProperty, u as asyncDebounce } from "./editorLayout-DZwh-cxt.js";
-import { A as hasExternalLabel, B as isInterrupting, C as getCirclePath, D as DEFAULT_LABEL_SIZE, E as getElementAnnotations, F as hasEscalationEventDefinition, I as hasEventDefinition$2, L as isEventSubProcess, M as setLabel, N as hasCompensateEventDefinition, O as getExternalLabelMid, P as hasErrorEventDefinition, R as isExpanded, S as toPlaneId, T as collectElementsAnnotations, V as BaseViewer, _ as keep_selection_visible_default, b as getShapeIdFromPlane, c as base_default, d as TOGGLE_MODE_EVENT, g as NavigatedViewer, h as outline_default, j as isLabelExternal, k as getLabel, l as ToggleOffIcon, u as ToggleOnIcon, v as Viewer, w as getRoundRectPath, x as isPlane, y as getPlaneIdFromShape, z as isHorizontal$1 } from "./createSurface-DyHVIhQM.js";
+import { _ as _defineProperty, l as isTextEditingSurface, p as asyncDebounce } from "./editorLayout-BNwn-014.js";
+import { A as hasExternalLabel, B as isInterrupting, C as getCirclePath, D as DEFAULT_LABEL_SIZE, E as getElementAnnotations, F as hasEscalationEventDefinition, I as hasEventDefinition$2, L as isEventSubProcess, M as setLabel, N as hasCompensateEventDefinition, O as getExternalLabelMid, P as hasErrorEventDefinition, R as isExpanded, S as toPlaneId, T as collectElementsAnnotations, V as BaseViewer, _ as keep_selection_visible_default, b as getShapeIdFromPlane, c as base_default, d as TOGGLE_MODE_EVENT, g as NavigatedViewer, h as outline_default, j as isLabelExternal, k as getLabel, l as ToggleOffIcon, u as ToggleOnIcon, v as Viewer, w as getRoundRectPath, x as isPlane, y as getPlaneIdFromShape, z as isHorizontal$1 } from "./createSurface-2zRsNQAh.js";
 import { A as isCmd, At as getParents$1, B as delta, Bt as clear, C as outline_default$1, Ct as add, D as KeyboardBindings$1, Dt as getBBox, E as keyboard_default$1, Et as eachElement, Ft as updateLine, G as hasPrimaryModifier, H as IdGenerator, Ht as create, I as set, It as append, Jt as all, K as hasSecondaryModifier, Kt as e, Mt as selfAndChildren, O as context_pad_default$1, P as movecanvas_default, Pt as createLine, R as zoomscroll_default, Rt as attr, St as pointsOnLine, T as keyboard_move_default, Tt as remove, U as selection_default, Wt as remove$1, Xt as attr$1, Yt as assign, Z as translate_default, Zt as classes$1, bt as pointInRect, ct as asTRBL, dt as getMid, en as delegate, ft as getOrientation, gt as isLabel, hn as subscribe, ht as isConnection, in as remove$2, it as ElementFactory$1, jt as selfAndAllChildren, k as CommandInterceptor, kt as getEnclosedElements, l as h, mt as roundPoint, n as A, nt as translate, pn as DisposableStore, pt as roundBounds, qt as Ids, rn as query, rt as getVisual, s as d, t as u$1, tn as event, ut as getElementLineIntersection, w as change_support_default, wt as indexOf, xt as pointsAligned, yt as pointDistance, zt as classes } from "./jsxRuntime.module-awBdvHUy.js";
 import { t as __vitePreload } from "../bpmn/main.js";
 import { A as pick, B as without, C as isObject, D as map, E as keys, F as sortBy, L as unionBy, O as matchPattern, P as some, S as isNumber, T as isUndefined, _ as init_dist, c as every, d as findIndex, f as flatten, g as has, h as groupBy, i as assign$1, j as reduce, k as omit, l as filter, p as forEach, r as domify, t as escapeCSS, u as find, v as isArray, w as isString, x as isNil, y as isDefined, z as values } from "./EscapeUtil-B1jzPlMc.js";
 import { $ as isSnapped, A as editor_actions_default$2, B as d$1, C as saveClear, D as keyboard_move_selection_default, F as popup_menu_default$1, G as S, H as q, I as search_default$1, J as create_default, K as k, L as A$1, M as distribute_elements_default$1, N as connection_preview_default, O as grid_snapping_default$1, P as replace_default$1, Q as bottomRight, R as T, S as getNewAttachShapeDelta, T as command_default, V as h$1, W as R, X as connect_default, Y as preview_support_default, Z as bendpoints_default, _ as Modeling$1, _t as align_elements_default$1, a as computeChildrenBBox, at as rotateVector, b as getResizedTargetAnchor, c as hand_tool_default, ct as dragging_default, d as tool_manager_default, dt as rules_default$1, et as mid$1, f as palette_default$1, ft as AutoResize, g as BaseLayouter, gt as getConnectedDistance, h as CroppingConnectionDocking, ht as generateGetNextPosition, i as resize_default, it as getDistancePointPoint, j as EditorActions$1, l as lasso_tool_default, lt as AutoResizeProvider, m as move_default, mt as findFreePosition, n as snapping_default$1, nt as topLeft, o as resizeTRBL, ot as getApproxIntersection, p as OrderingProvider, pt as auto_place_default$1, q as l, r as CreateMoveSnapping, rt as getAngle, s as substractTRBL, st as auto_scroll_default, t as clipboard_default, tt as setSnapped, u as mouse_default, ut as RuleProvider, v as getDirection, vt as search_pad_default, w as lib_default$1, x as getNewAttachPoint, y as getResizedSourceAnchor, z as _ } from "./clipboard-Bznk3d97.js";
 import { a as is, i as init_ModelUtil, n as getBusinessObject, o as isAny, r as getDi } from "./ModelUtil-BGe9jbj7.js";
-// ../../libs/modeler-types/src/textEditingSurface.ts
-function isTextEditingSurface(el) {
-	if (el instanceof HTMLInputElement) return true;
-	if (el instanceof HTMLTextAreaElement) return true;
-	if (el instanceof HTMLElement && el.contentEditable === "true") return true;
-	return false;
-}
 // ../../libs/modeler-types/src/workspaceDefinitions.ts
 var DEFINITION_KINDS = [
 	"message",
@@ -10820,7 +10813,7 @@ var modeler_default = { __depends__: [
 		tokenSimulationKeyboardBindings: ["type", KeyboardBindings]
 	}
 ] };
-// ../../libs/append-menu/src/templateEntryKey.ts
+// ../../libs/append-menu/src/templatePopupEntry.ts
 var TEMPLATE_MARKER = "template-";
 function templateMarkerIndex(key) {
 	if (key.startsWith(TEMPLATE_MARKER)) return 0;
@@ -10833,13 +10826,11 @@ function templateIdOfEntryKey(key) {
 	const id = key.slice(at + 9);
 	return id === "" ? void 0 : id;
 }
+var TEMPLATES_GROUP_ID = "templates";
+function isTemplatePopupEntry(key, entry) {
+	return templateIdOfEntryKey(key) !== void 0 || entry?.group?.id === TEMPLATES_GROUP_ID;
+}
 // ../../libs/append-menu/src/types.ts
-function isTemplateEntry(key, entry) {
-	return isTemplateKey(key) || !!entry.imageUrl;
-}
-function isTemplateKey(key) {
-	return templateIdOfEntryKey(key) !== void 0;
-}
 function flattenTemplateEntry(id, entry, template, node = template) {
 	if (!entry.entries) return [{
 		id,
@@ -10861,7 +10852,7 @@ function classifyEntries(entries, allTemplates = []) {
 	const templateIndex = new Map();
 	for (const t of allTemplates) templateIndex.set(t.id, t);
 	const classify = (key, entry, inheritedGroup) => {
-		if (entry.entries && !isTemplateKey(key)) {
+		if (entry.entries && !isTemplatePopupEntry(key, entry)) {
 			const categoryGroup = {
 				id: key,
 				name: entry.label
@@ -10869,7 +10860,7 @@ function classifyEntries(entries, allTemplates = []) {
 			for (const [childKey, child] of Object.entries(entry.entries)) classify(childKey, child, categoryGroup);
 			return;
 		}
-		if (isTemplateEntry(key, entry)) {
+		if (isTemplatePopupEntry(key, entry)) {
 			const templateId = templateIdOfEntryKey(key);
 			const template = templateId ? templateIndex.get(templateId) : void 0;
 			templates.push(...flattenTemplateEntry(key, entry, template));
@@ -13361,6 +13352,16 @@ _Layouter.$inject = [
 function messageOf$1(error) {
 	return error instanceof Error ? error.message : String(error);
 }
+// ../../libs/bpmn-diff/src/bpmnModdleFactory.ts
+async function loadBpmnModdle() {
+	return resolveBpmnModdleFactory(await __vitePreload(() => import("./createSurface-2zRsNQAh.js").then((n) => n.U), __vite__mapDeps([0,1,2,3,4,5,6,7,8]), import.meta.url));
+}
+function resolveBpmnModdleFactory(module) {
+	const moddleModule = module;
+	const createBpmnModdle = moddleModule.default ?? moddleModule.BpmnModdle;
+	if (typeof createBpmnModdle !== "function") throw new Error("bpmn-moddle did not expose a factory under `default` or `BpmnModdle`.");
+	return createBpmnModdle;
+}
 // ../../libs/bpmn-layout/src/port.ts
 var LayoutEngineError = class extends Error {
 	constructor(message, reason) {
@@ -13384,10 +13385,7 @@ function toNumber(value) {
 	return typeof value === "number" && Number.isFinite(value) ? value : void 0;
 }
 async function parse(xml) {
-	const moddleMod = await __vitePreload(() => import("./createSurface-DyHVIhQM.js").then((n) => n.U), __vite__mapDeps([0,1,2,3,4,5,6,7,8]), import.meta.url);
-	const createModdle = moddleMod.default ?? moddleMod.BpmnModdle;
-	if (!createModdle) throw new Error("bpmn-moddle exposes no factory");
-	const { rootElement } = await createModdle().fromXML(xml);
+	const { rootElement } = await (await loadBpmnModdle())().fromXML(xml);
 	return rootElement;
 }
 function collectGeometry(definitions) {
@@ -13442,7 +13440,7 @@ var BpmnAutoLayoutEngine = class {
 	async computeLayout(xml) {
 		let laidOutXml;
 		let diagnostics;
-		const autoLayout = await __vitePreload(() => import("./dist-CpxBSnUu.js"), __vite__mapDeps([9,0,1,2,3,4,5,6,7,8]), import.meta.url).catch((error) => {
+		const autoLayout = await __vitePreload(() => import("./dist-YiDDltFL.js"), __vite__mapDeps([9,0,1,2,3,4,5,6,7,8]), import.meta.url).catch((error) => {
 			throw new LayoutEngineError(`Could not load the layout engine: ${messageOf(error)}`, error);
 		});
 		try {
@@ -14023,7 +14021,7 @@ var ReplaceTemplatesTabProvider = class {
 				label: this.translate("Templates")
 			};
 			const tabbedEntries = {};
-			for (const [entryId, entry] of Object.entries(entries)) tabbedEntries[entryId] = templateIdOfEntryKey(entryId) !== void 0 ? {
+			for (const [entryId, entry] of Object.entries(entries)) tabbedEntries[entryId] = isTemplatePopupEntry(entryId, entry) ? {
 				...entry,
 				tab: templatesTab
 			} : entry;
@@ -14424,6 +14422,6 @@ function createReporter(sinks) {
 		}
 	};
 }
-export { templatePropertyDisplayText as C, createReviver as D, modeler_default as E, Modeler as O, propertyDisplayLabel as S, templateIdOfEntryKey as T, FlowNavigationModule as _, formatSurfaceDiagram as a, fallbackTranslate as b, subscribeFormatted as c, createPopupMenuAnnotationsModule as d, BPMN_TAB as f, createBpmnLayoutModule as g, createDefinitionSearchModule as h, createSurfaceLintHandle as i, wireContentSaved as l, buildLintModules as m, applyFavouriteBpmnElements as n, installClipboardSupport as o, ELEMENT_POPUP_MENUS as p, cleanupSurfaceDiagram as r, subscribeCommandStackChanged as s, createReporter as t, ReplaceTemplatesTabModule as u, AppendMenuModule as v, u as w, partitionVisibleProperties as x, extractImplementationDetail as y };
+export { templatePropertyDisplayText as C, modeler_default as D, templateIdOfEntryKey as E, createReviver as O, propertyDisplayLabel as S, isTemplatePopupEntry as T, FlowNavigationModule as _, formatSurfaceDiagram as a, fallbackTranslate as b, subscribeFormatted as c, createPopupMenuAnnotationsModule as d, BPMN_TAB as f, createBpmnLayoutModule as g, createDefinitionSearchModule as h, createSurfaceLintHandle as i, Modeler as k, wireContentSaved as l, buildLintModules as m, applyFavouriteBpmnElements as n, installClipboardSupport as o, ELEMENT_POPUP_MENUS as p, cleanupSurfaceDiagram as r, subscribeCommandStackChanged as s, createReporter as t, ReplaceTemplatesTabModule as u, AppendMenuModule as v, u as w, partitionVisibleProperties as x, extractImplementationDetail as y };
 
-//# sourceMappingURL=reporting-CwIb-OB4.js.map
+//# sourceMappingURL=reporting-2F_WO5Yt.js.map

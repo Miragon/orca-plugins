@@ -1,5 +1,5 @@
 import { a as __toESM, t as __commonJSMin } from "../shared/rolldown-runtime-DQp2zzRu.js";
-import { a as openOrcaSession, d as extras, f as TranslateModule, i as followOrcaTheme, l as createFlushableDebounceInput, m as _defineProperty$3, n as syncDocument, o as orcaLanguage, p as i18n, r as currentOrcaTheme, s as applyPageThemeScope, t as mountEditorLayout } from "../shared/editorLayout-DZwh-cxt.js";
+import { _ as _defineProperty$3, a as openOrcaSession, c as isBlankDocument, f as createFlushableDebounceInput, g as i18n, h as TranslateModule, i as followOrcaTheme, m as extras, n as syncDocument, o as orcaLanguage, r as currentOrcaTheme, s as applyPageThemeScope, t as mountEditorLayout } from "../shared/editorLayout-BNwn-014.js";
 import { A as pick, C as isObject$1, D as map, E as keys, F as sortBy, I as throttle, P as some, S as isNumber$4, _ as init_dist, b as isFunction$2, c as every, d as findIndex, g as has$1, h as groupBy, i as assign, j as reduce, l as filter$1, o as debounce, p as forEach, r as domify, u as find, v as isArray$4, w as isString$3, x as isNil$1, y as isDefined } from "../shared/EscapeUtil-B1jzPlMc.js";
 import { $ as Diagram, $t as closest, A as isCmd$5, Bt as clear, C as outline_default$1, Ct as add$1, D as KeyboardBindings$1, E as keyboard_default$4, G as hasPrimaryModifier, Gt as BaseRenderer, Ht as create$1, It as append, Jt as all, Kt as e, M as isRedo, N as isUndo, O as context_pad_default$1, P as movecanvas_default, Pt as createLine, Q as Text, R as zoomscroll_default, Rt as attr, T as keyboard_move_default, Tt as remove$2, U as selection_default$1, Ut as innerSVG, V as overlays_default, Vt as clone, Xt as attr$1, Z as translate_default, Zt as classes, _n as observeCanvasSize, a as T, an as Reader, b as X, cn as EventBus, ct as asTRBL, d as x, dn as fitCanvasToContent, dt as getMid, en as delegate, ft as getOrientation, g as R, in as remove$1, it as ElementFactory$3, k as CommandInterceptor, l as h, ln as ThemeController, mn as MutableDisposable, nn as matches$1, nt as translate, on as Writer, ot as Refs, pn as DisposableStore, q as isPrimaryButton, qt as Ids, rn as query, s as d, sn as Moddle, t as u, tn as event, u as q, un as installFitViewportButton, vn as NoModelerError, w as change_support_default, x as k } from "../shared/jsxRuntime.module-awBdvHUy.js";
 import { A as editor_actions_default$5, D as keyboard_move_selection_default, E as CommandStack, F as popup_menu_default$1, J as create_default, M as distribute_elements_default$1, N as connection_preview_default, O as grid_snapping_default, P as replace_default$1, T as command_default, X as connect_default, Z as bendpoints_default, _ as Modeling$5, _t as align_elements_default, c as hand_tool_default, ct as dragging_default, dt as rules_default$3, f as palette_default$1, ft as AutoResize, g as BaseLayouter, gt as getConnectedDistance, h as CroppingConnectionDocking, ht as generateGetNextPosition, i as resize_default, j as EditorActions$3, l as lasso_tool_default, lt as AutoResizeProvider, m as move_default, mt as findFreePosition, n as snapping_default$1, p as OrderingProvider, pt as auto_place_default$1, st as auto_scroll_default, t as clipboard_default, ut as RuleProvider, vt as search_pad_default, w as lib_default$1 } from "../shared/clipboard-Bznk3d97.js";
@@ -31801,8 +31801,6 @@ async function createModeler(container, options) {
 	return modeler;
 }
 // src/adapter/out/dmnCanvas.ts
-var holdsPendingInput = (modeler) => "flushPendingInput" in modeler;
-var sameView = (view, other) => view.type === other.type && view.element.id === other.element.id;
 async function createDmnCanvas(options) {
 	const editListeners = new Set();
 	const modeler = await createModeler(options.container, {
@@ -31812,16 +31810,10 @@ async function createDmnCanvas(options) {
 		onViewChanged: ({ activeView }) => options.onViewChanged(activeView),
 		onWarning: (message) => console.warn(message)
 	});
-	async function show(text) {
-		const viewed = modeler.getActiveView();
-		await modeler.loadDiagram(text.trim() ? text : EMPTY_DMN_DIAGRAM);
-		const again = viewed && modeler.getViews().find((view) => sameView(view, viewed));
-		if (again && !sameView(again, modeler.getActiveView())) await modeler.openView(again);
-	}
 	return {
 		async importText(text) {
 			try {
-				await show(text);
+				await modeler.loadDiagram(isBlankDocument(text) ? EMPTY_DMN_DIAGRAM : text);
 				return true;
 			} catch (error) {
 				console.warn("Unable to open the DMN diagram", error);
@@ -31829,19 +31821,20 @@ async function createDmnCanvas(options) {
 			}
 		},
 		exportText: () => modeler.exportDiagram(),
-		applyPendingInput: () => {
-			if (holdsPendingInput(modeler)) modeler.flushPendingInput();
-		},
+		applyPendingInput: () => modeler.flushPendingInput(),
 		onEdit: (listener) => {
 			editListeners.add(listener);
 			return () => editListeners.delete(listener);
 		},
-		setTheme: (theme) => modeler.setTheme(theme)
+		setTheme: (theme) => modeler.setTheme(theme),
+		isDrdViewActive: () => modeler.isDrdViewActive(),
+		focusCanvas: () => modeler.focusCanvas(),
+		isCanvasFocused: () => modeler.isCanvasFocused()
 	};
 }
 // src/composition/dmnEditor.ts
-function lockReadOnly(root) {
-	root.querySelector("#js-drop-zone").setAttribute("inert", "");
+function lockReadOnly(root, dropZone) {
+	dropZone.setAttribute("inert", "");
 	const notice = document.createElement("div");
 	notice.className = "orca-read-only-notice";
 	notice.textContent = i18n.translate("Read-only");
@@ -31851,8 +31844,14 @@ async function startDmnEditor(root) {
 	i18n.extend(extras);
 	i18n.setLanguage(orcaLanguage());
 	const session = await openOrcaSession();
-	const layout = mountEditorLayout(root, "dmn");
-	if (session.readOnly) lockReadOnly(root);
+	const shortcuts = {};
+	const layout = mountEditorLayout(root, "dmn", {
+		focusCanvas: () => shortcuts.target?.focusCanvas(),
+		isCanvasFocused: () => shortcuts.target?.isCanvasFocused() ?? false,
+		isEnabled: () => shortcuts.target?.isDrdViewActive() ?? false,
+		escapeToCanvas: true
+	});
+	if (session.readOnly) lockReadOnly(root, layout.dropZone);
 	const canvas = await createDmnCanvas({
 		container: layout.canvas,
 		panelParent: layout.panelMount,
@@ -31863,6 +31862,7 @@ async function startDmnEditor(root) {
 		applyPageThemeScope("data-dmn-theme", theme);
 		canvas.setTheme(theme);
 	});
+	shortcuts.target = canvas;
 	return syncDocument(session, canvas);
 }
 // src/dmn.ts

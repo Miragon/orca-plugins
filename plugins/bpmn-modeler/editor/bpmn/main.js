@@ -1,5 +1,5 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["../shared/bpmnlint-CFffn984.js","../shared/rolldown-runtime-DQp2zzRu.js","../shared/EscapeUtil-B1jzPlMc.js","../shared/ModelUtil-BGe9jbj7.js","../shared/editorLayout-DZwh-cxt.js","../shared/editorLayout-ThHr9A18.css","../shared/moddle-utils-CKD1iZGs.js","../shared/dist-BWHN8Och.js","../shared/bpmnlint-DoI7vgqE.css","../shared/viewer-CJWCHXS_.js","../shared/createSurface-DyHVIhQM.js","../shared/jsxRuntime.module-awBdvHUy.js","../shared/index.esm-CXJiDiAL.js","../shared/provider-Dq4DRXTy.js","../shared/index.esm-DgBSptNj.js","../shared/design-bQhzO_6V.js","../shared/reporting-CwIb-OB4.js","../shared/clipboard-Bznk3d97.js","../shared/reporting-DXH2a9lW.css","../shared/lib-CHaSAubE.js","../shared/design-5oiqdf5k.css","../shared/src-ClSm-gG3.js","../shared/src-CU_wPvE9.css"])))=>i.map(i=>d[i]);
-import { a as openOrcaSession, d as extras, i as followOrcaTheme, n as syncDocument, o as orcaLanguage, p as i18n, r as currentOrcaTheme, s as applyPageThemeScope, t as mountEditorLayout } from "../shared/editorLayout-DZwh-cxt.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["../shared/bpmnlint-B7ABP232.js","../shared/rolldown-runtime-DQp2zzRu.js","../shared/EscapeUtil-B1jzPlMc.js","../shared/ModelUtil-BGe9jbj7.js","../shared/editorLayout-BNwn-014.js","../shared/editorLayout-3p6pELEt.css","../shared/moddle-utils-CKD1iZGs.js","../shared/dist-BWHN8Och.js","../shared/bpmnlint-DoI7vgqE.css","../shared/viewer-a7bVyLLV.js","../shared/createSurface-2zRsNQAh.js","../shared/jsxRuntime.module-awBdvHUy.js","../shared/index.esm-CXJiDiAL.js","../shared/provider-BJ5t8FiF.js","../shared/index.esm-DgBSptNj.js","../shared/design-BwQtPwxg.js","../shared/reporting-2F_WO5Yt.js","../shared/clipboard-Bznk3d97.js","../shared/reporting-DXH2a9lW.css","../shared/lib-8JLHscGa.js","../shared/design-5oiqdf5k.css","../shared/src-b6BBObmf.js","../shared/src-CU_wPvE9.css"])))=>i.map(i=>d[i]);
+import { a as openOrcaSession, c as isBlankDocument, g as i18n, i as followOrcaTheme, m as extras, n as syncDocument, o as orcaLanguage, r as currentOrcaTheme, s as applyPageThemeScope, t as mountEditorLayout } from "../shared/editorLayout-BNwn-014.js";
 // ../../libs/modeler-types/src/engine.ts
 var ENGINES = ["c7", "c8"];
 function isEngine(value) {
@@ -188,6 +188,16 @@ function planTransition(from, to, engine) {
 	if (from !== "view" && to !== "view" && engine !== void 0) return "toggle";
 	return "recreate";
 }
+// ../../packages/bpmn-modeler/src/modeSession/surfaceCapabilities.ts
+function isModelerSurface(handle) {
+	return "setMode" in handle;
+}
+function isEditableSurface(handle) {
+	return "newDiagram" in handle;
+}
+function holdsPendingSave(handle) {
+	return "flushContentSaved" in handle;
+}
 // ../../packages/bpmn-modeler/src/modeSession/servingSurfaces.ts
 function servingSurfaces(surfaces, engine) {
 	const { view, design, implement } = surfaces;
@@ -203,31 +213,35 @@ function servingSurfaces(surfaces, engine) {
 	};
 }
 // ../../packages/bpmn-modeler/src/modeSession/modeSession.ts
-function canToggleMode(handle) {
-	return "setMode" in handle;
-}
-function holdsPanelInput(handle) {
-	return "flushPendingInput" in handle;
-}
-function holdsPendingSave(handle) {
-	return "flushContentSaved" in handle;
-}
 async function createModeSession(options) {
 	const { container, engine, surfaces } = options;
 	let theme = options.theme ?? "automatic";
 	const serving = servingSurfaces(surfaces, engine);
 	const available = SURFACE_MODES.filter((mode) => isModeAvailable(mode, engine) && serving[mode] !== void 0);
 	if (available.length === 0) throw new Error("createModeSession: no surface factory is available for this engine — supply at least one of view / design / implement.");
+	let busy = false;
+	let disposed = false;
+	const contentListeners = new Set();
+	let stopForwardingEdits = () => void 0;
+	function forwardEdits(surface) {
+		stopForwardingEdits();
+		stopForwardingEdits = isEditableSurface(surface) ? surface.onCommandStackChanged(() => {
+			if (!disposed) contentListeners.forEach((listener) => listener());
+		}) : () => void 0;
+	}
+	function bindSurface(surface, mode) {
+		forwardEdits(surface);
+		options.onSurfaceCreated?.(surface, mode);
+	}
 	let currentMode = resolveInitialMode(options.initialMode ?? null, engine, available);
 	let handle = await buildSurface(currentMode);
 	try {
-		options.onSurfaceCreated?.(handle, currentMode);
+		bindSurface(handle, currentMode);
 	} catch (error) {
+		stopForwardingEdits();
 		handle.destroy();
 		throw error;
 	}
-	let busy = false;
-	let disposed = false;
 	let inFlight = null;
 	function safeDestroy(surface) {
 		try {
@@ -250,7 +264,7 @@ async function createModeSession(options) {
 		if (disposed || !isAvailable(target) || busy) return;
 		const kind = planTransition(currentMode, target, engine);
 		if (kind === "none") return;
-		if (kind === "toggle" && canToggleMode(handle)) {
+		if (kind === "toggle" && isModelerSurface(handle)) {
 			handle.setMode(target);
 			currentMode = handle.getMode();
 			options.onModeChanged?.(currentMode, "toggle");
@@ -275,7 +289,7 @@ async function createModeSession(options) {
 		let snapshot;
 		let xml;
 		try {
-			if (holdsPanelInput(original)) original.flushPendingInput();
+			if (isEditableSurface(original)) original.flushPendingInput();
 			snapshot = original.captureViewState();
 			xml = await original.exportDiagram();
 			if (disposed) {
@@ -300,6 +314,7 @@ async function createModeSession(options) {
 			options.onError?.(error);
 			return;
 		}
+		stopForwardingEdits();
 		original.destroy();
 		let candidate = null;
 		try {
@@ -311,7 +326,7 @@ async function createModeSession(options) {
 			handle = candidate;
 			currentMode = target;
 			handle.setTheme(theme);
-			options.onSurfaceCreated?.(handle, target);
+			bindSurface(handle, target);
 			await handle.loadDiagram(xml);
 			if (disposed) {
 				safeDestroy(candidate);
@@ -338,7 +353,7 @@ async function createModeSession(options) {
 			handle = surface;
 			currentMode = fallback;
 			handle.setTheme(theme);
-			options.onSurfaceCreated?.(handle, fallback);
+			bindSurface(handle, fallback);
 			await handle.loadDiagram(xml);
 			if (disposed) {
 				safeDestroy(surface);
@@ -356,6 +371,15 @@ async function createModeSession(options) {
 		availableModes: () => available,
 		isAvailable,
 		requestMode,
+		flushPendingInput: () => {
+			if (!disposed && isEditableSurface(handle)) handle.flushPendingInput();
+		},
+		onContentChanged: (listener) => {
+			contentListeners.add(listener);
+			return () => {
+				contentListeners.delete(listener);
+			};
+		},
 		setTheme: (next) => {
 			if (disposed) return;
 			theme = next;
@@ -364,6 +388,7 @@ async function createModeSession(options) {
 		destroy: async () => {
 			if (disposed) return;
 			disposed = true;
+			stopForwardingEdits();
 			if (inFlight) await inFlight;
 			else handle.destroy();
 		}
@@ -659,11 +684,11 @@ var __vitePreload = function preload(baseModule, deps, importerUrl) {
 };
 // src/adapter/out/bpmnCanvas.ts
 function surfaceFactories(panelParent, clipboard) {
-	const linting = async () => ({ linting: { module: await __vitePreload(() => import("../shared/bpmnlint-CFffn984.js"), __vite__mapDeps([0,1,2,3,4,5,6,7,8]), import.meta.url) } });
+	const linting = async () => ({ linting: { module: await __vitePreload(() => import("../shared/bpmnlint-B7ABP232.js"), __vite__mapDeps([0,1,2,3,4,5,6,7,8]), import.meta.url) } });
 	return {
 		view: async ({ container, theme }) => {
 			const { createViewer } = await __vitePreload(async () => {
-				const { createViewer } = await import("../shared/viewer-CJWCHXS_.js");
+				const { createViewer } = await import("../shared/viewer-a7bVyLLV.js");
 				return { createViewer };
 			}, __vite__mapDeps([9,4,1,5,10,11,2,3,12,13,14,7]), import.meta.url);
 			return createViewer(container, {
@@ -673,7 +698,7 @@ function surfaceFactories(panelParent, clipboard) {
 		},
 		design: async ({ container, theme }) => {
 			const { createDesigner } = await __vitePreload(async () => {
-				const { createDesigner } = await import("../shared/design-bQhzO_6V.js");
+				const { createDesigner } = await import("../shared/design-BwQtPwxg.js");
 				return { createDesigner };
 			}, __vite__mapDeps([15,4,1,5,16,10,11,2,3,17,18,13,14,7,19,12,20]), import.meta.url);
 			return createDesigner(container, {
@@ -685,7 +710,7 @@ function surfaceFactories(panelParent, clipboard) {
 		},
 		implement: async ({ container, theme, mode, engine }) => {
 			const { createModeler } = await __vitePreload(async () => {
-				const { createModeler } = await import("../shared/src-ClSm-gG3.js");
+				const { createModeler } = await import("../shared/src-b6BBObmf.js");
 				return { createModeler };
 			}, __vite__mapDeps([21,4,1,5,16,10,11,2,3,17,18,22]), import.meta.url);
 			return createModeler(container, {
@@ -699,12 +724,6 @@ function surfaceFactories(panelParent, clipboard) {
 		}
 	};
 }
-function hasCommandStack(handle) {
-	return "onCommandStackChanged" in handle;
-}
-function holdsPendingInput(handle) {
-	return "flushPendingInput" in handle;
-}
 function createBpmnCanvas(options) {
 	const factories = surfaceFactories(options.panelParent, { bridge: memoryClipboard() });
 	const surfaces = options.readOnly ? { view: factories.view } : factories;
@@ -713,8 +732,7 @@ function createBpmnCanvas(options) {
 	let engine;
 	let session;
 	let strip;
-	let stopListening = () => void 0;
-	let shownOnce = false;
+	const canvasFocus = () => session?.getHandle().getService("canvas");
 	const renderStrip = (busy) => {
 		if (session) strip?.render({
 			mode: session.getMode(),
@@ -722,10 +740,6 @@ function createBpmnCanvas(options) {
 			busy
 		});
 	};
-	function listenTo(handle) {
-		stopListening();
-		stopListening = hasCommandStack(handle) ? handle.onCommandStackChanged(() => editListeners.forEach((listener) => listener())) : () => void 0;
-	}
 	async function startSession(nextEngine) {
 		await session?.destroy();
 		engine = nextEngine;
@@ -734,12 +748,12 @@ function createBpmnCanvas(options) {
 			engine,
 			surfaces,
 			theme,
-			onSurfaceCreated: listenTo,
 			onModeChanged: () => renderStrip(false),
 			onSwitchStateChanged: renderStrip,
 			onError: (error) => console.warn("Unable to switch the BPMN mode", error)
 		});
 		const liveSession = session;
+		liveSession.onContentChanged(() => editListeners.forEach((listener) => listener()));
 		strip ??= mountModeStrip({
 			host: options.strip.host,
 			stripEl: options.strip.el,
@@ -753,21 +767,17 @@ function createBpmnCanvas(options) {
 	}
 	async function show(text) {
 		const nextEngine = detectEngine(text);
-		const kept = session !== void 0 && nextEngine === engine;
-		const surface = (kept ? session : await startSession(nextEngine)).getHandle();
-		if (!text.trim() && "newDiagram" in surface) {
+		const surface = (session !== void 0 && nextEngine === engine ? session : await startSession(nextEngine)).getHandle();
+		if (isBlankDocument(text) && isEditableSurface(surface)) {
 			await surface.newDiagram();
 			return;
 		}
-		const view = shownOnce && kept ? surface.captureViewState() : void 0;
-		await surface.loadDiagram(text);
-		if (view) surface.applyViewState(view);
+		await surface.reloadDiagram(text);
 	}
 	return {
 		async importText(text) {
 			try {
 				await show(text);
-				shownOnce = true;
 				return true;
 			} catch (error) {
 				console.warn("Unable to open the BPMN diagram", error);
@@ -775,10 +785,7 @@ function createBpmnCanvas(options) {
 			}
 		},
 		exportText: () => session.getHandle().exportDiagram(),
-		applyPendingInput: () => {
-			const surface = session?.getHandle();
-			if (surface && holdsPendingInput(surface)) surface.flushPendingInput();
-		},
+		applyPendingInput: () => session?.flushPendingInput(),
 		onEdit: (listener) => {
 			editListeners.add(listener);
 			return () => editListeners.delete(listener);
@@ -786,7 +793,9 @@ function createBpmnCanvas(options) {
 		setTheme: (next) => {
 			theme = next;
 			session?.setTheme(next);
-		}
+		},
+		focusCanvas: () => canvasFocus()?.focus(),
+		isCanvasFocused: () => canvasFocus()?.isFocused() ?? false
 	};
 }
 // src/composition/bpmnEditor.ts
@@ -794,7 +803,11 @@ async function startBpmnEditor(root) {
 	i18n.extend(extras);
 	i18n.setLanguage(orcaLanguage());
 	const session = await openOrcaSession();
-	const layout = mountEditorLayout(root, "bpmn");
+	const shortcuts = {};
+	const layout = mountEditorLayout(root, "bpmn", {
+		focusCanvas: () => shortcuts.target?.focusCanvas(),
+		isCanvasFocused: () => shortcuts.target?.isCanvasFocused() ?? false
+	});
 	layout.panelHost.classList.add("panel-host");
 	const strip = document.createElement("div");
 	strip.className = "mode-strip";
@@ -813,10 +826,11 @@ async function startBpmnEditor(root) {
 		applyPageThemeScope("data-bpmn-theme", theme);
 		canvas.setTheme(theme);
 	});
+	shortcuts.target = canvas;
 	return syncDocument(session, canvas);
 }
 // src/bpmn.ts
 startBpmnEditor(document.getElementById("app"));
-export { MODELER_NAMESPACE_URI as a, isEngine as c, ENGINE_EXECUTION_PLATFORM as i, parseEditableMode as n, engineSupports as o, surfaceModeSupports as r, executionPlatformAttributeNames as s, __vitePreload as t };
+export { surfaceModeSupports as a, engineSupports as c, parseEditableMode as i, executionPlatformAttributeNames as l, isEditableSurface as n, ENGINE_EXECUTION_PLATFORM as o, isModelerSurface as r, MODELER_NAMESPACE_URI as s, __vitePreload as t, isEngine as u };
 
 //# sourceMappingURL=main.js.map

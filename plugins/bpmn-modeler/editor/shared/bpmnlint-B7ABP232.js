@@ -1,8 +1,8 @@
 import { a as __toESM, i as __toCommonJS, n as __esmMin, r as __exportAll, t as __commonJSMin } from "./rolldown-runtime-DQp2zzRu.js";
 import { D as map, _ as init_dist$2, g as has, h as groupBy, i as assign, j as reduce, n as escapeHTML, r as domify, s as dist_exports$2, x as isNil } from "./EscapeUtil-B1jzPlMc.js";
-import { r as surfaceModeSupports } from "../bpmn/main.js";
+import { a as surfaceModeSupports } from "../bpmn/main.js";
 import { a as is$1, i as init_ModelUtil } from "./ModelUtil-BGe9jbj7.js";
-import { m as _defineProperty } from "./editorLayout-DZwh-cxt.js";
+import { _ as _defineProperty } from "./editorLayout-BNwn-014.js";
 import { i as require_semver_compare, n as moddle_utils_exports, t as init_moddle_utils } from "./moddle-utils-CKD1iZGs.js";
 import { a as dist_exports$3, c as init_dist$5, g as tags, i as init_dist$3, m as styleTags, n as ExternalTokenizer, p as init_dist$4, r as LRParser, t as ContextTracker } from "./dist-BWHN8Och.js";
 // ../../libs/modeler-types/src/lint.ts
@@ -11404,4 +11404,4 @@ function createLintModule(tier, callbacks) {
 }
 export { createLintModule };
 
-//# sourceMappingURL=bpmnlint-CFffn984.js.map
+//# sourceMappingURL=bpmnlint-B7ABP232.js.map
