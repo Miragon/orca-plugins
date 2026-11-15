@@ -12927,13 +12927,13 @@ function getAttribute(node3, name) {
   }
 }
 function setAttribute(node3, name, value) {
-  var hyphenated = name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-  var type = CSS_PROPERTIES[hyphenated];
+  var hyphenated2 = name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+  var type = CSS_PROPERTIES[hyphenated2];
   if (type) {
     if (type === LENGTH_ATTR && typeof value === "number") {
       value = String(value) + "px";
     }
-    node3.style[hyphenated] = value;
+    node3.style[hyphenated2] = value;
   } else {
     node3.setAttributeNS(null, name, value);
   }
@@ -21821,6 +21821,28 @@ function withTitle(document2, title) {
     )
   };
 }
+var STICKY_COLUMNS = [2, 3, 4];
+var DEFAULT_STICKY_COLUMNS = 2;
+function isStickyColumns(value) {
+  return STICKY_COLUMNS.includes(value);
+}
+function columnsOf(document2) {
+  const value = document2.header.find((field) => field.key === "columns")?.value;
+  return isStickyColumns(value) ? value : DEFAULT_STICKY_COLUMNS;
+}
+function withColumns(document2, columns) {
+  const others = document2.header.filter((field) => field.key !== "columns");
+  if (columns === DEFAULT_STICKY_COLUMNS) return { ...document2, header: others };
+  if (others.length === document2.header.length) {
+    return { ...document2, header: [...document2.header, { key: "columns", value: columns }] };
+  }
+  return {
+    ...document2,
+    header: document2.header.map(
+      (field) => field.key === "columns" ? { ...field, value: columns } : field
+    )
+  };
+}
 function withBlock(document2, blockId) {
   if (blockOf(document2, blockId)) return document2;
   const rank = METHOD_ORDER.indexOf(blockId);
@@ -21984,16 +22006,12 @@ function readableTextColor(fill, dark, light) {
 }
 
 // ../../packages/schema-model/src/layout.ts
-var STICKY_SIZE = { width: 120, height: 84 };
+var STICKY_SIZE = { width: 152, height: 92 };
 var STICKY_GAP = 12;
 var BLOCK_PADDING = 18;
 var BLOCK_HEADING_HEIGHT = 44;
 var HEADER_BAND_HEIGHT = 56;
 var FOOTER_HEIGHT = 40;
-var COLUMN_STICKIES = 2;
-var COLUMN_WIDTH = COLUMN_STICKIES * STICKY_SIZE.width + STICKY_GAP + 2 * BLOCK_PADDING;
-var CANVAS_WIDTH = 5 * COLUMN_WIDTH;
-var HALF_WIDTH = CANVAS_WIDTH / 2;
 var TWO_ROWS = BLOCK_HEADING_HEIGHT + 2 * (STICKY_SIZE.height + STICKY_GAP) + BLOCK_PADDING;
 var TOP_COLUMNS = [
   { kind: "full", blockId: "key-partners" },
@@ -22035,32 +22053,38 @@ function blockLayout(blockId, rect) {
     stickyOrigin: stickyOrigin(rect)
   };
 }
+function columnWidthFor(stickies) {
+  return stickies * STICKY_SIZE.width + (stickies - 1) * STICKY_GAP + 2 * BLOCK_PADDING;
+}
 function layoutCanvas(document2) {
+  const columnWidth = columnWidthFor(columnsOf(document2));
+  const canvasWidth = 5 * columnWidth;
+  const halfWidth = canvasWidth / 2;
   const topHeight = Math.max(
     2 * TWO_ROWS,
     ...TOP_COLUMNS.map(
-      (column) => column.kind === "full" ? neededHeight(document2, column.blockId, COLUMN_WIDTH) : 2 * Math.max(
-        neededHeight(document2, column.upper, COLUMN_WIDTH),
-        neededHeight(document2, column.lower, COLUMN_WIDTH)
+      (column) => column.kind === "full" ? neededHeight(document2, column.blockId, columnWidth) : 2 * Math.max(
+        neededHeight(document2, column.upper, columnWidth),
+        neededHeight(document2, column.lower, columnWidth)
       )
     )
   );
   const bottomHeight = Math.max(
     TWO_ROWS,
-    ...BOTTOM_BLOCKS.map((blockId) => neededHeight(document2, blockId, HALF_WIDTH))
+    ...BOTTOM_BLOCKS.map((blockId) => neededHeight(document2, blockId, halfWidth))
   );
   const top = HEADER_BAND_HEIGHT;
   const bottom = top + topHeight;
   const footerTop = bottom + bottomHeight;
   const blocks = [];
   TOP_COLUMNS.forEach((column, index2) => {
-    const x3 = index2 * COLUMN_WIDTH;
+    const x3 = index2 * columnWidth;
     if (column.kind === "full") {
       blocks.push(
         blockLayout(column.blockId, {
           x: x3,
           y: top,
-          width: COLUMN_WIDTH,
+          width: columnWidth,
           height: topHeight
         })
       );
@@ -22068,16 +22092,16 @@ function layoutCanvas(document2) {
     }
     const half = topHeight / 2;
     blocks.push(
-      blockLayout(column.upper, { x: x3, y: top, width: COLUMN_WIDTH, height: half }),
-      blockLayout(column.lower, { x: x3, y: top + half, width: COLUMN_WIDTH, height: half })
+      blockLayout(column.upper, { x: x3, y: top, width: columnWidth, height: half }),
+      blockLayout(column.lower, { x: x3, y: top + half, width: columnWidth, height: half })
     );
   });
   BOTTOM_BLOCKS.forEach((blockId, index2) => {
     blocks.push(
       blockLayout(blockId, {
-        x: index2 * HALF_WIDTH,
+        x: index2 * halfWidth,
         y: bottom,
-        width: HALF_WIDTH,
+        width: halfWidth,
         height: bottomHeight
       })
     );
@@ -22089,10 +22113,10 @@ function layoutCanvas(document2) {
     });
   }
   return {
-    bounds: { x: 0, y: 0, width: CANVAS_WIDTH, height: footerTop + FOOTER_HEIGHT },
-    topRow: { x: 0, y: top, width: CANVAS_WIDTH, height: topHeight },
-    header: { x: 0, y: 0, width: CANVAS_WIDTH, height: HEADER_BAND_HEIGHT },
-    footer: { x: 0, y: footerTop, width: CANVAS_WIDTH, height: FOOTER_HEIGHT },
+    bounds: { x: 0, y: 0, width: canvasWidth, height: footerTop + FOOTER_HEIGHT },
+    topRow: { x: 0, y: top, width: canvasWidth, height: topHeight },
+    header: { x: 0, y: 0, width: canvasWidth, height: HEADER_BAND_HEIGHT },
+    footer: { x: 0, y: footerTop, width: canvasWidth, height: FOOTER_HEIGHT },
     blocks,
     stickies
   };
@@ -22138,7 +22162,7 @@ function neighbourBlock(layout, from, point, direction) {
 
 // ../../packages/dsl/src/fields.ts
 var ROOT_FIELDS = ["version", "canvas"];
-var CANVAS_FIELDS = ["title", "notes"];
+var CANVAS_FIELDS = ["title", "columns", "notes"];
 var BLOCK_FIELDS = ["items", "notes"];
 var STICKY_FIELDS = ["id", "text", "color", "notes"];
 var NOTE_FIELDS = ["text"];
@@ -22270,9 +22294,15 @@ function readCanvas(reader, value) {
   }
   const title = "title" in value ? reader.textOf(value["title"], [...path, "title"]) : void 0;
   if ("title" in value && title === void 0) reader.error([...path, "title"], "Text: title: \u2026.");
+  const columns = value["columns"];
+  const knownColumns = isStickyColumns(columns) ? columns : void 0;
+  if ("columns" in value && knownColumns === void 0) {
+    reader.error([...path, "columns"], "2, 3 or 4 stickies side by side: columns: 3.");
+  }
   return {
     header: [
       ...title === void 0 ? [] : [{ key: "title", value: title }],
+      ...knownColumns === void 0 ? [] : [{ key: "columns", value: knownColumns }],
       ...reader.foreignFields(value, CANVAS_FIELDS, path)
     ],
     notes: readNotes(reader, value["notes"], [...path, "notes"])
@@ -22959,53 +22989,126 @@ function getLineHeight(style) {
 
 // ../../packages/renderer/src/draw/text.ts
 var ELLIPSIS = "\u2026";
-function fittedText(text2, options) {
+var HYPHEN = "-";
+var SHORTEST_WORD_PART = 3;
+var UNBOUNDED = 1e5;
+function settingAt(fontSize, options) {
   const style = {
     fontFamily: FONT.family,
-    fontSize: options.fontSize,
+    fontSize,
     lineHeight: FONT.lineHeight,
     ...options.fontWeight ? { fontWeight: options.fontWeight } : {}
   };
-  const util = new Text({ style });
+  const horizontal = options.padding ?? 0;
+  const vertical = options.verticalPadding ?? horizontal;
   const config2 = {
     box: options.box,
     // diagram-js's typings list only the centred alignments its own renderers use.
     align: options.align ?? "left-top",
-    padding: {
-      top: options.verticalPadding ?? options.padding ?? 0,
-      bottom: options.verticalPadding ?? options.padding ?? 0,
-      left: options.padding ?? 0,
-      right: options.padding ?? 0
-    },
+    padding: { top: vertical, bottom: vertical, left: horizontal, right: horizontal },
     style: { fill: options.fill }
   };
-  const element3 = util.createText(text2, config2);
-  const lineHeight = options.fontSize * FONT.lineHeight;
-  const maxLines = Math.max(
-    1,
-    Math.floor(
-      (options.box.height - 2 * (options.verticalPadding ?? options.padding ?? 0)) / lineHeight
-    )
-  );
-  const lines = [...element3.children].map((line) => line.textContent ?? "");
-  if (lines.length <= maxLines) return withFont(element3, style.fontFamily);
-  const kept = lines.slice(0, maxLines - 1);
-  let last = (lines[maxLines - 1] ?? "").trimEnd();
-  for (; ; ) {
-    const cut = util.createText([...kept, `${last}${ELLIPSIS}`].join("\n"), config2);
-    if (cut.children.length <= maxLines || last === "") return withFont(cut, style.fontFamily);
-    last = last.slice(0, -1).trimEnd();
+  return {
+    util: new Text({ style }),
+    config: config2,
+    family: style.fontFamily,
+    maxLines: Math.max(
+      1,
+      Math.floor((options.box.height - 2 * vertical) / (fontSize * FONT.lineHeight))
+    ),
+    lineWidth: options.box.width - 2 * horizontal
+  };
+}
+function widthOf(word, setting) {
+  return setting.util.getDimensions(word, {
+    box: { width: UNBOUNDED, height: UNBOUNDED }
+  }).width;
+}
+var VOWEL = /[aeiouyäöü]/i;
+var LETTER = /\p{L}/u;
+var UNSPLIT_PAIRS = /* @__PURE__ */ new Set(["ch", "ck", "ph", "th", "sc"]);
+function syllableBreakAt(word, end) {
+  const [before, after, next] = [word[end - 1] ?? "", word[end] ?? "", word[end + 1] ?? ""];
+  if (![before, after].every((letter) => LETTER.test(letter))) return void 0;
+  const consonant = (letter) => LETTER.test(letter) && !VOWEL.test(letter);
+  if (consonant(before) && consonant(after)) {
+    return UNSPLIT_PAIRS.has(`${before}${after}`.toLowerCase()) ? void 0 : "consonants";
   }
+  return VOWEL.test(before) && consonant(after) && VOWEL.test(next) ? "vowels" : void 0;
+}
+var CONSONANT_BREAK_SHARE = 0.6;
+function hyphenatedHead(word, setting) {
+  const ends = [];
+  for (let end2 = word.length - SHORTEST_WORD_PART; end2 >= SHORTEST_WORD_PART; end2--) {
+    if (widthOf(`${word.slice(0, end2)}${HYPHEN}`, setting) <= setting.lineWidth) ends.push(end2);
+  }
+  const longestAt = (kind) => ends.find((candidate) => syllableBreakAt(word, candidate) === kind);
+  const consonants = longestAt("consonants");
+  const vowels = longestAt("vowels");
+  const end = consonants !== void 0 && (vowels === void 0 || consonants >= CONSONANT_BREAK_SHARE * vowels) ? consonants : vowels ?? ends[0];
+  return end === void 0 ? void 0 : word.slice(0, end);
+}
+function hyphenatedWord(word, setting) {
+  let rest = word;
+  const lines = [];
+  while (widthOf(rest, setting) > setting.lineWidth) {
+    const head = hyphenatedHead(rest, setting);
+    if (!head) break;
+    lines.push(`${head}${HYPHEN}`);
+    rest = rest.slice(head.length);
+  }
+  return [...lines, rest].join("\n");
+}
+function hyphenated(text2, setting) {
+  return text2.split(/(\s+|(?<=-))/).map((part) => /\S/.test(part) ? hyphenatedWord(part, setting) : part).join("");
+}
+function linesOf(element3) {
+  return [...element3.children].map((line) => line.textContent ?? "");
 }
 function withFont(element3, family) {
   element3.setAttribute("font-family", family);
   return element3;
 }
+function fontSizesOf(options) {
+  const smallest = Math.min(options.smallestFontSize ?? options.fontSize, options.fontSize);
+  return Array.from(
+    { length: options.fontSize - smallest + 1 },
+    (_3, step) => options.fontSize - step
+  );
+}
+function withEllipsis(text2, setting) {
+  const { util, config: config2, maxLines } = setting;
+  const lines = linesOf(util.createText(text2, config2));
+  const kept = lines.slice(0, maxLines - 1);
+  let last = (lines[maxLines - 1] ?? "").trimEnd();
+  for (; ; ) {
+    const cut = util.createText([...kept, `${last}${ELLIPSIS}`].join("\n"), config2);
+    if (cut.children.length <= maxLines || last === "") return cut;
+    last = last.slice(0, -1).trimEnd();
+  }
+}
+function fittedText(text2, options) {
+  let setting;
+  let prepared = text2;
+  for (const fontSize of fontSizesOf(options)) {
+    setting = settingAt(fontSize, options);
+    prepared = hyphenated(text2, setting);
+    const element3 = setting.util.createText(prepared, setting.config);
+    if (element3.children.length <= setting.maxLines) {
+      return { element: withFont(element3, setting.family), truncated: false };
+    }
+  }
+  const smallest = setting;
+  return { element: withFont(withEllipsis(prepared, smallest), smallest.family), truncated: true };
+}
 
 // ../../packages/renderer/src/draw/StickyRenderer.ts
 var RENDER_PRIORITY = 1500;
 var SHADOW_FILTER_ID = "bmc-paper-shadow";
-var TAPE = { width: 44, height: 12, overhang: 5, tilt: -2, room: 4 };
+var TAPE = { width: 44, height: 12, overhang: 5, tilt: -2 };
+var STICKY_LEAN = -1;
+var TEXT_BAND = { top: 10, bottom: 6 };
+var SMALLEST_FONT_SIZE = 11;
 function create3(tag, attributes) {
   return attr(create(tag), attributes);
 }
@@ -23067,45 +23170,46 @@ var StickyRenderer = class extends BaseRenderer {
         })
       );
     }
-    const tape = tapeColor(sticky.color);
-    if (tape) this.drawTape(visuals, shape, tape);
-    const truncated = this.drawText(visuals, shape, tape !== void 0);
+    this.drawTape(visuals, shape, tapeColor(sticky.color));
+    const truncated = this.drawText(visuals, shape);
+    attr(visuals, {
+      transform: `rotate(${STICKY_LEAN} ${shape.width / 2} ${shape.height / 2})`
+    });
     attr(visuals, { "data-bmc-description": stickyDescription(sticky) });
     if (truncated || folded) {
       attr(visuals, { "data-bmc-tooltip": "true" });
     } else visuals.removeAttribute("data-bmc-tooltip");
     return paper;
   }
+  /** Coloured tape carries the sticky's colour; plain tape only holds it up. */
   drawTape(visuals, shape, tape) {
     const strip = create3("rect", {
-      class: "bmc-tape",
+      class: tape ? "bmc-tape" : "bmc-tape-plain",
       x: -TAPE.width / 2,
       y: -TAPE.overhang,
       width: TAPE.width,
       height: TAPE.height,
-      fill: tape,
+      fill: tape ?? COLORS.line,
       transform: `translate(${shape.width / 2}, 0) rotate(${TAPE.tilt})`
     });
     append(visuals, strip);
   }
   /** Whether the text did not fit and ends in an ellipsis. */
-  drawText(visuals, shape, taped) {
+  drawText(visuals, shape) {
     if (shape.sticky.text === "") return false;
-    const top = taped ? TAPE.room : 0;
-    const label = fittedText(shape.sticky.text, {
-      box: { width: shape.width, height: shape.height - top },
+    const { element: element3, truncated } = fittedText(shape.sticky.text, {
+      box: { width: shape.width, height: shape.height - TEXT_BAND.top - TEXT_BAND.bottom },
       align: "center-middle",
       fontSize: FONT.sticky,
+      smallestFontSize: SMALLEST_FONT_SIZE,
       fontWeight: 500,
       fill: COLORS.ink,
       padding: STICKY_PADDING,
-      // Three lines still fit under the tape (§4: the content leads).
-      ...taped ? { verticalPadding: STICKY_PADDING - 2 - top / 2 } : {}
+      verticalPadding: 0
     });
-    if (top > 0) attr(label, { transform: `translate(0, ${top})` });
-    append(visuals, label);
-    const shown = (label.textContent ?? "").replace(/\s/g, "");
-    return shown !== shape.sticky.text.replace(/\s/g, "");
+    attr(element3, { transform: `translate(0, ${TEXT_BAND.top})` });
+    append(visuals, element3);
+    return truncated;
   }
   getShapePath(shape) {
     const { x: x3, y: y3, width, height } = shape;
@@ -23334,7 +23438,7 @@ var CanvasFrame = class {
   }
   drawHint(layer, block) {
     const width = block.rect.width - 2 * BLOCK_PADDING;
-    const hint = fittedText(BLOCK_HINTS[block.blockId], {
+    const { element: hint } = fittedText(BLOCK_HINTS[block.blockId], {
       box: { width, height: 3 * FONT.hint * FONT.lineHeight },
       fontSize: FONT.hint,
       fill: COLORS.quiet
@@ -31357,6 +31461,14 @@ var CanvasModeling = class {
   title() {
     return titleOf(this.document());
   }
+  stickyColumns() {
+    return columnsOf(this.document());
+  }
+  setStickyColumns(columns) {
+    if (columns !== this.stickyColumns()) {
+      this.updateDocument(withColumns(this.document(), columns));
+    }
+  }
   /** A blank title removes the field. */
   setTitle(title) {
     const next = withTitle(this.document(), title);
@@ -33334,6 +33446,19 @@ function exportEntry(id, label, action, icon) {
     onSelect: () => action.onSelect()
   };
 }
+function stickyColumnsEntry(model) {
+  return {
+    kind: "radio",
+    id: "sticky-columns",
+    label: "Stickies side by side",
+    options: STICKY_COLUMNS.map((columns) => ({ value: String(columns), label: String(columns) })),
+    value: () => String(model.stickyColumns()),
+    onSelect: (value) => {
+      const columns = Number(value);
+      if (isStickyColumns(columns)) model.setStickyColumns(columns);
+    }
+  };
+}
 function notesEntry(notes) {
   return {
     kind: "checkbox",
@@ -33354,6 +33479,7 @@ function diagramMenu(actions) {
         label: "Canvas title\u2026",
         onSelect: () => model.showCanvasTitle()
       },
+      stickyColumnsEntry(model),
       ...actions.notes ? [notesEntry(actions.notes)] : []
     ],
     export: [
@@ -33511,6 +33637,8 @@ function canvasModelActions(diagram, chrome) {
   launcher?.registerCanvasTitle(showCanvasTitle);
   return {
     showCanvasTitle,
+    stickyColumns: () => modeling.stickyColumns(),
+    setStickyColumns: (columns) => modeling.setStickyColumns(columns),
     close: () => open2?.close()
   };
 }

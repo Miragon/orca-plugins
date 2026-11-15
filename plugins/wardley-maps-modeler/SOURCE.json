@@ -1,6 +1,6 @@
 {
   "repository": "Miragon/modeler-suite",
-  "commit": "0e6bb3505964b6f80c63885fe66936d2ea9291e7",
-  "tag": "wardley-maps-orca-v0.4.4",
-  "workflowRun": "https://github.com/Miragon/modeler-suite/actions/runs/43269727839"
+  "commit": "14476a312c9178b3ba842b29f89b92a13cb4256f",
+  "tag": "wardley-maps-orca-v0.4.5",
+  "workflowRun": "https://github.com/Miragon/modeler-suite/actions/runs/43636977596"
 }
