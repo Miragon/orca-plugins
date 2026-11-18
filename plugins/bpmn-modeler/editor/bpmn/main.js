@@ -1,5 +1,5 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["../shared/bpmnlint-B7ABP232.js","../shared/rolldown-runtime-DQp2zzRu.js","../shared/EscapeUtil-B1jzPlMc.js","../shared/ModelUtil-BGe9jbj7.js","../shared/editorLayout-BNwn-014.js","../shared/editorLayout-3p6pELEt.css","../shared/moddle-utils-CKD1iZGs.js","../shared/dist-BWHN8Och.js","../shared/bpmnlint-DoI7vgqE.css","../shared/viewer-a7bVyLLV.js","../shared/createSurface-2zRsNQAh.js","../shared/jsxRuntime.module-awBdvHUy.js","../shared/index.esm-CXJiDiAL.js","../shared/provider-BJ5t8FiF.js","../shared/index.esm-DgBSptNj.js","../shared/design-BwQtPwxg.js","../shared/reporting-2F_WO5Yt.js","../shared/clipboard-Bznk3d97.js","../shared/reporting-DXH2a9lW.css","../shared/lib-8JLHscGa.js","../shared/design-5oiqdf5k.css","../shared/src-b6BBObmf.js","../shared/src-CU_wPvE9.css"])))=>i.map(i=>d[i]);
-import { a as openOrcaSession, c as isBlankDocument, g as i18n, i as followOrcaTheme, m as extras, n as syncDocument, o as orcaLanguage, r as currentOrcaTheme, s as applyPageThemeScope, t as mountEditorLayout } from "../shared/editorLayout-BNwn-014.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["../shared/bpmnlint-BymumoxW.js","../shared/rolldown-runtime-DQp2zzRu.js","../shared/editorLayout-Dxr4ugLL.js","../shared/editorLayout-3p6pELEt.css","../shared/EscapeUtil-B1jzPlMc.js","../shared/ModelUtil-BGe9jbj7.js","../shared/moddle-utils-CKD1iZGs.js","../shared/dist-BWHN8Och.js","../shared/bpmnlint-DoI7vgqE.css","../shared/viewer-BUq8qEEg.js","../shared/createSurface-CzjA2jEt.js","../shared/jsxRuntime.module-awBdvHUy.js","../shared/index.esm-CXJiDiAL.js","../shared/provider-CE2pkzJX.js","../shared/index.esm-DgBSptNj.js","../shared/design-BGxvG83h.js","../shared/reporting-Bgp2TgWv.js","../shared/clipboard-Bznk3d97.js","../shared/reporting-B1SMpZVh.css","../shared/lib-CIY0Qhue.js","../shared/design-5oiqdf5k.css","../shared/src-DgHcs8_T.js","../shared/src-CU_wPvE9.css"])))=>i.map(i=>d[i]);
+import { a as openOrcaSession, c as isBlankDocument, g as i18n, i as followOrcaTheme, m as extras, n as syncDocument, o as orcaLanguage, r as currentOrcaTheme, s as applyPageThemeScope, t as mountEditorLayout } from "../shared/editorLayout-Dxr4ugLL.js";
 // ../../libs/modeler-types/src/engine.ts
 var ENGINES = ["c7", "c8"];
 function isEngine(value) {
@@ -684,13 +684,13 @@ var __vitePreload = function preload(baseModule, deps, importerUrl) {
 };
 // src/adapter/out/bpmnCanvas.ts
 function surfaceFactories(panelParent, clipboard) {
-	const linting = async () => ({ linting: { module: await __vitePreload(() => import("../shared/bpmnlint-B7ABP232.js"), __vite__mapDeps([0,1,2,3,4,5,6,7,8]), import.meta.url) } });
+	const linting = async () => ({ linting: { module: await __vitePreload(() => import("../shared/bpmnlint-BymumoxW.js"), __vite__mapDeps([0,1,2,3,4,5,6,7,8]), import.meta.url) } });
 	return {
 		view: async ({ container, theme }) => {
 			const { createViewer } = await __vitePreload(async () => {
-				const { createViewer } = await import("../shared/viewer-a7bVyLLV.js");
+				const { createViewer } = await import("../shared/viewer-BUq8qEEg.js");
 				return { createViewer };
-			}, __vite__mapDeps([9,4,1,5,10,11,2,3,12,13,14,7]), import.meta.url);
+			}, __vite__mapDeps([9,2,1,3,10,11,4,5,12,13,14,7]), import.meta.url);
 			return createViewer(container, {
 				theme,
 				propertiesPanel: { parent: panelParent }
@@ -698,9 +698,9 @@ function surfaceFactories(panelParent, clipboard) {
 		},
 		design: async ({ container, theme }) => {
 			const { createDesigner } = await __vitePreload(async () => {
-				const { createDesigner } = await import("../shared/design-BwQtPwxg.js");
+				const { createDesigner } = await import("../shared/design-BGxvG83h.js");
 				return { createDesigner };
-			}, __vite__mapDeps([15,4,1,5,16,10,11,2,3,17,18,13,14,7,19,12,20]), import.meta.url);
+			}, __vite__mapDeps([15,2,1,3,16,10,11,4,5,17,18,13,14,7,19,12,20]), import.meta.url);
 			return createDesigner(container, {
 				theme,
 				clipboard,
@@ -710,9 +710,9 @@ function surfaceFactories(panelParent, clipboard) {
 		},
 		implement: async ({ container, theme, mode, engine }) => {
 			const { createModeler } = await __vitePreload(async () => {
-				const { createModeler } = await import("../shared/src-b6BBObmf.js");
+				const { createModeler } = await import("../shared/src-DgHcs8_T.js");
 				return { createModeler };
-			}, __vite__mapDeps([21,4,1,5,16,10,11,2,3,17,18,22]), import.meta.url);
+			}, __vite__mapDeps([21,2,1,3,16,10,11,4,5,17,18,22]), import.meta.url);
 			return createModeler(container, {
 				engine,
 				mode,

@@ -1,12 +1,16 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./createSurface-2zRsNQAh.js","./rolldown-runtime-DQp2zzRu.js","./editorLayout-BNwn-014.js","./editorLayout-3p6pELEt.css","./jsxRuntime.module-awBdvHUy.js","./EscapeUtil-B1jzPlMc.js","../bpmn/main.js","./bpmn-BKnWBDxl.css","./ModelUtil-BGe9jbj7.js","./dist-YiDDltFL.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./createSurface-CzjA2jEt.js","./rolldown-runtime-DQp2zzRu.js","./editorLayout-Dxr4ugLL.js","./editorLayout-3p6pELEt.css","./jsxRuntime.module-awBdvHUy.js","./EscapeUtil-B1jzPlMc.js","../bpmn/main.js","./bpmn-BvXu8wGO.css","./ModelUtil-BGe9jbj7.js","./dist-DtYzSTQ6.js"])))=>i.map(i=>d[i]);
 import { r as __exportAll } from "./rolldown-runtime-DQp2zzRu.js";
-import { _ as _defineProperty, l as isTextEditingSurface, p as asyncDebounce } from "./editorLayout-BNwn-014.js";
-import { A as hasExternalLabel, B as isInterrupting, C as getCirclePath, D as DEFAULT_LABEL_SIZE, E as getElementAnnotations, F as hasEscalationEventDefinition, I as hasEventDefinition$2, L as isEventSubProcess, M as setLabel, N as hasCompensateEventDefinition, O as getExternalLabelMid, P as hasErrorEventDefinition, R as isExpanded, S as toPlaneId, T as collectElementsAnnotations, V as BaseViewer, _ as keep_selection_visible_default, b as getShapeIdFromPlane, c as base_default, d as TOGGLE_MODE_EVENT, g as NavigatedViewer, h as outline_default, j as isLabelExternal, k as getLabel, l as ToggleOffIcon, u as ToggleOnIcon, v as Viewer, w as getRoundRectPath, x as isPlane, y as getPlaneIdFromShape, z as isHorizontal$1 } from "./createSurface-2zRsNQAh.js";
-import { A as isCmd, At as getParents$1, B as delta, Bt as clear, C as outline_default$1, Ct as add, D as KeyboardBindings$1, Dt as getBBox, E as keyboard_default$1, Et as eachElement, Ft as updateLine, G as hasPrimaryModifier, H as IdGenerator, Ht as create, I as set, It as append, Jt as all, K as hasSecondaryModifier, Kt as e, Mt as selfAndChildren, O as context_pad_default$1, P as movecanvas_default, Pt as createLine, R as zoomscroll_default, Rt as attr, St as pointsOnLine, T as keyboard_move_default, Tt as remove, U as selection_default, Wt as remove$1, Xt as attr$1, Yt as assign, Z as translate_default, Zt as classes$1, bt as pointInRect, ct as asTRBL, dt as getMid, en as delegate, ft as getOrientation, gt as isLabel, hn as subscribe, ht as isConnection, in as remove$2, it as ElementFactory$1, jt as selfAndAllChildren, k as CommandInterceptor, kt as getEnclosedElements, l as h, mt as roundPoint, n as A, nt as translate, pn as DisposableStore, pt as roundBounds, qt as Ids, rn as query, rt as getVisual, s as d, t as u$1, tn as event, ut as getElementLineIntersection, w as change_support_default, wt as indexOf, xt as pointsAligned, yt as pointDistance, zt as classes } from "./jsxRuntime.module-awBdvHUy.js";
+import { _ as _defineProperty, l as isTextEditingSurface, p as asyncDebounce } from "./editorLayout-Dxr4ugLL.js";
+import { A as hasExternalLabel, B as isInterrupting, C as getCirclePath, D as DEFAULT_LABEL_SIZE, E as getElementAnnotations, F as hasEscalationEventDefinition, I as hasEventDefinition$2, L as isEventSubProcess, M as setLabel, N as hasCompensateEventDefinition, O as getExternalLabelMid, P as hasErrorEventDefinition, R as isExpanded, S as toPlaneId, T as collectElementsAnnotations, V as BaseViewer, _ as keep_selection_visible_default, b as getShapeIdFromPlane, c as base_default, d as TOGGLE_MODE_EVENT, g as NavigatedViewer, h as outline_default, j as isLabelExternal, k as getLabel, l as ToggleOffIcon, u as ToggleOnIcon, v as Viewer, w as getRoundRectPath, x as isPlane, y as getPlaneIdFromShape, z as isHorizontal$1 } from "./createSurface-CzjA2jEt.js";
+import { A as isCmd, At as getParents$1, B as delta, Bt as clear, C as outline_default$1, Ct as add, D as KeyboardBindings$1, Dt as getBBox, E as keyboard_default$1, Et as eachElement, Ft as updateLine, G as hasPrimaryModifier, H as IdGenerator, Ht as create, I as set, It as append, Jt as all, K as hasSecondaryModifier, Kt as e, Mt as selfAndChildren, O as context_pad_default$1, P as movecanvas_default, Pt as createLine, R as zoomscroll_default, Rt as attr, St as pointsOnLine, T as keyboard_move_default, Tt as remove, U as selection_default, Wt as remove$1, Xt as attr$1, Yt as assign, Z as translate_default, Zt as classes$1, bt as pointInRect, ct as asTRBL, dt as getMid, en as delegate, ft as getOrientation, gt as isLabel, hn as subscribe, ht as isConnection, in as remove$2, it as ElementFactory$1, jt as selfAndAllChildren, k as CommandInterceptor, kt as getEnclosedElements, l as h, mt as roundPoint, n as A, nt as translate, pn as DisposableStore, pt as roundBounds, qt as Ids, rn as query, rt as getVisual, s as d, t as u$1, tn as event, ut as getElementLineIntersection, w as change_support_default, wt as indexOf, x as k, xt as pointsAligned, yt as pointDistance, zt as classes } from "./jsxRuntime.module-awBdvHUy.js";
 import { t as __vitePreload } from "../bpmn/main.js";
 import { A as pick, B as without, C as isObject, D as map, E as keys, F as sortBy, L as unionBy, O as matchPattern, P as some, S as isNumber, T as isUndefined, _ as init_dist, c as every, d as findIndex, f as flatten, g as has, h as groupBy, i as assign$1, j as reduce, k as omit, l as filter, p as forEach, r as domify, t as escapeCSS, u as find, v as isArray, w as isString, x as isNil, y as isDefined, z as values } from "./EscapeUtil-B1jzPlMc.js";
-import { $ as isSnapped, A as editor_actions_default$2, B as d$1, C as saveClear, D as keyboard_move_selection_default, F as popup_menu_default$1, G as S, H as q, I as search_default$1, J as create_default, K as k, L as A$1, M as distribute_elements_default$1, N as connection_preview_default, O as grid_snapping_default$1, P as replace_default$1, Q as bottomRight, R as T, S as getNewAttachShapeDelta, T as command_default, V as h$1, W as R, X as connect_default, Y as preview_support_default, Z as bendpoints_default, _ as Modeling$1, _t as align_elements_default$1, a as computeChildrenBBox, at as rotateVector, b as getResizedTargetAnchor, c as hand_tool_default, ct as dragging_default, d as tool_manager_default, dt as rules_default$1, et as mid$1, f as palette_default$1, ft as AutoResize, g as BaseLayouter, gt as getConnectedDistance, h as CroppingConnectionDocking, ht as generateGetNextPosition, i as resize_default, it as getDistancePointPoint, j as EditorActions$1, l as lasso_tool_default, lt as AutoResizeProvider, m as move_default, mt as findFreePosition, n as snapping_default$1, nt as topLeft, o as resizeTRBL, ot as getApproxIntersection, p as OrderingProvider, pt as auto_place_default$1, q as l, r as CreateMoveSnapping, rt as getAngle, s as substractTRBL, st as auto_scroll_default, t as clipboard_default, tt as setSnapped, u as mouse_default, ut as RuleProvider, v as getDirection, vt as search_pad_default, w as lib_default$1, x as getNewAttachPoint, y as getResizedSourceAnchor, z as _ } from "./clipboard-Bznk3d97.js";
+import { $ as isSnapped, A as editor_actions_default$2, B as d$1, C as saveClear, D as keyboard_move_selection_default, F as popup_menu_default$1, G as S, H as q, I as search_default$1, J as create_default, K as k$1, L as A$1, M as distribute_elements_default$1, N as connection_preview_default, O as grid_snapping_default$1, P as replace_default$1, Q as bottomRight, R as T, S as getNewAttachShapeDelta, T as command_default, V as h$1, W as R, X as connect_default, Y as preview_support_default, Z as bendpoints_default, _ as Modeling$1, _t as align_elements_default$1, a as computeChildrenBBox, at as rotateVector, b as getResizedTargetAnchor, c as hand_tool_default, ct as dragging_default, d as tool_manager_default, dt as rules_default$1, et as mid$1, f as palette_default$1, ft as AutoResize, g as BaseLayouter, gt as getConnectedDistance, h as CroppingConnectionDocking, ht as generateGetNextPosition, i as resize_default, it as getDistancePointPoint, j as EditorActions$1, l as lasso_tool_default, lt as AutoResizeProvider, m as move_default, mt as findFreePosition, n as snapping_default$1, nt as topLeft, o as resizeTRBL, ot as getApproxIntersection, p as OrderingProvider, pt as auto_place_default$1, q as l, r as CreateMoveSnapping, rt as getAngle, s as substractTRBL, st as auto_scroll_default, t as clipboard_default, tt as setSnapped, u as mouse_default, ut as RuleProvider, v as getDirection, vt as search_pad_default, w as lib_default$1, x as getNewAttachPoint, y as getResizedSourceAnchor, z as _ } from "./clipboard-Bznk3d97.js";
 import { a as is, i as init_ModelUtil, n as getBusinessObject, o as isAny, r as getDi } from "./ModelUtil-BGe9jbj7.js";
+// ../../libs/modeler-types/src/elementIds.ts
+function elementIdSettingsOf(settings) {
+	return settings?.elementIdsFollowName === void 0 ? {} : { followName: settings.elementIdsFollowName };
+}
 // ../../libs/modeler-types/src/workspaceDefinitions.ts
 var DEFINITION_KINDS = [
 	"message",
@@ -11229,7 +11233,7 @@ function ExpandableTemplateCard({ enrichedEntry, focused, selected, onClick, onH
 	});
 }
 // ../../libs/element-template-chooser/src/types.ts
-var fallbackTranslate = (template, replacements = {}) => template.replace(/{([^}]+)}/g, (_, key) => replacements[key] ?? `{${key}}`);
+var fallbackTranslate$1 = (template, replacements = {}) => template.replace(/{([^}]+)}/g, (_, key) => replacements[key] ?? `{${key}}`);
 function applyTemplatePreset(template, presetId) {
 	const preset = presetId ? template.presets?.find(({ id }) => id === presetId) : void 0;
 	if (!preset) return template;
@@ -11966,7 +11970,7 @@ var AppendMenuOverride = class {
 	constructor(popupMenu, canvas, eventBus, injector) {
 		this.favourites = [];
 		const elementTemplates = injector.get("elementTemplates", false);
-		const translate = injector.get("translate", false) ?? fallbackTranslate;
+		const translate = injector.get("translate", false) ?? fallbackTranslate$1;
 		const originalOpen = popupMenu.open.bind(popupMenu);
 		const originalClose = popupMenu.close.bind(popupMenu);
 		const originalIsOpen = popupMenu.isOpen.bind(popupMenu);
@@ -12032,7 +12036,7 @@ var AppendMenuOverride = class {
 				canvas.focus();
 			};
 			const canvasBounds = canvasContainer.getBoundingClientRect();
-			R(k(AppendMenuOverlay, {
+			R(k$1(AppendMenuOverlay, {
 				templateEntries: classified.templates,
 				bpmnGroups: classified.bpmnGroups,
 				favourites: this.favourites,
@@ -13354,7 +13358,7 @@ function messageOf$1(error) {
 }
 // ../../libs/bpmn-diff/src/bpmnModdleFactory.ts
 async function loadBpmnModdle() {
-	return resolveBpmnModdleFactory(await __vitePreload(() => import("./createSurface-2zRsNQAh.js").then((n) => n.U), __vite__mapDeps([0,1,2,3,4,5,6,7,8]), import.meta.url));
+	return resolveBpmnModdleFactory(await __vitePreload(() => import("./createSurface-CzjA2jEt.js").then((n) => n.U), __vite__mapDeps([0,1,2,3,4,5,6,7,8]), import.meta.url));
 }
 function resolveBpmnModdleFactory(module) {
 	const moddleModule = module;
@@ -13440,7 +13444,7 @@ var BpmnAutoLayoutEngine = class {
 	async computeLayout(xml) {
 		let laidOutXml;
 		let diagnostics;
-		const autoLayout = await __vitePreload(() => import("./dist-YiDDltFL.js"), __vite__mapDeps([9,0,1,2,3,4,5,6,7,8]), import.meta.url).catch((error) => {
+		const autoLayout = await __vitePreload(() => import("./dist-DtYzSTQ6.js"), __vite__mapDeps([9,0,1,2,3,4,5,6,7,8]), import.meta.url).catch((error) => {
 			throw new LayoutEngineError(`Could not load the layout engine: ${messageOf(error)}`, error);
 		});
 		try {
@@ -13513,6 +13517,597 @@ function createBpmnLayoutModule(engine) {
 		]
 	};
 }
+// ../../libs/element-ids/src/elementKinds.ts
+var KIND_OF_TYPE = {
+	Process: "process",
+	Participant: "participant",
+	Lane: "lane",
+	...Object.fromEntries([
+		...[
+			"Task",
+			"UserTask",
+			"ServiceTask",
+			"SendTask",
+			"ReceiveTask",
+			"ManualTask",
+			"BusinessRuleTask",
+			"ScriptTask"
+		],
+		"SubProcess",
+		"Transaction",
+		"AdHocSubProcess",
+		"CallActivity"
+	].map((type) => [type, "activity"])),
+	...Object.fromEntries([
+		"StartEvent",
+		"EndEvent",
+		"IntermediateCatchEvent",
+		"IntermediateThrowEvent",
+		"BoundaryEvent"
+	].map((type) => [type, "event"])),
+	...Object.fromEntries([
+		"ExclusiveGateway",
+		"ParallelGateway",
+		"InclusiveGateway",
+		"ComplexGateway",
+		"EventBasedGateway"
+	].map((type) => [type, "gateway"])),
+	SequenceFlow: "flow",
+	MessageFlow: "flow"
+};
+function localType(bpmnType) {
+	return bpmnType.replace(/^[^:]*:/, "");
+}
+function elementKindOf(bpmnType) {
+	return KIND_OF_TYPE[localType(bpmnType)] ?? "other";
+}
+function keepsIdUnlessAsked(bpmnType) {
+	return elementKindOf(bpmnType) === "process";
+}
+var SHARED_PREFIX = {
+	activity: "Activity",
+	event: "Event",
+	gateway: "Gateway",
+	flow: "Flow"
+};
+function defaultIdPrefixesOf(bpmnType) {
+	const kind = elementKindOf(bpmnType);
+	const shared = SHARED_PREFIX[kind];
+	if (shared === void 0) return [localType(bpmnType)];
+	return [shared, ...Object.keys(KIND_OF_TYPE).filter((type) => KIND_OF_TYPE[type] === kind)];
+}
+// ../../libs/element-ids/src/candidates.ts
+var UNNAMED_TYPES = new Set([
+	"bpmn:Association",
+	"bpmn:DataInputAssociation",
+	"bpmn:DataOutputAssociation",
+	"bpmn:TextAnnotation",
+	"bpmn:Group",
+	"bpmn:Collaboration"
+]);
+function collectCandidates(registry) {
+	const seen = new Set();
+	const candidates = [];
+	const add = (businessObject, target, shown, name) => {
+		if (seen.has(businessObject) || businessObject.id === void 0) return;
+		seen.add(businessObject);
+		candidates.push({
+			id: businessObject.id,
+			name: name ?? businessObject.name ?? "",
+			type: businessObject.$type,
+			element: businessObject,
+			kind: elementKindOf(businessObject.$type),
+			target,
+			shown
+		});
+	};
+	for (const element of registry.getAll()) {
+		const businessObject = element.businessObject;
+		if (!businessObject || element.labelTarget || element.id !== businessObject.id) continue;
+		if (UNNAMED_TYPES.has(businessObject.$type)) continue;
+		add(businessObject, {
+			kind: "element",
+			element
+		}, element);
+		const process = businessObject.processRef;
+		if (businessObject.$type === "bpmn:Participant" && process) add(process, {
+			kind: "process",
+			participant: element,
+			process
+		}, element, process.name || businessObject.name);
+	}
+	return candidates;
+}
+// ../../libs/element-ids/src/convention.ts
+var lowerFirst = (word) => word.charAt(0).toLowerCase() + word.slice(1);
+var FALLBACK_CONVENTION = {
+	prefixesFor: (element) => keepsIdUnlessAsked(element.$type) ? [] : [`${lowerFirst(localType(element.$type))}_`],
+	case: {
+		label: "camelCase",
+		pattern: /^[a-z][A-Za-z0-9]*$/
+	}
+};
+// ../../libs/element-ids/src/technicalId.ts
+var TRANSLITERATIONS = {
+	ä: "ae",
+	ö: "oe",
+	ü: "ue",
+	Ä: "Ae",
+	Ö: "Oe",
+	Ü: "Ue",
+	ß: "ss",
+	æ: "ae",
+	Æ: "Ae",
+	ø: "o",
+	Ø: "O",
+	œ: "oe",
+	Œ: "Oe",
+	ł: "l",
+	Ł: "L",
+	đ: "d",
+	Đ: "D",
+	ð: "d",
+	þ: "th"
+};
+function nameWords(name) {
+	return name.replace(/[äöüÄÖÜßæÆøØœŒłŁđĐðþ]/g, (letter) => TRANSLITERATIONS[letter] ?? letter).normalize("NFD").replace(/\p{M}/gu, "").replace(/['’]/g, "").split(/[^A-Za-z0-9]+/).filter((word) => word !== "");
+}
+var humps = (word) => word.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/([A-Z])([A-Z][a-z])/g, "$1 $2").split(" ");
+var capitalize = (part) => part.charAt(0).toUpperCase() + part.slice(1);
+var camelCase = (parts) => parts.map((part, index) => index === 0 ? part : capitalize(part)).join("");
+var CASE_SPELLINGS = {
+	"camelCase": camelCase,
+	"PascalCase": (parts) => parts.map(capitalize).join(""),
+	"snake_case": (parts) => parts.join("_"),
+	"kebab-case": (parts) => parts.join("-"),
+	"any": camelCase
+};
+Object.keys(CASE_SPELLINGS);
+var COUNTER_SEPARATORS = {
+	"snake_case": "_",
+	"kebab-case": "-"
+};
+function counterSeparatorOf(convention) {
+	return COUNTER_SEPARATORS[convention.case.label] ?? "";
+}
+var digitMask = (convention) => convention.case.label === "PascalCase" ? "N" : "n";
+function nameInCase(name, convention) {
+	const parts = nameWords(name).flatMap(humps).map((part) => part.toLowerCase());
+	if (parts.length === 0) return;
+	const spelled = (CASE_SPELLINGS[convention.case.label] ?? camelCase)(parts);
+	return convention.case.pattern.test(spelled) ? spelled : `${digitMask(convention)}${spelled}`;
+}
+function technicalIdFor(name, element, convention) {
+	const spelled = nameInCase(name, convention);
+	if (spelled === void 0) return;
+	const id = `${convention.prefixesFor(element)[0] ?? ""}${spelled}`;
+	return /^\d/.test(id) ? `${digitMask(convention)}${id}` : id;
+}
+// ../../libs/element-ids/src/proposals.ts
+var escapeRegExp = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function followsName(id, base, element, convention) {
+	const prefixes = convention.prefixesFor(element);
+	const name = base.slice((prefixes[0] ?? "").length);
+	const spellings = (prefixes.length > 0 ? prefixes : [""]).map((prefix) => escapeRegExp(`${prefix}${name}`));
+	const counter = `${escapeRegExp(counterSeparatorOf(convention))}\\d+`;
+	return new RegExp(`^(?:${spellings.join("|")})(?:${counter})?$`).test(id);
+}
+function idFollowsName(id, name, element, convention) {
+	const base = technicalIdFor(name, element, convention);
+	return base !== void 0 && followsName(id, base, element, convention);
+}
+function firstFree(base, separator, isFree) {
+	if (isFree(base)) return base;
+	let counter = 2;
+	while (!isFree(`${base}${separator}${counter}`)) counter++;
+	return `${base}${separator}${counter}`;
+}
+function proposeIds(candidates, options) {
+	const { convention, unchecked, isTakenElsewhere } = options;
+	const separator = counterSeparatorOf(convention);
+	const bases = candidates.map((candidate) => technicalIdFor(candidate.name, candidate.element, convention));
+	const follows = candidates.map((candidate, index) => {
+		const base = bases[index];
+		return base !== void 0 && followsName(candidate.id, base, candidate.element, convention);
+	});
+	const kept = new Set();
+	candidates.forEach((candidate, index) => {
+		if (bases[index] === void 0 || follows[index] || unchecked.has(candidate.id)) kept.add(candidate.id);
+	});
+	const assigned = new Set();
+	const isFree = (id) => !kept.has(id) && !assigned.has(id) && !isTakenElsewhere(id);
+	return candidates.map((candidate, index) => {
+		const base = bases[index];
+		if (base === void 0) return {
+			candidate,
+			status: "skipped",
+			newId: void 0,
+			clash: false
+		};
+		if (follows[index]) return {
+			candidate,
+			status: "matches",
+			newId: candidate.id,
+			clash: false
+		};
+		if (unchecked.has(candidate.id)) return {
+			candidate,
+			status: "unchecked",
+			newId: base,
+			clash: false
+		};
+		const newId = firstFree(base, separator, isFree);
+		assigned.add(newId);
+		return {
+			candidate,
+			status: "rename",
+			newId,
+			clash: newId !== base
+		};
+	}).map((proposal) => proposal.status === "unchecked" && proposal.newId !== void 0 ? {
+		...proposal,
+		newId: firstFree(proposal.newId, separator, isFree),
+		clash: !isFree(proposal.newId)
+	} : proposal);
+}
+// ../../libs/element-ids/src/renameOrder.ts
+function orderRenames(renames, isTakenElsewhere) {
+	const pending = renames.filter((rename) => rename.from !== rename.to);
+	const held = new Set(pending.map((rename) => rename.from));
+	const targets = new Set(pending.map((rename) => rename.to));
+	const steps = [];
+	const take = (rename) => {
+		steps.push(rename);
+		held.delete(rename.from);
+		held.add(rename.to);
+	};
+	while (pending.length > 0) {
+		const ready = pending.findIndex((rename) => !held.has(rename.to));
+		if (ready >= 0) {
+			take(pending.splice(ready, 1)[0]);
+			continue;
+		}
+		const [blocked] = pending.splice(0, 1);
+		const temporary = temporaryId(blocked.from, (id) => held.has(id) || targets.has(id) || isTakenElsewhere(id));
+		take({
+			item: blocked.item,
+			from: blocked.from,
+			to: temporary
+		});
+		pending.push({
+			item: blocked.item,
+			from: temporary,
+			to: blocked.to
+		});
+	}
+	return steps;
+}
+function temporaryId(from, isTaken) {
+	let candidate = `${from}_tmp`;
+	for (let counter = 2; isTaken(candidate); counter++) candidate = `${from}_tmp${counter}`;
+	return candidate;
+}
+function dropBlockedRenames(renames, isHeld) {
+	let current = [...renames];
+	for (;;) {
+		const freed = new Set(current.map((rename) => rename.from));
+		const next = current.filter((rename) => !isHeld(rename.to) || freed.has(rename.to));
+		if (next.length === current.length) return current;
+		current = next;
+	}
+}
+// ../../libs/element-ids/src/RenameElementIdsHandler.ts
+var _RenameElementIdsHandler;
+var _UpdateLabelIdHandler;
+var RENAME_ELEMENT_IDS_COMMAND = "elementIds.rename";
+var UPDATE_LABEL_ID_COMMAND = "elementIds.updateLabelId";
+var RenameElementIdsHandler = class {
+	constructor(modeling, moddle, elementRegistry, commandStack) {
+		this.modeling = modeling;
+		this.moddle = moddle;
+		this.elementRegistry = elementRegistry;
+		this.commandStack = commandStack;
+	}
+	preExecute({ steps }) {
+		const originalIds = new Map();
+		const finalIds = new Map();
+		for (const step of steps) {
+			if (!originalIds.has(step.item)) originalIds.set(step.item, step.from);
+			finalIds.set(step.item, step.to);
+			this.rename(step);
+		}
+		const moved = [...finalIds].flatMap(([target, to]) => target.kind === "element" ? [{
+			element: target.element,
+			from: originalIds.get(target),
+			to
+		}] : []);
+		this.renameDiIds(moved);
+		this.renameLabelIds(moved);
+	}
+	rename({ item: target, from, to }) {
+		if (target.kind === "element") {
+			this.modeling.updateProperties(target.element, { id: to });
+			return;
+		}
+		this.modeling.unclaimId(from, target.process);
+		this.modeling.updateModdleProperties(target.participant, target.process, { id: to });
+		this.modeling.claimId(to, target.process);
+	}
+	renameDiIds(moved) {
+		const isHeld = (id) => Boolean(this.moddle.ids.assigned(id));
+		const renames = moved.flatMap(({ element, from, to }) => element.di?.id === `${from}_di` ? [{
+			item: element,
+			from: `${from}_di`,
+			to: `${to}_di`
+		}] : []);
+		for (const { item: element, from, to } of orderRenames(dropBlockedRenames(renames, isHeld), isHeld)) {
+			this.modeling.unclaimId(from, element.di);
+			this.modeling.updateProperties(element, { di: { id: to } });
+			this.modeling.claimId(to, element.di);
+		}
+	}
+	renameLabelIds(moved) {
+		const isHeld = (id) => this.elementRegistry.get(id) !== void 0;
+		const renames = moved.flatMap(({ element, from, to }) => element.label?.id === `${from}_label` ? [{
+			item: element.label,
+			from: `${from}_label`,
+			to: `${to}_label`
+		}] : []);
+		for (const { item: label, to } of orderRenames(dropBlockedRenames(renames, isHeld), isHeld)) this.commandStack.execute(UPDATE_LABEL_ID_COMMAND, {
+			label,
+			id: to
+		});
+	}
+};
+_RenameElementIdsHandler = RenameElementIdsHandler;
+_RenameElementIdsHandler.$inject = [
+	"modeling",
+	"moddle",
+	"elementRegistry",
+	"commandStack"
+];
+var UpdateLabelIdHandler = class {
+	constructor(elementRegistry) {
+		this.elementRegistry = elementRegistry;
+	}
+	execute(context) {
+		context.oldId = context.label.id;
+		this.elementRegistry.updateId(context.label, context.id);
+		return [];
+	}
+	revert(context) {
+		this.elementRegistry.updateId(context.label, context.oldId);
+		return [];
+	}
+};
+_UpdateLabelIdHandler = UpdateLabelIdHandler;
+_UpdateLabelIdHandler.$inject = ["elementRegistry"];
+// ../../libs/element-ids/src/ElementIdsService.ts
+var _ElementIdsService;
+var rowOf = ({ candidate, status, newId, clash }) => ({
+	id: candidate.id,
+	name: candidate.name,
+	type: candidate.type,
+	kind: candidate.kind,
+	status,
+	...newId === void 0 ? {} : { newId },
+	clash,
+	shownId: candidate.shown.id,
+	startsUnchecked: keepsIdUnlessAsked(candidate.type)
+});
+var ElementIdsService = class {
+	constructor(elementRegistry, moddle, commandStack) {
+		this.elementRegistry = elementRegistry;
+		this.moddle = moddle;
+		this.commandStack = commandStack;
+		this.settings = { followName: false };
+		this.convention = FALLBACK_CONVENTION;
+	}
+	configure(options) {
+		this.settings = { followName: options.followName ?? this.settings.followName };
+		this.convention = options.convention ?? this.convention;
+		this.openReview = options.openReview ?? this.openReview;
+	}
+	hostReview() {
+		return this.openReview;
+	}
+	getSettings() {
+		return this.settings;
+	}
+	getConvention() {
+		return this.convention;
+	}
+	propose(unchecked = new Set()) {
+		const candidates = collectCandidates(this.elementRegistry);
+		return proposeIds(candidates, {
+			convention: this.convention,
+			unchecked,
+			isTakenElsewhere: this.takenOutside(candidates)
+		});
+	}
+	list(unchecked = this.initiallyUnchecked()) {
+		return { rows: this.propose(unchecked).map(rowOf) };
+	}
+	initiallyUnchecked() {
+		return new Set(collectCandidates(this.elementRegistry).filter((candidate) => keepsIdUnlessAsked(candidate.type)).map((candidate) => candidate.id));
+	}
+	rename(unchecked = new Set()) {
+		return this.apply(this.propose(unchecked));
+	}
+	proposalFor(element) {
+		const target = element.labelTarget ?? element;
+		const candidate = collectCandidates(this.elementRegistry).find((each) => each.target.kind === "element" && each.target.element === target);
+		if (!candidate) return;
+		const [proposal] = proposeIds([candidate], {
+			convention: this.convention,
+			unchecked: new Set(),
+			isTakenElsewhere: this.takenOutside([candidate])
+		});
+		return proposal;
+	}
+	renameFromName(element) {
+		const proposal = this.proposalFor(element);
+		return proposal !== void 0 && this.apply([proposal]) > 0;
+	}
+	apply(proposals) {
+		const renames = proposals.flatMap((proposal) => proposal.status === "rename" && proposal.newId !== void 0 ? [{
+			item: proposal.candidate.target,
+			from: proposal.candidate.id,
+			to: proposal.newId
+		}] : []);
+		if (renames.length === 0) return 0;
+		const steps = orderRenames(renames, (id) => this.isTaken(id));
+		this.commandStack.execute(RENAME_ELEMENT_IDS_COMMAND, { steps });
+		return renames.length;
+	}
+	isTaken(id) {
+		return Boolean(this.moddle.ids.assigned(id)) || this.elementRegistry.get(id) !== void 0;
+	}
+	takenOutside(candidates) {
+		const owners = new Set();
+		const elements = new Set();
+		for (const { target } of candidates) if (target.kind === "element") {
+			owners.add(target.element.businessObject);
+			elements.add(target.element);
+		} else owners.add(target.process);
+		return (id) => {
+			const owner = this.moddle.ids.assigned(id);
+			if (owner && !owners.has(owner)) return true;
+			const element = this.elementRegistry.get(id);
+			return element !== void 0 && !elements.has(element);
+		};
+	}
+};
+_ElementIdsService = ElementIdsService;
+_ElementIdsService.$inject = [
+	"elementRegistry",
+	"moddle",
+	"commandStack"
+];
+// ../../libs/element-ids/src/followName.ts
+var RANDOM_TOKEN = "(?=[0-9a-z]*[a-z])(?=[0-9a-z]*\\d)[0-9a-z]{6,8}";
+var COUNTER = "\\d+";
+function isDefaultId(id, type) {
+	const prefixes = defaultIdPrefixesOf(type).join("|");
+	return new RegExp(`^(?:${prefixes})_(?:${COUNTER}|${RANDOM_TOKEN})$`).test(id);
+}
+function followsChange({ id, oldName, oldElement, convention }) {
+	if (isDefaultId(id, oldElement.$type)) return true;
+	return oldName !== void 0 && idFollowsName(id, oldName, oldElement, convention);
+}
+// ../../libs/element-ids/src/FollowNameBehavior.ts
+var _FollowNameBehavior;
+var FollowNameBehavior = class {
+	constructor(eventBus, elementIds) {
+		this.elementIds = elementIds;
+		eventBus.on("commandStack.element.updateLabel.postExecute", ({ context }) => {
+			this.follow(context.element, context.oldLabel);
+		});
+		eventBus.on("commandStack.element.updateProperties.postExecute", ({ context }) => {
+			if (context.properties && "name" in context.properties) this.follow(context.element, context.oldProperties?.name);
+		});
+		eventBus.on("commandStack.element.updateModdleProperties.postExecute", ({ context }) => {
+			if (context.properties && "name" in context.properties && context.moddleElement === context.element.businessObject) this.follow(context.element, context.oldProperties?.name);
+		});
+		eventBus.on("commandStack.shape.replace.postExecuted", ({ context }) => {
+			const { oldShape, newShape } = context;
+			this.follow(newShape, newShape.businessObject?.name, oldShape.businessObject);
+		});
+	}
+	follow(element, oldName, oldElement) {
+		const { followName } = this.elementIds.getSettings();
+		const target = element.labelTarget ?? element;
+		const businessObject = target.businessObject;
+		if (!followName || businessObject?.id === void 0 || keepsIdUnlessAsked(businessObject.$type)) return;
+		if (followsChange({
+			id: businessObject.id,
+			oldName: typeof oldName === "string" && oldName !== "" ? oldName : void 0,
+			oldElement: oldElement ?? businessObject,
+			convention: this.elementIds.getConvention()
+		})) this.elementIds.renameFromName(target);
+	}
+};
+_FollowNameBehavior = FollowNameBehavior;
+_FollowNameBehavior.$inject = ["eventBus", "elementIds"];
+// ../../libs/element-ids/src/IdFromNameEntry.ts
+var DISABLED_REASONS = {
+	none: "Add a name to generate the ID from it.",
+	skipped: "Add a name to generate the ID from it.",
+	matches: "The ID already follows the name."
+};
+function IdFromNameEntry({ element, proposalFor, renameFromName, openReview, translate }) {
+	const proposal = proposalFor(element);
+	const disabledReason = DISABLED_REASONS[proposal?.status ?? "none"];
+	return k("div", {
+		"class": "bio-properties-panel-entry eid-id-actions",
+		"data-entry-id": "idFromName"
+	}, k("button", {
+		type: "button",
+		class: "eid-link",
+		disabled: disabledReason !== void 0,
+		title: disabledReason ? translate(disabledReason) : translate("Rename the ID to {id}", { id: proposal?.newId ?? "" }),
+		onClick: () => renameFromName(element)
+	}, translate("Generate from name")), openReview && k("span", {
+		"class": "eid-separator",
+		"aria-hidden": "true"
+	}, "·"), openReview && k("button", {
+		type: "button",
+		class: "eid-link",
+		onClick: openReview
+	}, translate("Review all IDs…")));
+}
+// ../../libs/element-ids/src/translate.ts
+var fallbackTranslate = (template, replacements = {}) => template.replace(/{([^}]+)}/g, (_, key) => replacements[key] ?? `{${key}}`);
+// ../../libs/element-ids/src/IdFromNamePropertiesProvider.ts
+var _IdFromNamePropertiesProvider;
+var ID_FROM_NAME_PRIORITY = 200;
+var IdFromNamePropertiesProvider = class {
+	constructor(injector, elementIds) {
+		this.elementIds = elementIds;
+		this.translate = injector.get("translate", false) ?? fallbackTranslate;
+		injector.get("propertiesPanel", false)?.registerProvider(ID_FROM_NAME_PRIORITY, this);
+	}
+	getGroups(element) {
+		return (groups) => {
+			const entries = groups.find((group) => group?.id === "general")?.entries;
+			const idIndex = entries?.findIndex((entry) => entry?.id === "id") ?? -1;
+			if (entries && idIndex >= 0) entries.splice(idIndex + 1, 0, {
+				id: "idFromName",
+				component: IdFromNameEntry,
+				isEdited: () => false,
+				element,
+				proposalFor: (target) => this.elementIds.proposalFor(target),
+				renameFromName: (target) => this.elementIds.renameFromName(target),
+				openReview: this.elementIds.hostReview(),
+				translate: this.translate
+			});
+			return groups;
+		};
+	}
+};
+_IdFromNamePropertiesProvider = IdFromNamePropertiesProvider;
+_IdFromNamePropertiesProvider.$inject = ["injector", "elementIds"];
+// ../../libs/element-ids/src/index.ts
+function ElementIdCommands(eventBus, injector) {
+	const commandStack = injector.get("commandStack", false);
+	if (!commandStack) return;
+	eventBus.on("diagram.init", () => {
+		commandStack.registerHandler(RENAME_ELEMENT_IDS_COMMAND, RenameElementIdsHandler);
+		commandStack.registerHandler(UPDATE_LABEL_ID_COMMAND, UpdateLabelIdHandler);
+	});
+}
+ElementIdCommands.$inject = ["eventBus", "injector"];
+var ElementIdsModule = {
+	__init__: [
+		"elementIdCommands",
+		"followNameBehavior",
+		"idFromNamePropertiesProvider"
+	],
+	elementIdCommands: ["type", ElementIdCommands],
+	elementIds: ["type", ElementIdsService],
+	followNameBehavior: ["type", FollowNameBehavior],
+	idFromNamePropertiesProvider: ["type", IdFromNamePropertiesProvider]
+};
 // ../../libs/definition-search/src/DefinitionSearchEntry.tsx
 var SEARCH_DEBOUNCE_MS = 150;
 var MAX_LISTED_USAGES = 3;
@@ -13810,6 +14405,9 @@ function buildLintModules(linting, init, callbacks, opts = {}) {
 		mode: init.mode,
 		config
 	}, callbacks)];
+}
+function lintElementIdConvention(linting) {
+	return linting ? linting.module.createElementIdConvention?.() : void 0;
 }
 // ../../packages/bpmn-modeler/src/popupMenuAnnotations/popupMenuAnnotations.ts
 var MENU_PREFIX = /^(?:create|append)-/;
@@ -14406,6 +15004,16 @@ function cleanupSurfaceDiagram(surface, options) {
 function applyFavouriteBpmnElements(surface, types) {
 	surface.optionalService("appendMenuOverride")?.setFavourites([...types]);
 }
+var NO_ELEMENT_IDS = { rows: [] };
+function proposeSurfaceElementIds(surface, unchecked) {
+	return surface.optionalService("elementIds")?.list(unchecked && new Set(unchecked)) ?? NO_ELEMENT_IDS;
+}
+function renameSurfaceElementIds(surface, unchecked) {
+	return surface.optionalService("elementIds")?.rename(new Set(unchecked)) ?? 0;
+}
+function applyElementIdSettings(surface, options) {
+	surface.optionalService("elementIds")?.configure(options);
+}
 function createSurfaceLintHandle(surface, reporter) {
 	return createLintHandleMethods(() => surface.optionalService("bpmnLintConfig"), (message) => reporter.warn(message));
 }
@@ -14422,6 +15030,6 @@ function createReporter(sinks) {
 		}
 	};
 }
-export { templatePropertyDisplayText as C, modeler_default as D, templateIdOfEntryKey as E, createReviver as O, propertyDisplayLabel as S, isTemplatePopupEntry as T, FlowNavigationModule as _, formatSurfaceDiagram as a, fallbackTranslate as b, subscribeFormatted as c, createPopupMenuAnnotationsModule as d, BPMN_TAB as f, createBpmnLayoutModule as g, createDefinitionSearchModule as h, createSurfaceLintHandle as i, Modeler as k, wireContentSaved as l, buildLintModules as m, applyFavouriteBpmnElements as n, installClipboardSupport as o, ELEMENT_POPUP_MENUS as p, cleanupSurfaceDiagram as r, subscribeCommandStackChanged as s, createReporter as t, ReplaceTemplatesTabModule as u, AppendMenuModule as v, u as w, partitionVisibleProperties as x, extractImplementationDetail as y };
+export { isTemplatePopupEntry as A, AppendMenuModule as C, propertyDisplayLabel as D, partitionVisibleProperties as E, elementIdSettingsOf as F, modeler_default as M, createReviver as N, templatePropertyDisplayText as O, Modeler as P, FlowNavigationModule as S, fallbackTranslate$1 as T, buildLintModules as _, createSurfaceLintHandle as a, ElementIdsModule as b, proposeSurfaceElementIds as c, subscribeFormatted as d, wireContentSaved as f, ELEMENT_POPUP_MENUS as g, BPMN_TAB as h, cleanupSurfaceDiagram as i, templateIdOfEntryKey as j, u as k, renameSurfaceElementIds as l, createPopupMenuAnnotationsModule as m, applyElementIdSettings as n, formatSurfaceDiagram as o, ReplaceTemplatesTabModule as p, applyFavouriteBpmnElements as r, installClipboardSupport as s, createReporter as t, subscribeCommandStackChanged as u, lintElementIdConvention as v, extractImplementationDetail as w, createBpmnLayoutModule as x, createDefinitionSearchModule as y };
 
-//# sourceMappingURL=reporting-2F_WO5Yt.js.map
+//# sourceMappingURL=reporting-Bgp2TgWv.js.map

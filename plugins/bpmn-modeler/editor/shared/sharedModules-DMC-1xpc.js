@@ -1,14 +1,14 @@
 import { a as __toESM, t as __commonJSMin } from "./rolldown-runtime-DQp2zzRu.js";
-import { _ as _defineProperty } from "./editorLayout-BNwn-014.js";
-import { B as isInterrupting$1, L as isEventSubProcess, M as setLabel, R as isExpanded, b as getShapeIdFromPlane, k as getLabel, x as isPlane$1 } from "./createSurface-2zRsNQAh.js";
+import { _ as _defineProperty } from "./editorLayout-Dxr4ugLL.js";
+import { B as isInterrupting$1, L as isEventSubProcess, M as setLabel, R as isExpanded, b as getShapeIdFromPlane, k as getLabel, x as isPlane$1 } from "./createSurface-CzjA2jEt.js";
 import { Bt as clear, Ct as add$2, Ht as create, It as append, M as isRedo, N as isUndo, Rt as attr, Z as translate_default, _ as S, a as T$1, b as X, d as x, dt as getMid, g as R, k as CommandInterceptor, l as h$1, n as A, p as C, qt as Ids, rn as query, s as d, t as u$1, tn as event, u as q, x as k } from "./jsxRuntime.module-awBdvHUy.js";
 import { A as pick, B as without, C as isObject, D as map, E as keys, F as sortBy, M as set, S as isNumber, T as isUndefined$1, _ as init_dist, a as bind, b as isFunction, d as findIndex, f as flatten, g as has$1, h as groupBy, i as assign, j as reduce, l as filter, p as forEach$1, r as domify, u as find, v as isArray$1, w as isString, x as isNil$1, y as isDefined, z as values } from "./EscapeUtil-B1jzPlMc.js";
 import { k as quantize$1 } from "./clipboard-Bznk3d97.js";
 import { A as isEdited$3, B as require_classnames, C as TextfieldEntry, D as index$1$5, E as index$6, F as isEdited$9, G as camundaReservedNameBuiltins, H as gn, I as useError, J as parser, K as FeelAnalyzer, L as useLayoutState, M as isEdited$6, N as isEdited$7, O as isEdited, P as isEdited$8, R as usePrevious, S as TextAreaEntry, T as TooltipWrapper, V as $, W as camundaBuiltins, Y as trackVariables, _ as ListGroup, a as Create, b as SelectEntry, c as FeelEntry$1, d as FeelTextAreaEntry$1, f as Group, g as List, h as JsonEditorEntry, i as CollapsibleEntry, j as isEdited$5, k as isEdited$1, l as FeelLanguageContext, m as HeaderButton, n as CheckboxEntry, o as DropdownButton, p as Header$1, q as VariableContext, r as CheckboxGroup, s as FeelCheckboxEntry, t as Arrow, u as FeelNumberEntry, v as NumberFieldEntry, w as ToggleSwitchEntry, x as Simple, y as PropertiesPanel, z as useShowEntryEvent } from "./index.esm-DgBSptNj.js";
 import { c as init_dist$1, i as init_dist$2, o as getCoerced, s as getCompatible, t as ContextTracker, u as isSatisfied } from "./dist-BWHN8Och.js";
-import { a as is$3, i as init_ModelUtil, n as getBusinessObject$1, o as isAny } from "./ModelUtil-BGe9jbj7.js";
 import { i as require_semver_compare, r as pathEquals, t as init_moddle_utils } from "./moddle-utils-CKD1iZGs.js";
-import { t as lib_default$1 } from "./lib-8JLHscGa.js";
+import { a as is$3, i as init_ModelUtil, n as getBusinessObject$1, o as isAny } from "./ModelUtil-BGe9jbj7.js";
+import { t as lib_default$1 } from "./lib-CIY0Qhue.js";
 import { t as index$5 } from "./index.esm-CXJiDiAL.js";
 // ../../node_modules/camunda-bpmn-js-behaviors/lib/util/ExtensionElementsUtil.js
 init_ModelUtil();
@@ -68290,4 +68290,4 @@ function composeUpstreamModules(engineUpstreamModules) {
 }
 export { VariableProvider as a, TooltipProvider as c, index$1$3 as d, useService as f, removeExtensionElements$1 as h, ZeebeVariableResolverModule as i, TooltipProvider$1 as l, getExtensionElementsList$2 as m, colors_default as n, index$2 as o, DeleteParticipantBehaviour as p, CamundaVariableResolverModule as r, index$1 as s, composeUpstreamModules as t, index$4 as u };
 
-//# sourceMappingURL=sharedModules-CXHmOeSF.js.map
+//# sourceMappingURL=sharedModules-DMC-1xpc.js.map
