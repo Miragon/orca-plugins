@@ -1,9 +1,9 @@
-import { _ as _defineProperty, g as i18n, h as TranslateModule, m as extras } from "./editorLayout-BNwn-014.js";
-import { D as modeler_default, _ as FlowNavigationModule, a as formatSurfaceDiagram, c as subscribeFormatted, d as createPopupMenuAnnotationsModule, g as createBpmnLayoutModule, h as createDefinitionSearchModule, i as createSurfaceLintHandle, k as Modeler, l as wireContentSaved, m as buildLintModules, n as applyFavouriteBpmnElements, o as installClipboardSupport, r as cleanupSurfaceDiagram, s as subscribeCommandStackChanged, t as createReporter, v as AppendMenuModule } from "./reporting-2F_WO5Yt.js";
+import { _ as _defineProperty, g as i18n, h as TranslateModule, m as extras } from "./editorLayout-Dxr4ugLL.js";
+import { C as AppendMenuModule, M as modeler_default, P as Modeler, S as FlowNavigationModule, _ as buildLintModules, a as createSurfaceLintHandle, b as ElementIdsModule, c as proposeSurfaceElementIds, d as subscribeFormatted, f as wireContentSaved, i as cleanupSurfaceDiagram, l as renameSurfaceElementIds, m as createPopupMenuAnnotationsModule, n as applyElementIdSettings, o as formatSurfaceDiagram, r as applyFavouriteBpmnElements, s as installClipboardSupport, t as createReporter, u as subscribeCommandStackChanged, v as lintElementIdConvention, x as createBpmnLayoutModule, y as createDefinitionSearchModule } from "./reporting-Bgp2TgWv.js";
+import { n as render_default, t as provider_default } from "./provider-CE2pkzJX.js";
 import { pn as DisposableStore } from "./jsxRuntime.module-awBdvHUy.js";
-import { n as render_default, t as provider_default } from "./provider-BJ5t8FiF.js";
-import { a as exportSvg, f as CustomGroupsModule, i as exportFormattedXml, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, s as createModelNavigationModule, t as createSurface } from "./createSurface-2zRsNQAh.js";
-import { i as index$1, t as lib_default } from "./lib-8JLHscGa.js";
+import { a as exportSvg, f as CustomGroupsModule, i as exportFormattedXml, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, s as createModelNavigationModule, t as createSurface } from "./createSurface-CzjA2jEt.js";
+import { i as index$1, t as lib_default } from "./lib-CIY0Qhue.js";
 import { t as index } from "./index.esm-CXJiDiAL.js";
 // ../../packages/bpmn-modeler/src/design/designer.ts
 var BpmnDesigner = class {
@@ -46,6 +46,11 @@ var BpmnDesigner = class {
 			hasSearchPad: true
 		});
 		if (this.options.favouriteBpmnElements) this.setFavouriteBpmnElements(this.options.favouriteBpmnElements);
+		const { elementIdSettings, linting } = this.options;
+		this.setElementIdSettings({
+			...elementIdSettings,
+			convention: elementIdSettings?.convention ?? lintElementIdConvention(linting)
+		});
 		const onContentSaved = this.options.onContentSaved;
 		if (onContentSaved) this.deliverPendingContentSave = wireContentSaved({
 			store: this.store,
@@ -75,6 +80,7 @@ var BpmnDesigner = class {
 				createPopupMenuAnnotationsModule(),
 				FlowNavigationModule,
 				createBpmnLayoutModule(),
+				ElementIdsModule,
 				index,
 				modeler_default,
 				...buildLintModules(this.options.linting, {
@@ -118,6 +124,15 @@ var BpmnDesigner = class {
 	}
 	setFavouriteBpmnElements(types) {
 		applyFavouriteBpmnElements(this.core, types);
+	}
+	setElementIdSettings(options) {
+		applyElementIdSettings(this.core, options);
+	}
+	proposeElementIds(unchecked) {
+		return proposeSurfaceElementIds(this.core, unchecked);
+	}
+	renameElementIds(unchecked) {
+		return renameSurfaceElementIds(this.core, unchecked);
 	}
 	setTheme(theme) {
 		this.core.setTheme(this.store, theme);
@@ -165,4 +180,4 @@ async function createDesigner(container, options) {
 }
 export { createDesigner };
 
-//# sourceMappingURL=design-BwQtPwxg.js.map
+//# sourceMappingURL=design-BGxvG83h.js.map

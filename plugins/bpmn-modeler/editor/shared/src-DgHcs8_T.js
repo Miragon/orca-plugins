@@ -1,10 +1,10 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./c7-BnIEhxZ8.js","./rolldown-runtime-DQp2zzRu.js","./ModelUtil-BGe9jbj7.js","./EscapeUtil-B1jzPlMc.js","./jsxRuntime.module-awBdvHUy.js","./sharedModules-CXHmOeSF.js","./editorLayout-BNwn-014.js","./editorLayout-3p6pELEt.css","./createSurface-2zRsNQAh.js","../bpmn/main.js","./bpmn-BKnWBDxl.css","./clipboard-Bznk3d97.js","./index.esm-DgBSptNj.js","./dist-BWHN8Och.js","./moddle-utils-CKD1iZGs.js","./lib-8JLHscGa.js","./reporting-2F_WO5Yt.js","./reporting-DXH2a9lW.css","./index.esm-CXJiDiAL.js","./c8-o3zwbPyy.js"])))=>i.map(i=>d[i]);
-import { _ as _defineProperty, g as i18n, h as TranslateModule, m as extras } from "./editorLayout-BNwn-014.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./c7-DnBrPmIx.js","./rolldown-runtime-DQp2zzRu.js","./ModelUtil-BGe9jbj7.js","./EscapeUtil-B1jzPlMc.js","./jsxRuntime.module-awBdvHUy.js","./sharedModules-DMC-1xpc.js","./editorLayout-Dxr4ugLL.js","./editorLayout-3p6pELEt.css","./createSurface-CzjA2jEt.js","../bpmn/main.js","./bpmn-BvXu8wGO.css","./clipboard-Bznk3d97.js","./index.esm-DgBSptNj.js","./dist-BWHN8Och.js","./moddle-utils-CKD1iZGs.js","./lib-CIY0Qhue.js","./reporting-Bgp2TgWv.js","./reporting-B1SMpZVh.css","./index.esm-CXJiDiAL.js","./c8-Dz0CRAzg.js"])))=>i.map(i=>d[i]);
+import { _ as _defineProperty, g as i18n, h as TranslateModule, m as extras } from "./editorLayout-Dxr4ugLL.js";
 import { a as surfaceModeSupports, c as engineSupports, l as executionPlatformAttributeNames, o as ENGINE_EXECUTION_PLATFORM, s as MODELER_NAMESPACE_URI, t as __vitePreload, u as isEngine } from "../bpmn/main.js";
-import { C as templatePropertyDisplayText, D as modeler_default, E as templateIdOfEntryKey, S as propertyDisplayLabel, T as isTemplatePopupEntry, _ as FlowNavigationModule, a as formatSurfaceDiagram, b as fallbackTranslate, c as subscribeFormatted, d as createPopupMenuAnnotationsModule, f as BPMN_TAB, g as createBpmnLayoutModule, h as createDefinitionSearchModule, i as createSurfaceLintHandle, k as Modeler, l as wireContentSaved, m as buildLintModules, n as applyFavouriteBpmnElements, o as installClipboardSupport, p as ELEMENT_POPUP_MENUS, r as cleanupSurfaceDiagram, s as subscribeCommandStackChanged, t as createReporter, u as ReplaceTemplatesTabModule, v as AppendMenuModule, w as u, x as partitionVisibleProperties, y as extractImplementationDetail } from "./reporting-2F_WO5Yt.js";
+import { A as isTemplatePopupEntry, C as AppendMenuModule, D as propertyDisplayLabel, E as partitionVisibleProperties, F as elementIdSettingsOf, M as modeler_default, O as templatePropertyDisplayText, P as Modeler, S as FlowNavigationModule, T as fallbackTranslate, _ as buildLintModules, a as createSurfaceLintHandle, b as ElementIdsModule, c as proposeSurfaceElementIds, d as subscribeFormatted, f as wireContentSaved, g as ELEMENT_POPUP_MENUS, h as BPMN_TAB, i as cleanupSurfaceDiagram, j as templateIdOfEntryKey, k as u, l as renameSurfaceElementIds, m as createPopupMenuAnnotationsModule, n as applyElementIdSettings, o as formatSurfaceDiagram, p as ReplaceTemplatesTabModule, r as applyFavouriteBpmnElements, s as installClipboardSupport, t as createReporter, u as subscribeCommandStackChanged, v as lintElementIdConvention, w as extractImplementationDetail, x as createBpmnLayoutModule, y as createDefinitionSearchModule } from "./reporting-Bgp2TgWv.js";
 import { B as d, H as q, K as k, L as A, R as T, V as h, W as R } from "./clipboard-Bznk3d97.js";
 import { a as is, i as init_ModelUtil, n as getBusinessObject } from "./ModelUtil-BGe9jbj7.js";
-import { a as exportSvg, f as CustomGroupsModule, i as exportFormattedXml, m as FlushableDebounceInputModule, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, r as DrilldownFitModule, s as createModelNavigationModule, t as createSurface } from "./createSurface-2zRsNQAh.js";
+import { a as exportSvg, f as CustomGroupsModule, i as exportFormattedXml, m as FlushableDebounceInputModule, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, r as DrilldownFitModule, s as createModelNavigationModule, t as createSurface } from "./createSurface-CzjA2jEt.js";
 import { _ as S, hn as subscribe, pn as DisposableStore, t as u$1, yn as UnsupportedEngineError } from "./jsxRuntime.module-awBdvHUy.js";
 var VERSIONS = {
 	c7: [
@@ -2300,11 +2300,11 @@ function executionPlatformAttributes(definitions) {
 // ../../packages/bpmn-modeler/src/engineStacks/index.ts
 var ENGINE_STACK_LOADERS = {
 	c7: async () => (await __vitePreload(async () => {
-		const { c7Stack } = await import("./c7-BnIEhxZ8.js");
+		const { c7Stack } = await import("./c7-DnBrPmIx.js");
 		return { c7Stack };
 	}, __vite__mapDeps([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]), import.meta.url)).c7Stack,
 	c8: async () => (await __vitePreload(async () => {
-		const { c8Stack } = await import("./c8-o3zwbPyy.js");
+		const { c8Stack } = await import("./c8-Dz0CRAzg.js");
 		return { c8Stack };
 	}, __vite__mapDeps([19,4,3,1,2,5,6,7,8,9,10,11,12,13,14,15,16,17,18]), import.meta.url)).c8Stack
 };
@@ -2517,6 +2517,7 @@ var BpmnModeler = class {
 			ReplaceTemplatesTabModule,
 			FlowNavigationModule,
 			createBpmnLayoutModule(),
+			ElementIdsModule,
 			propertiesPanelRootModule,
 			ModeFilterModule,
 			CustomGroupsModule,
@@ -2558,6 +2559,10 @@ var BpmnModeler = class {
 			hasSearchPad: true
 		});
 		this.applyHiddenElementTemplates();
+		applyElementIdSettings(this.core, {
+			...elementIdSettingsOf(this.settings),
+			convention: lintElementIdConvention(this.options.linting)
+		});
 		const onElementTemplatesErrors = this.options.onElementTemplatesErrors;
 		if (onElementTemplatesErrors) this.store.add(subscribe(this.getModeler(), "elementTemplates.errors", (event) => {
 			onElementTemplatesErrors(event.errors ?? []);
@@ -2676,9 +2681,20 @@ var BpmnModeler = class {
 			}
 		}
 		if (settings.favouriteBpmnElements !== void 0) applyFavouriteBpmnElements(this.core, settings.favouriteBpmnElements);
+		applyElementIdSettings(this.core, elementIdSettingsOf(settings));
 	}
 	setFavouriteBpmnElements(types) {
 		this.setSettings({ favouriteBpmnElements: [...types] });
+	}
+	setElementIdSettings({ followName, ...options }) {
+		if (followName !== void 0) this.setSettings({ elementIdsFollowName: followName });
+		applyElementIdSettings(this.core, options);
+	}
+	proposeElementIds(unchecked) {
+		return proposeSurfaceElementIds(this.core, unchecked);
+	}
+	renameElementIds(unchecked) {
+		return renameSurfaceElementIds(this.core, unchecked);
 	}
 	alignElementsToOrigin() {
 		if (this.settings.alignToOrigin) this.getModeler().get("alignToOrigin").align();
@@ -2760,4 +2776,4 @@ async function createModeler(container, options) {
 }
 export { createModeler };
 
-//# sourceMappingURL=src-b6BBObmf.js.map
+//# sourceMappingURL=src-DgHcs8_T.js.map

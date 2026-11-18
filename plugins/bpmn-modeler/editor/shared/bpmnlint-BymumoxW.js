@@ -1,8 +1,8 @@
 import { a as __toESM, i as __toCommonJS, n as __esmMin, r as __exportAll, t as __commonJSMin } from "./rolldown-runtime-DQp2zzRu.js";
-import { D as map, _ as init_dist$2, g as has, h as groupBy, i as assign, j as reduce, n as escapeHTML, r as domify, s as dist_exports$2, x as isNil } from "./EscapeUtil-B1jzPlMc.js";
+import { _ as _defineProperty } from "./editorLayout-Dxr4ugLL.js";
 import { a as surfaceModeSupports } from "../bpmn/main.js";
+import { D as map, _ as init_dist$2, g as has, h as groupBy, i as assign, j as reduce, n as escapeHTML, r as domify, s as dist_exports$2, x as isNil } from "./EscapeUtil-B1jzPlMc.js";
 import { a as is$1, i as init_ModelUtil } from "./ModelUtil-BGe9jbj7.js";
-import { _ as _defineProperty } from "./editorLayout-BNwn-014.js";
 import { i as require_semver_compare, n as moddle_utils_exports, t as init_moddle_utils } from "./moddle-utils-CKD1iZGs.js";
 import { a as dist_exports$3, c as init_dist$5, g as tags, i as init_dist$3, m as styleTags, n as ExternalTokenizer, p as init_dist$4, r as LRParser, t as ContextTracker } from "./dist-BWHN8Och.js";
 // ../../libs/modeler-types/src/lint.ts
@@ -22,628 +22,6 @@ function staticUnresolvedModdleExtensions(config) {
 	for (const [prefix, value] of Object.entries(declared)) if (!(value != null && typeof value === "object" && LIVE_MODDLE_PREFIXES.has(prefix))) unresolved.push(`moddleExtension:${prefix}`);
 	return unresolved;
 }
-// ../../node_modules/@bpmn-io/lint-core/lib/traverse.js
-var require_traverse = __commonJSMin(((exports, module) => {
-	function isSimpleType(type) {
-		return [
-			"String",
-			"Boolean",
-			"Integer",
-			"Real"
-		].includes(type);
-	}
-	module.exports = function traverse(element, options) {
-		const enter = options.enter;
-		const leave = options.leave;
-		const enterSubTree = enter && enter(element);
-		const descriptor = element.$descriptor;
-		if (enterSubTree !== false && !descriptor.isGeneric) descriptor.properties.filter((p) => {
-			return !p.isAttr && !p.isReference && !isSimpleType(p.type);
-		}).forEach((p) => {
-			if (p.name in element) {
-				const propertyValue = element[p.name];
-				if (p.isMany) propertyValue.forEach((child) => {
-					traverse(child, options);
-				});
-				else traverse(propertyValue, options);
-			}
-		});
-		leave && leave(element);
-	};
-}));
-// ../../node_modules/@bpmn-io/lint-core/lib/test-rule.js
-var require_test_rule = __commonJSMin(((exports, module) => {
-	var traverse = require_traverse();
-	var { isArray, isObject, isFunction } = (init_dist$2(), __toCommonJS(dist_exports$2));
-	var Reporter = class {
-		constructor({ moddleRoot, rule }) {
-			this.rule = rule;
-			this.moddleRoot = moddleRoot;
-			this.messages = [];
-			this.report = this.report.bind(this);
-		}
-		report(id, message, path) {
-			let report = {
-				id,
-				message
-			};
-			if (path && isArray(path)) report = {
-				...report,
-				path
-			};
-			if (path && isObject(path)) report = {
-				...report,
-				...path
-			};
-			this.messages.push(report);
-		}
-	};
-	module.exports = function testRule({ moddleRoot, rule }) {
-		const reporter = new Reporter({
-			rule,
-			moddleRoot
-		});
-		const check = rule.check || {};
-		const leave = "leave" in check ? check.leave : void 0;
-		const enter = "enter" in check ? check.enter : isFunction(check) ? check : void 0;
-		if (!enter && !leave) throw new Error("no check implemented");
-		traverse(moddleRoot, {
-			enter: enter ? (node) => enter(node, reporter) : void 0,
-			leave: leave ? (node) => leave(node, reporter) : void 0
-		});
-		return reporter.messages;
-	};
-}));
-// ../../node_modules/@bpmn-io/lint-core/lib/product.js
-var require_product$1 = __commonJSMin(((exports, module) => {
-	function normalizeProduct(product) {
-		const { name, pluginPrefix = name + "-plugin-" } = product || {};
-		if (typeof name !== "string" || !name) throw new Error("must provide <product.name>");
-		return {
-			name,
-			pluginPrefix
-		};
-	}
-	function escapeRegExp(string) {
-		return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-	}
-	module.exports = {
-		normalizeProduct,
-		escapeRegExp
-	};
-}));
-// ../../node_modules/@bpmn-io/lint-core/lib/linter.js
-var require_linter$1 = __commonJSMin(((exports, module) => {
-	var testRule = require_test_rule();
-	var { normalizeProduct, escapeRegExp } = require_product$1();
-	var noopTransformRule = (rule, options) => {
-		return rule;
-	};
-	var categoryMap = {
-		0: "off",
-		1: "warn",
-		2: "error",
-		3: "info"
-	};
-	var ruleErrorCategory = "rule-error";
-	function createLinter(product) {
-		const { name: productName, pluginPrefix } = normalizeProduct(product);
-		const configNameRegExp = new RegExp("^(?:(?:plugin:(?:(@[^/]+)\\/)?([^@]{1}[^/]*)\\/)|" + escapeRegExp(productName) + ":)([^/]+)$");
-		function Linter(options) {
-			const { config = {}, resolver, transformRule = noopTransformRule } = options || {};
-			if (typeof resolver === "undefined") throw new Error("must provide <options.resolver>");
-			this.config = config;
-			this.resolver = resolver;
-			this.transformRule = transformRule;
-			this.cachedRules = {};
-			this.cachedConfigs = {};
-		}
-		Linter.prototype.applyRule = function applyRule(moddleRoot, ruleDefinition) {
-			const { config, rule, category, name } = ruleDefinition;
-			try {
-				return testRule({
-					moddleRoot,
-					rule,
-					config
-				}).map(function(report) {
-					return {
-						...report,
-						meta: rule.meta,
-						category
-					};
-				});
-			} catch (e) {
-				console.error("rule <" + name + "> failed with error: ", e);
-				return [{
-					message: e.message,
-					category: ruleErrorCategory
-				}];
-			}
-		};
-		Linter.prototype.resolveRule = function(name, config) {
-			const { pkg, ruleName } = this.parseRuleName(name);
-			const id = `${pkg}-${ruleName}`;
-			const rule = this.cachedRules[id];
-			if (rule) return Promise.resolve(rule);
-			return Promise.resolve(this.resolver.resolveRule(pkg, ruleName)).then((ruleFactory) => {
-				if (!ruleFactory) throw new Error(`unknown rule <${name}>`);
-				return this.cachedRules[id] = this.transformRule(ruleFactory(config), {
-					pkg,
-					ruleName
-				});
-			});
-		};
-		Linter.prototype.resolveConfig = function(name) {
-			const { pkg, configName } = this.parseConfigName(name);
-			const id = `${pkg}-${configName}`;
-			const config = this.cachedConfigs[id];
-			if (config) return Promise.resolve(config);
-			return Promise.resolve(this.resolver.resolveConfig(pkg, configName)).then((config) => {
-				if (!config) throw new Error(`unknown config <${name}>`);
-				return this.cachedConfigs[id] = this.normalizeConfig(config, pkg);
-			});
-		};
-		Linter.prototype.resolveRules = function(config) {
-			return this.resolveConfiguredRules(config).then((rulesConfig) => {
-				const loaders = Object.entries(rulesConfig).map(([name, value]) => {
-					const { category, config } = this.parseRuleValue(value);
-					return {
-						name,
-						category,
-						config
-					};
-				}).filter((definition) => definition.category !== "off").map((definition) => {
-					const { name, config } = definition;
-					return this.resolveRule(name, config).then(function(rule) {
-						return {
-							...definition,
-							rule
-						};
-					});
-				});
-				return Promise.all(loaders);
-			});
-		};
-		Linter.prototype.resolveConfiguredRules = function(config) {
-			let parents = config.extends;
-			if (typeof parents === "string") parents = [parents];
-			if (typeof parents === "undefined") parents = [];
-			return Promise.all(parents.map((configName) => {
-				return this.resolveConfig(configName).then((config) => {
-					return this.resolveConfiguredRules(config);
-				});
-			})).then((inheritedRules) => {
-				const overrideRules = this.normalizeConfig(config, productName).rules;
-				return [...inheritedRules, overrideRules].reduce((rules, currentRules) => {
-					return {
-						...rules,
-						...currentRules
-					};
-				}, {});
-			});
-		};
-		Linter.prototype.lint = function(moddleRoot, config) {
-			config = config || this.config;
-			return this.resolveRules(config).then((ruleDefinitions) => {
-				const allReports = {};
-				ruleDefinitions.forEach((ruleDefinition) => {
-					const { name } = ruleDefinition;
-					const reports = this.applyRule(moddleRoot, ruleDefinition);
-					if (reports.length) allReports[name] = reports;
-				});
-				return allReports;
-			});
-		};
-		Linter.prototype.parseRuleValue = function(value) {
-			let category;
-			let config;
-			if (Array.isArray(value)) {
-				category = value[0];
-				config = value[1];
-			} else {
-				category = value;
-				config = {};
-			}
-			if (typeof category === "string") category = category.toLowerCase();
-			category = categoryMap[category] || category;
-			return {
-				config,
-				category
-			};
-		};
-		Linter.prototype.parseRuleName = function(name, localPackage = productName) {
-			const match = /^(?:(?:(@[^/]+)\/)?([^@]{1}[^/]*)\/)?([^/]+)$/.exec(name);
-			if (!match) throw new Error(`unparseable rule name <${name}>`);
-			const [_, ns, packageName, ruleName] = match;
-			if (!packageName) return {
-				pkg: localPackage,
-				ruleName
-			};
-			return {
-				pkg: `${ns ? ns + "/" : ""}${prefixPackage(packageName)}`,
-				ruleName
-			};
-		};
-		Linter.prototype.parseConfigName = function(name) {
-			const match = configNameRegExp.exec(name);
-			if (!match) throw new Error(`unparseable config name <${name}>`);
-			const [_, ns, packageName, configName] = match;
-			if (!packageName) return {
-				pkg: productName,
-				configName
-			};
-			return {
-				pkg: `${ns ? ns + "/" : ""}${prefixPackage(packageName)}`,
-				configName
-			};
-		};
-		Linter.prototype.getSimplePackageName = function(name) {
-			const match = /^(?:(@[^/]+)\/)?([^/]+)$/.exec(name);
-			if (!match) throw new Error(`unparseable package name <${name}>`);
-			const [_, ns, packageName] = match;
-			return `${ns ? ns + "/" : ""}${unprefixPackage(packageName)}`;
-		};
-		Linter.prototype.normalizeConfig = function(config, localPackage) {
-			const rules = config.rules || {};
-			const validatedRules = Object.keys(rules).reduce((normalizedRules, name) => {
-				const value = rules[name];
-				const { pkg, ruleName } = this.parseRuleName(name, localPackage);
-				const normalizedName = pkg === productName ? ruleName : `${this.getSimplePackageName(pkg)}/${ruleName}`;
-				normalizedRules[normalizedName] = value;
-				return normalizedRules;
-			}, {});
-			return {
-				...config,
-				rules: validatedRules
-			};
-		};
-		function prefixPackage(pkg) {
-			if (pkg === productName) return productName;
-			if (pkg.startsWith(pluginPrefix)) return pkg;
-			return `${pluginPrefix}${pkg}`;
-		}
-		function unprefixPackage(pkg) {
-			if (pkg.startsWith(pluginPrefix)) return pkg.substring(pluginPrefix.length);
-			return pkg;
-		}
-		return Linter;
-	}
-	module.exports = { createLinter };
-}));
-// ../../node_modules/bpmnlint/lib/product.js
-var require_product = __commonJSMin(((exports, module) => {
-	module.exports = { name: "bpmnlint" };
-}));
-// ../../node_modules/bpmnlint/lib/linter.js
-var require_linter = __commonJSMin(((exports, module) => {
-	var { createLinter } = require_linter$1();
-	module.exports = createLinter(require_product());
-}));
-// ../../node_modules/bpmn-js-bpmnlint/dist/index.esm.js
-var import_lib = __commonJSMin(((exports, module) => {
-	module.exports = { Linter: require_linter() };
-}))();
-init_dist$2();
-init_ModelUtil();
-function EditorActions(injector, linting) {
-	var editorActions = injector.get("editorActions", false);
-	editorActions && editorActions.register({ toggleLinting: function() {
-		linting.toggle();
-	} });
-}
-EditorActions.$inject = ["injector", "linting"];
-var ErrorSvg = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<svg\n   version=\"1.1\"\n   viewBox=\"0 0 512 512\"\n   xmlns=\"http://www.w3.org/2000/svg\"\n   xmlns:svg=\"http://www.w3.org/2000/svg\">\n  <path\n     d=\"M 339.07183,256.00001 463.66713,131.4047 c 15.28961,-15.2896 15.28961,-40.079175 0,-55.381227 l -27.6906,-27.690611 c -15.28961,-15.289602 -40.07917,-15.289602 -55.38123,0 L 256,172.92818 131.4047,48.332862 c -15.2896,-15.289602 -40.079177,-15.289602 -55.381228,0 L 48.332861,76.023473 c -15.2896,15.2896 -15.2896,40.079177 0,55.381227 L 172.92815,256.00001 48.332861,380.59531 c -15.2896,15.2896 -15.2896,40.07917 0,55.38123 l 27.690611,27.69061 c 15.289601,15.28959 40.091628,15.28959 55.381228,0 L 256,339.07184 380.5953,463.66715 c 15.2896,15.28959 40.09162,15.28959 55.38123,0 l 27.6906,-27.69061 c 15.28961,-15.2896 15.28961,-40.07918 0,-55.38123 z\"\n     fill=\"currentColor\" />\n</svg>\n";
-var WarningSvg = "<svg version=\"1.1\" viewBox=\"0 0 512 512\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path d=\"m256 323.95c-45.518 0-82.419 34.576-82.419 77.229 0 42.652 36.9 77.229 82.419 77.229 45.518 0 82.419-34.577 82.419-77.23 0-42.652-36.9-77.229-82.419-77.229zm-80.561-271.8 11.61 204.35c.544 9.334 8.78 16.64 18.755 16.64h100.39c9.975 0 18.211-7.306 18.754-16.64l11.611-204.35c.587-10.082-7.98-18.56-18.754-18.56h-123.62c-10.775 0-19.34 8.478-18.753 18.56z\" fill=\"currentColor\"/>\n</svg>\n";
-var SuccessSvg = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<svg\n   viewBox=\"0 0 512 512\"\n   version=\"1.1\"\n   xmlns=\"http://www.w3.org/2000/svg\"\n   xmlns:svg=\"http://www.w3.org/2000/svg\">\n  <path\n     fill=\"currentColor\"\n     d=\"m 173.898,439.40356 -166.4,-166.4 c -9.997,-9.997 -9.997,-26.206 0,-36.204 l 36.203,-36.204 c 9.997,-9.998 26.207,-9.998 36.204,0 L 192,312.68956 432.095,72.595562 c 9.997,-9.997 26.207,-9.997 36.204,0 l 36.203,36.203998 c 9.997,9.997 9.997,26.206 0,36.204 l -294.4,294.401 c -9.998,9.997 -26.207,9.997 -36.204,-10e-4 z\" />\n</svg>\n";
-var InfoSvg = "<svg\n  viewBox=\"3.5 3.5 9 9\"\n  version=\"1.1\"\n  xmlns=\"http://www.w3.org/2000/svg\">\n  <path\n    fill=\"currentColor\" d=\"M6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path>\n</svg>";
-var OFFSET_TOP = -7;
-var OFFSET_RIGHT = -7;
-var LOW_PRIORITY = 500;
-var emptyConfig = {
-	resolver: { resolveRule: function() {
-		return null;
-	} },
-	config: {}
-};
-var stateToIcon = {
-	error: ErrorSvg,
-	warning: WarningSvg,
-	success: SuccessSvg,
-	info: InfoSvg,
-	inactive: SuccessSvg
-};
-function Linting(bpmnjs, canvas, config, elementRegistry, eventBus, overlays, translate) {
-	this._bpmnjs = bpmnjs;
-	this._canvas = canvas;
-	this._elementRegistry = elementRegistry;
-	this._eventBus = eventBus;
-	this._overlays = overlays;
-	this._translate = translate;
-	this._issues = {};
-	this._active = config && config.active || false;
-	this._linterConfig = emptyConfig;
-	this._overlayIds = {};
-	var self = this;
-	eventBus.on([
-		"import.done",
-		"elements.changed",
-		"linting.configChanged",
-		"linting.toggle"
-	], LOW_PRIORITY, function(e) {
-		self.update();
-	});
-	eventBus.on("linting.toggle", function(event) {
-		if (!event.active) {
-			self._clearIssues();
-			self._updateButton();
-		}
-	});
-	eventBus.on("diagram.clear", function() {
-		self._clearIssues();
-	});
-	var linterConfig = config && config.bpmnlint;
-	linterConfig && eventBus.once("diagram.init", function() {
-		if (self.getLinterConfig() !== emptyConfig) return;
-		try {
-			self.setLinterConfig(linterConfig);
-		} catch (err) {
-			console.error("[bpmn-js-bpmnlint] Invalid lint rules configured. Please doublecheck your linting.bpmnlint configuration, cf. https://github.com/bpmn-io/bpmn-js-bpmnlint#configure-lint-rules");
-		}
-	});
-	this._init();
-}
-Linting.prototype.setLinterConfig = function(linterConfig) {
-	if (!linterConfig.config || !linterConfig.resolver) throw new Error("Expected linterConfig = { config, resolver }");
-	this._linterConfig = linterConfig;
-	this._eventBus.fire("linting.configChanged");
-};
-Linting.prototype.getLinterConfig = function() {
-	return this._linterConfig;
-};
-Linting.prototype._init = function() {
-	this._createButton();
-	this._updateButton();
-};
-Linting.prototype.isActive = function() {
-	return this._active;
-};
-Linting.prototype._formatIssues = function(issues) {
-	let self = this;
-	let reports = reduce(issues, function(reports, ruleReports, rule) {
-		return reports.concat(ruleReports.map(function(report) {
-			report.rule = rule;
-			return report;
-		}));
-	}, []);
-	const participantBos = self._elementRegistry.filter((ele) => {
-		return is$1(ele, "bpmn:Participant");
-	}).map((ele) => {
-		return ele.businessObject;
-	});
-	reports = map(reports, function(report) {
-		if (!self._elementRegistry.get(report.id)) {
-			report.isChildIssue = true;
-			report.actualElementId = report.id;
-			const referringParticipant = participantBos.filter((ele) => {
-				return ele.processRef && ele.processRef.id && ele.processRef.id === report.id;
-			});
-			if (referringParticipant.length) report.id = referringParticipant[0].id;
-			else report.id = self._canvas.getRootElement().id;
-		}
-		return report;
-	});
-	reports = groupBy(reports, function(report) {
-		return report.id;
-	});
-	return reports;
-};
-Linting.prototype.toggle = function(newActive) {
-	newActive = typeof newActive === "undefined" ? !this.isActive() : newActive;
-	this._setActive(newActive);
-	return newActive;
-};
-Linting.prototype._setActive = function(active) {
-	if (this._active === active) return;
-	this._active = active;
-	this._eventBus.fire("linting.toggle", { active });
-};
-Linting.prototype.update = function() {
-	var self = this;
-	if (!this._bpmnjs.getDefinitions()) return;
-	var lintStart = this._lintStart = Math.random();
-	this.lint().then(function(newIssues) {
-		if (self._lintStart !== lintStart) return;
-		newIssues = self._formatIssues(newIssues);
-		var remove = {}, update = {}, add = {};
-		for (var id1 in self._issues) if (!newIssues[id1]) remove[id1] = self._issues[id1];
-		for (var id2 in newIssues) if (!self._issues[id2]) add[id2] = newIssues[id2];
-		else if (newIssues[id2] !== self._issues[id2]) update[id2] = newIssues[id2];
-		remove = assign(remove, update);
-		add = assign(add, update);
-		self._clearOverlays();
-		if (self.isActive()) self._createIssues(add);
-		self._issues = newIssues;
-		self._updateButton();
-		self._fireComplete(newIssues);
-	});
-};
-Linting.prototype._fireComplete = function(issues) {
-	this._eventBus.fire("linting.completed", { issues });
-};
-Linting.prototype._createIssues = function(issues) {
-	for (var id in issues) this._createElementIssues(id, issues[id]);
-};
-Linting.prototype._createElementIssues = function(elementId, elementIssues) {
-	var element = this._elementRegistry.get(elementId);
-	if (!element) return;
-	var plane = this._elementRegistry.get(elementId + "_plane");
-	if (plane) this._createElementIssues(plane.id, elementIssues);
-	var menuPosition;
-	var position;
-	var isRoot = !element.parent;
-	if (isRoot && is$1(element, "bpmn:Process")) {
-		menuPosition = "bottom-right";
-		position = {
-			top: 20,
-			left: 150
-		};
-	} else if (isRoot && is$1(element, "bpmn:SubProcess")) {
-		menuPosition = "bottom-right";
-		position = {
-			top: 50,
-			left: 150
-		};
-	} else {
-		menuPosition = "top-right";
-		position = {
-			top: OFFSET_TOP,
-			left: OFFSET_RIGHT
-		};
-	}
-	var issuesByType = groupBy(elementIssues, function(elementIssue) {
-		return (elementIssue.isChildIssue ? "child" : "") + elementIssue.category;
-	});
-	var errors = issuesByType.error, warnings = issuesByType.warn, infos = issuesByType.info, childErrors = issuesByType.childerror, childWarnings = issuesByType.childwarn, childInfos = issuesByType.childinfo;
-	if (!infos && !errors && !warnings && !childErrors && !childWarnings && !childInfos) return;
-	var $html = domify("<div class=\"bjsl-overlay bjsl-issues-" + menuPosition + "\"></div>");
-	var $icon = errors || childErrors ? domify("<div class=\"bjsl-icon bjsl-icon-error\">" + ErrorSvg + "</div>") : warnings || childWarnings ? domify("<div class=\"bjsl-icon bjsl-icon-warning\">" + WarningSvg + "</div>") : domify("<div class=\"bjsl-icon bjsl-icon-info\">" + InfoSvg + "</div>");
-	var $dropdown = domify("<div class=\"bjsl-dropdown\"></div>");
-	var $dropdownContent = domify("<div class=\"bjsl-dropdown-content\"></div>");
-	var $issueContainer = domify("<div class=\"bjsl-issues\"></div>");
-	var $issues = domify("<div class=\"bjsl-current-element-issues\"></div>");
-	var $issueList = domify("<ul></ul>");
-	$html.appendChild($icon);
-	$html.appendChild($dropdown);
-	$dropdown.appendChild($dropdownContent);
-	$dropdownContent.appendChild($issueContainer);
-	$issueContainer.appendChild($issues);
-	$issues.appendChild($issueList);
-	if (errors) this._addErrors($issueList, errors);
-	if (warnings) this._addWarnings($issueList, warnings);
-	if (infos) this._addInfos($issueList, infos);
-	if (childErrors || childWarnings || childInfos) {
-		var $childIssues = domify("<div class=\"bjsl-child-issues\"></div>");
-		var $childIssueList = domify("<ul></ul>");
-		var childLabel = this._translate("Issues for child elements");
-		var $childIssueLabel = domify("<a class=\"bjsl-issue-heading\">" + childLabel + ":</a>");
-		if (childErrors) this._addErrors($childIssueList, childErrors);
-		if (childWarnings) this._addWarnings($childIssueList, childWarnings);
-		if (childInfos) this._addInfos($childIssueList, childInfos);
-		if (errors || warnings) {
-			var $childIssuesSeparator = domify("<hr/>");
-			$childIssues.appendChild($childIssuesSeparator);
-		}
-		$childIssues.appendChild($childIssueLabel);
-		$childIssues.appendChild($childIssueList);
-		$issueContainer.appendChild($childIssues);
-	}
-	this._overlayIds[elementId] = this._overlays.add(element, "linting", {
-		position,
-		html: $html,
-		scale: { min: .7 }
-	});
-};
-Linting.prototype._addErrors = function($ul, errors) {
-	var self = this;
-	errors.forEach(function(error) {
-		self._addEntry($ul, "error", error);
-	});
-};
-Linting.prototype._addWarnings = function($ul, warnings) {
-	var self = this;
-	warnings.forEach(function(error) {
-		self._addEntry($ul, "warning", error);
-	});
-};
-Linting.prototype._addInfos = function($ul, infos) {
-	var self = this;
-	infos.forEach(function(error) {
-		self._addEntry($ul, "info", error);
-	});
-};
-Linting.prototype._addEntry = function($ul, state, entry) {
-	var rule = entry.rule, documentationUrl = entry.meta?.documentation.url, message = this._translate(entry.message), actualElementId = entry.actualElementId;
-	var icon = stateToIcon[state];
-	var $entry = domify(`
-    <li class="${state}" data-rule="${escapeHTML(rule)}">
-      <span class="icon">${icon}</span>
-      <span class="message">${escapeHTML(message)}</span>
-      <span class="rule">(${documentationUrl ? `<a href="${escapeHTML(documentationUrl)}" target="_blank">${escapeHTML(rule)}</a>` : escapeHTML(rule)})</span>
-      ${actualElementId ? `<span class="bjsl-id-hint"><code>${escapeHTML(actualElementId)}</code></span>` : ""}
-    </li>
-  `);
-	$ul.appendChild($entry);
-};
-Linting.prototype._clearOverlays = function() {
-	this._overlays.remove({ type: "linting" });
-	this._overlayIds = {};
-};
-Linting.prototype._clearIssues = function() {
-	this._issues = {};
-	this._clearOverlays();
-};
-Linting.prototype._setButtonState = function(issues) {
-	var { errors, warnings, infos } = issues;
-	var button = this._button;
-	var state = errors && "error" || warnings && "warning" || "success";
-	var html = `
-    <span class="icon">${stateToIcon[state]}</span>
-    <span>${this._translate(errors || warnings ? "{errors} Errors, {warnings} Warnings" : "No Issues", {
-		errors: String(errors),
-		warnings: String(warnings),
-		infos: String(infos)
-	})}</span>`;
-	state = this.isActive() ? state : "inactive";
-	[
-		"error",
-		"inactive",
-		"success",
-		"warning"
-	].forEach(function(s) {
-		if (state === s) button.classList.add("bjsl-button-" + s);
-		else button.classList.remove("bjsl-button-" + s);
-	});
-	button.innerHTML = html;
-};
-Linting.prototype._updateButton = function() {
-	var errors = 0, warnings = 0, infos = 0;
-	for (var id in this._issues) this._issues[id].forEach(function(issue) {
-		if (issue.category === "error") errors++;
-		else if (issue.category === "warn") warnings++;
-		else if (issue.category === "info") infos++;
-	});
-	this._setButtonState({
-		errors,
-		warnings,
-		infos
-	});
-};
-Linting.prototype._createButton = function() {
-	var self = this;
-	this._button = domify("<button class=\"bjsl-button bjsl-button-inactive\" title=\"" + this._translate("Toggle linting overlays") + "\"></button>");
-	this._button.addEventListener("click", function() {
-		self.toggle();
-	});
-	this._canvas.getContainer().appendChild(this._button);
-};
-Linting.prototype.lint = function() {
-	var definitions = this._bpmnjs.getDefinitions();
-	return new import_lib.Linter(this._linterConfig).lint(definitions);
-};
-Linting.$inject = [
-	"bpmnjs",
-	"canvas",
-	"config.linting",
-	"elementRegistry",
-	"eventBus",
-	"overlays",
-	"translate"
-];
-var index = {
-	__init__: ["linting", "lintingEditorActions"],
-	linting: ["type", Linting],
-	lintingEditorActions: ["type", EditorActions]
-};
 // ../../node_modules/@miragon/bpmnlint-plugin-rules/dist/chunk-4LLSBYUS.js
 var __defProp = Object.defineProperty;
 var __export = (target, all) => {
@@ -1362,7 +740,8 @@ function isExpression(value) {
 function isGeneratedId(id) {
 	return /^[A-Za-z][A-Za-z0-9]*_(?=[a-z0-9]{6,8}$)(?=[a-z0-9]*[a-z])(?=[a-z0-9]*[0-9])[a-z0-9]+$/.test(id) || /^[A-Za-z][A-Za-z0-9]*_[0-9]+$/.test(id);
 }
-__export({}, {
+var naming_exports = {};
+__export(naming_exports, {
 	DEFAULT_PREFIXES: () => DEFAULT_PREFIXES,
 	ElementIdConvention: () => ElementIdConvention,
 	ValueNamingScheme: () => ValueNamingScheme,
@@ -10624,6 +10003,628 @@ var createBundledResolver = BundledResolver.create;
 BundledResolver.entries;
 var getDefaultLintConfig = EngineConfig.defaultLintConfig;
 EngineConfig.rulesForEngine;
+// ../../node_modules/@bpmn-io/lint-core/lib/traverse.js
+var require_traverse = __commonJSMin(((exports, module) => {
+	function isSimpleType(type) {
+		return [
+			"String",
+			"Boolean",
+			"Integer",
+			"Real"
+		].includes(type);
+	}
+	module.exports = function traverse(element, options) {
+		const enter = options.enter;
+		const leave = options.leave;
+		const enterSubTree = enter && enter(element);
+		const descriptor = element.$descriptor;
+		if (enterSubTree !== false && !descriptor.isGeneric) descriptor.properties.filter((p) => {
+			return !p.isAttr && !p.isReference && !isSimpleType(p.type);
+		}).forEach((p) => {
+			if (p.name in element) {
+				const propertyValue = element[p.name];
+				if (p.isMany) propertyValue.forEach((child) => {
+					traverse(child, options);
+				});
+				else traverse(propertyValue, options);
+			}
+		});
+		leave && leave(element);
+	};
+}));
+// ../../node_modules/@bpmn-io/lint-core/lib/test-rule.js
+var require_test_rule = __commonJSMin(((exports, module) => {
+	var traverse = require_traverse();
+	var { isArray, isObject, isFunction } = (init_dist$2(), __toCommonJS(dist_exports$2));
+	var Reporter = class {
+		constructor({ moddleRoot, rule }) {
+			this.rule = rule;
+			this.moddleRoot = moddleRoot;
+			this.messages = [];
+			this.report = this.report.bind(this);
+		}
+		report(id, message, path) {
+			let report = {
+				id,
+				message
+			};
+			if (path && isArray(path)) report = {
+				...report,
+				path
+			};
+			if (path && isObject(path)) report = {
+				...report,
+				...path
+			};
+			this.messages.push(report);
+		}
+	};
+	module.exports = function testRule({ moddleRoot, rule }) {
+		const reporter = new Reporter({
+			rule,
+			moddleRoot
+		});
+		const check = rule.check || {};
+		const leave = "leave" in check ? check.leave : void 0;
+		const enter = "enter" in check ? check.enter : isFunction(check) ? check : void 0;
+		if (!enter && !leave) throw new Error("no check implemented");
+		traverse(moddleRoot, {
+			enter: enter ? (node) => enter(node, reporter) : void 0,
+			leave: leave ? (node) => leave(node, reporter) : void 0
+		});
+		return reporter.messages;
+	};
+}));
+// ../../node_modules/@bpmn-io/lint-core/lib/product.js
+var require_product$1 = __commonJSMin(((exports, module) => {
+	function normalizeProduct(product) {
+		const { name, pluginPrefix = name + "-plugin-" } = product || {};
+		if (typeof name !== "string" || !name) throw new Error("must provide <product.name>");
+		return {
+			name,
+			pluginPrefix
+		};
+	}
+	function escapeRegExp(string) {
+		return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	}
+	module.exports = {
+		normalizeProduct,
+		escapeRegExp
+	};
+}));
+// ../../node_modules/@bpmn-io/lint-core/lib/linter.js
+var require_linter$1 = __commonJSMin(((exports, module) => {
+	var testRule = require_test_rule();
+	var { normalizeProduct, escapeRegExp } = require_product$1();
+	var noopTransformRule = (rule, options) => {
+		return rule;
+	};
+	var categoryMap = {
+		0: "off",
+		1: "warn",
+		2: "error",
+		3: "info"
+	};
+	var ruleErrorCategory = "rule-error";
+	function createLinter(product) {
+		const { name: productName, pluginPrefix } = normalizeProduct(product);
+		const configNameRegExp = new RegExp("^(?:(?:plugin:(?:(@[^/]+)\\/)?([^@]{1}[^/]*)\\/)|" + escapeRegExp(productName) + ":)([^/]+)$");
+		function Linter(options) {
+			const { config = {}, resolver, transformRule = noopTransformRule } = options || {};
+			if (typeof resolver === "undefined") throw new Error("must provide <options.resolver>");
+			this.config = config;
+			this.resolver = resolver;
+			this.transformRule = transformRule;
+			this.cachedRules = {};
+			this.cachedConfigs = {};
+		}
+		Linter.prototype.applyRule = function applyRule(moddleRoot, ruleDefinition) {
+			const { config, rule, category, name } = ruleDefinition;
+			try {
+				return testRule({
+					moddleRoot,
+					rule,
+					config
+				}).map(function(report) {
+					return {
+						...report,
+						meta: rule.meta,
+						category
+					};
+				});
+			} catch (e) {
+				console.error("rule <" + name + "> failed with error: ", e);
+				return [{
+					message: e.message,
+					category: ruleErrorCategory
+				}];
+			}
+		};
+		Linter.prototype.resolveRule = function(name, config) {
+			const { pkg, ruleName } = this.parseRuleName(name);
+			const id = `${pkg}-${ruleName}`;
+			const rule = this.cachedRules[id];
+			if (rule) return Promise.resolve(rule);
+			return Promise.resolve(this.resolver.resolveRule(pkg, ruleName)).then((ruleFactory) => {
+				if (!ruleFactory) throw new Error(`unknown rule <${name}>`);
+				return this.cachedRules[id] = this.transformRule(ruleFactory(config), {
+					pkg,
+					ruleName
+				});
+			});
+		};
+		Linter.prototype.resolveConfig = function(name) {
+			const { pkg, configName } = this.parseConfigName(name);
+			const id = `${pkg}-${configName}`;
+			const config = this.cachedConfigs[id];
+			if (config) return Promise.resolve(config);
+			return Promise.resolve(this.resolver.resolveConfig(pkg, configName)).then((config) => {
+				if (!config) throw new Error(`unknown config <${name}>`);
+				return this.cachedConfigs[id] = this.normalizeConfig(config, pkg);
+			});
+		};
+		Linter.prototype.resolveRules = function(config) {
+			return this.resolveConfiguredRules(config).then((rulesConfig) => {
+				const loaders = Object.entries(rulesConfig).map(([name, value]) => {
+					const { category, config } = this.parseRuleValue(value);
+					return {
+						name,
+						category,
+						config
+					};
+				}).filter((definition) => definition.category !== "off").map((definition) => {
+					const { name, config } = definition;
+					return this.resolveRule(name, config).then(function(rule) {
+						return {
+							...definition,
+							rule
+						};
+					});
+				});
+				return Promise.all(loaders);
+			});
+		};
+		Linter.prototype.resolveConfiguredRules = function(config) {
+			let parents = config.extends;
+			if (typeof parents === "string") parents = [parents];
+			if (typeof parents === "undefined") parents = [];
+			return Promise.all(parents.map((configName) => {
+				return this.resolveConfig(configName).then((config) => {
+					return this.resolveConfiguredRules(config);
+				});
+			})).then((inheritedRules) => {
+				const overrideRules = this.normalizeConfig(config, productName).rules;
+				return [...inheritedRules, overrideRules].reduce((rules, currentRules) => {
+					return {
+						...rules,
+						...currentRules
+					};
+				}, {});
+			});
+		};
+		Linter.prototype.lint = function(moddleRoot, config) {
+			config = config || this.config;
+			return this.resolveRules(config).then((ruleDefinitions) => {
+				const allReports = {};
+				ruleDefinitions.forEach((ruleDefinition) => {
+					const { name } = ruleDefinition;
+					const reports = this.applyRule(moddleRoot, ruleDefinition);
+					if (reports.length) allReports[name] = reports;
+				});
+				return allReports;
+			});
+		};
+		Linter.prototype.parseRuleValue = function(value) {
+			let category;
+			let config;
+			if (Array.isArray(value)) {
+				category = value[0];
+				config = value[1];
+			} else {
+				category = value;
+				config = {};
+			}
+			if (typeof category === "string") category = category.toLowerCase();
+			category = categoryMap[category] || category;
+			return {
+				config,
+				category
+			};
+		};
+		Linter.prototype.parseRuleName = function(name, localPackage = productName) {
+			const match = /^(?:(?:(@[^/]+)\/)?([^@]{1}[^/]*)\/)?([^/]+)$/.exec(name);
+			if (!match) throw new Error(`unparseable rule name <${name}>`);
+			const [_, ns, packageName, ruleName] = match;
+			if (!packageName) return {
+				pkg: localPackage,
+				ruleName
+			};
+			return {
+				pkg: `${ns ? ns + "/" : ""}${prefixPackage(packageName)}`,
+				ruleName
+			};
+		};
+		Linter.prototype.parseConfigName = function(name) {
+			const match = configNameRegExp.exec(name);
+			if (!match) throw new Error(`unparseable config name <${name}>`);
+			const [_, ns, packageName, configName] = match;
+			if (!packageName) return {
+				pkg: productName,
+				configName
+			};
+			return {
+				pkg: `${ns ? ns + "/" : ""}${prefixPackage(packageName)}`,
+				configName
+			};
+		};
+		Linter.prototype.getSimplePackageName = function(name) {
+			const match = /^(?:(@[^/]+)\/)?([^/]+)$/.exec(name);
+			if (!match) throw new Error(`unparseable package name <${name}>`);
+			const [_, ns, packageName] = match;
+			return `${ns ? ns + "/" : ""}${unprefixPackage(packageName)}`;
+		};
+		Linter.prototype.normalizeConfig = function(config, localPackage) {
+			const rules = config.rules || {};
+			const validatedRules = Object.keys(rules).reduce((normalizedRules, name) => {
+				const value = rules[name];
+				const { pkg, ruleName } = this.parseRuleName(name, localPackage);
+				const normalizedName = pkg === productName ? ruleName : `${this.getSimplePackageName(pkg)}/${ruleName}`;
+				normalizedRules[normalizedName] = value;
+				return normalizedRules;
+			}, {});
+			return {
+				...config,
+				rules: validatedRules
+			};
+		};
+		function prefixPackage(pkg) {
+			if (pkg === productName) return productName;
+			if (pkg.startsWith(pluginPrefix)) return pkg;
+			return `${pluginPrefix}${pkg}`;
+		}
+		function unprefixPackage(pkg) {
+			if (pkg.startsWith(pluginPrefix)) return pkg.substring(pluginPrefix.length);
+			return pkg;
+		}
+		return Linter;
+	}
+	module.exports = { createLinter };
+}));
+// ../../node_modules/bpmnlint/lib/product.js
+var require_product = __commonJSMin(((exports, module) => {
+	module.exports = { name: "bpmnlint" };
+}));
+// ../../node_modules/bpmnlint/lib/linter.js
+var require_linter = __commonJSMin(((exports, module) => {
+	var { createLinter } = require_linter$1();
+	module.exports = createLinter(require_product());
+}));
+// ../../node_modules/bpmn-js-bpmnlint/dist/index.esm.js
+var import_lib = __commonJSMin(((exports, module) => {
+	module.exports = { Linter: require_linter() };
+}))();
+init_dist$2();
+init_ModelUtil();
+function EditorActions(injector, linting) {
+	var editorActions = injector.get("editorActions", false);
+	editorActions && editorActions.register({ toggleLinting: function() {
+		linting.toggle();
+	} });
+}
+EditorActions.$inject = ["injector", "linting"];
+var ErrorSvg = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<svg\n   version=\"1.1\"\n   viewBox=\"0 0 512 512\"\n   xmlns=\"http://www.w3.org/2000/svg\"\n   xmlns:svg=\"http://www.w3.org/2000/svg\">\n  <path\n     d=\"M 339.07183,256.00001 463.66713,131.4047 c 15.28961,-15.2896 15.28961,-40.079175 0,-55.381227 l -27.6906,-27.690611 c -15.28961,-15.289602 -40.07917,-15.289602 -55.38123,0 L 256,172.92818 131.4047,48.332862 c -15.2896,-15.289602 -40.079177,-15.289602 -55.381228,0 L 48.332861,76.023473 c -15.2896,15.2896 -15.2896,40.079177 0,55.381227 L 172.92815,256.00001 48.332861,380.59531 c -15.2896,15.2896 -15.2896,40.07917 0,55.38123 l 27.690611,27.69061 c 15.289601,15.28959 40.091628,15.28959 55.381228,0 L 256,339.07184 380.5953,463.66715 c 15.2896,15.28959 40.09162,15.28959 55.38123,0 l 27.6906,-27.69061 c 15.28961,-15.2896 15.28961,-40.07918 0,-55.38123 z\"\n     fill=\"currentColor\" />\n</svg>\n";
+var WarningSvg = "<svg version=\"1.1\" viewBox=\"0 0 512 512\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path d=\"m256 323.95c-45.518 0-82.419 34.576-82.419 77.229 0 42.652 36.9 77.229 82.419 77.229 45.518 0 82.419-34.577 82.419-77.23 0-42.652-36.9-77.229-82.419-77.229zm-80.561-271.8 11.61 204.35c.544 9.334 8.78 16.64 18.755 16.64h100.39c9.975 0 18.211-7.306 18.754-16.64l11.611-204.35c.587-10.082-7.98-18.56-18.754-18.56h-123.62c-10.775 0-19.34 8.478-18.753 18.56z\" fill=\"currentColor\"/>\n</svg>\n";
+var SuccessSvg = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<svg\n   viewBox=\"0 0 512 512\"\n   version=\"1.1\"\n   xmlns=\"http://www.w3.org/2000/svg\"\n   xmlns:svg=\"http://www.w3.org/2000/svg\">\n  <path\n     fill=\"currentColor\"\n     d=\"m 173.898,439.40356 -166.4,-166.4 c -9.997,-9.997 -9.997,-26.206 0,-36.204 l 36.203,-36.204 c 9.997,-9.998 26.207,-9.998 36.204,0 L 192,312.68956 432.095,72.595562 c 9.997,-9.997 26.207,-9.997 36.204,0 l 36.203,36.203998 c 9.997,9.997 9.997,26.206 0,36.204 l -294.4,294.401 c -9.998,9.997 -26.207,9.997 -36.204,-10e-4 z\" />\n</svg>\n";
+var InfoSvg = "<svg\n  viewBox=\"3.5 3.5 9 9\"\n  version=\"1.1\"\n  xmlns=\"http://www.w3.org/2000/svg\">\n  <path\n    fill=\"currentColor\" d=\"M6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path>\n</svg>";
+var OFFSET_TOP = -7;
+var OFFSET_RIGHT = -7;
+var LOW_PRIORITY = 500;
+var emptyConfig = {
+	resolver: { resolveRule: function() {
+		return null;
+	} },
+	config: {}
+};
+var stateToIcon = {
+	error: ErrorSvg,
+	warning: WarningSvg,
+	success: SuccessSvg,
+	info: InfoSvg,
+	inactive: SuccessSvg
+};
+function Linting(bpmnjs, canvas, config, elementRegistry, eventBus, overlays, translate) {
+	this._bpmnjs = bpmnjs;
+	this._canvas = canvas;
+	this._elementRegistry = elementRegistry;
+	this._eventBus = eventBus;
+	this._overlays = overlays;
+	this._translate = translate;
+	this._issues = {};
+	this._active = config && config.active || false;
+	this._linterConfig = emptyConfig;
+	this._overlayIds = {};
+	var self = this;
+	eventBus.on([
+		"import.done",
+		"elements.changed",
+		"linting.configChanged",
+		"linting.toggle"
+	], LOW_PRIORITY, function(e) {
+		self.update();
+	});
+	eventBus.on("linting.toggle", function(event) {
+		if (!event.active) {
+			self._clearIssues();
+			self._updateButton();
+		}
+	});
+	eventBus.on("diagram.clear", function() {
+		self._clearIssues();
+	});
+	var linterConfig = config && config.bpmnlint;
+	linterConfig && eventBus.once("diagram.init", function() {
+		if (self.getLinterConfig() !== emptyConfig) return;
+		try {
+			self.setLinterConfig(linterConfig);
+		} catch (err) {
+			console.error("[bpmn-js-bpmnlint] Invalid lint rules configured. Please doublecheck your linting.bpmnlint configuration, cf. https://github.com/bpmn-io/bpmn-js-bpmnlint#configure-lint-rules");
+		}
+	});
+	this._init();
+}
+Linting.prototype.setLinterConfig = function(linterConfig) {
+	if (!linterConfig.config || !linterConfig.resolver) throw new Error("Expected linterConfig = { config, resolver }");
+	this._linterConfig = linterConfig;
+	this._eventBus.fire("linting.configChanged");
+};
+Linting.prototype.getLinterConfig = function() {
+	return this._linterConfig;
+};
+Linting.prototype._init = function() {
+	this._createButton();
+	this._updateButton();
+};
+Linting.prototype.isActive = function() {
+	return this._active;
+};
+Linting.prototype._formatIssues = function(issues) {
+	let self = this;
+	let reports = reduce(issues, function(reports, ruleReports, rule) {
+		return reports.concat(ruleReports.map(function(report) {
+			report.rule = rule;
+			return report;
+		}));
+	}, []);
+	const participantBos = self._elementRegistry.filter((ele) => {
+		return is$1(ele, "bpmn:Participant");
+	}).map((ele) => {
+		return ele.businessObject;
+	});
+	reports = map(reports, function(report) {
+		if (!self._elementRegistry.get(report.id)) {
+			report.isChildIssue = true;
+			report.actualElementId = report.id;
+			const referringParticipant = participantBos.filter((ele) => {
+				return ele.processRef && ele.processRef.id && ele.processRef.id === report.id;
+			});
+			if (referringParticipant.length) report.id = referringParticipant[0].id;
+			else report.id = self._canvas.getRootElement().id;
+		}
+		return report;
+	});
+	reports = groupBy(reports, function(report) {
+		return report.id;
+	});
+	return reports;
+};
+Linting.prototype.toggle = function(newActive) {
+	newActive = typeof newActive === "undefined" ? !this.isActive() : newActive;
+	this._setActive(newActive);
+	return newActive;
+};
+Linting.prototype._setActive = function(active) {
+	if (this._active === active) return;
+	this._active = active;
+	this._eventBus.fire("linting.toggle", { active });
+};
+Linting.prototype.update = function() {
+	var self = this;
+	if (!this._bpmnjs.getDefinitions()) return;
+	var lintStart = this._lintStart = Math.random();
+	this.lint().then(function(newIssues) {
+		if (self._lintStart !== lintStart) return;
+		newIssues = self._formatIssues(newIssues);
+		var remove = {}, update = {}, add = {};
+		for (var id1 in self._issues) if (!newIssues[id1]) remove[id1] = self._issues[id1];
+		for (var id2 in newIssues) if (!self._issues[id2]) add[id2] = newIssues[id2];
+		else if (newIssues[id2] !== self._issues[id2]) update[id2] = newIssues[id2];
+		remove = assign(remove, update);
+		add = assign(add, update);
+		self._clearOverlays();
+		if (self.isActive()) self._createIssues(add);
+		self._issues = newIssues;
+		self._updateButton();
+		self._fireComplete(newIssues);
+	});
+};
+Linting.prototype._fireComplete = function(issues) {
+	this._eventBus.fire("linting.completed", { issues });
+};
+Linting.prototype._createIssues = function(issues) {
+	for (var id in issues) this._createElementIssues(id, issues[id]);
+};
+Linting.prototype._createElementIssues = function(elementId, elementIssues) {
+	var element = this._elementRegistry.get(elementId);
+	if (!element) return;
+	var plane = this._elementRegistry.get(elementId + "_plane");
+	if (plane) this._createElementIssues(plane.id, elementIssues);
+	var menuPosition;
+	var position;
+	var isRoot = !element.parent;
+	if (isRoot && is$1(element, "bpmn:Process")) {
+		menuPosition = "bottom-right";
+		position = {
+			top: 20,
+			left: 150
+		};
+	} else if (isRoot && is$1(element, "bpmn:SubProcess")) {
+		menuPosition = "bottom-right";
+		position = {
+			top: 50,
+			left: 150
+		};
+	} else {
+		menuPosition = "top-right";
+		position = {
+			top: OFFSET_TOP,
+			left: OFFSET_RIGHT
+		};
+	}
+	var issuesByType = groupBy(elementIssues, function(elementIssue) {
+		return (elementIssue.isChildIssue ? "child" : "") + elementIssue.category;
+	});
+	var errors = issuesByType.error, warnings = issuesByType.warn, infos = issuesByType.info, childErrors = issuesByType.childerror, childWarnings = issuesByType.childwarn, childInfos = issuesByType.childinfo;
+	if (!infos && !errors && !warnings && !childErrors && !childWarnings && !childInfos) return;
+	var $html = domify("<div class=\"bjsl-overlay bjsl-issues-" + menuPosition + "\"></div>");
+	var $icon = errors || childErrors ? domify("<div class=\"bjsl-icon bjsl-icon-error\">" + ErrorSvg + "</div>") : warnings || childWarnings ? domify("<div class=\"bjsl-icon bjsl-icon-warning\">" + WarningSvg + "</div>") : domify("<div class=\"bjsl-icon bjsl-icon-info\">" + InfoSvg + "</div>");
+	var $dropdown = domify("<div class=\"bjsl-dropdown\"></div>");
+	var $dropdownContent = domify("<div class=\"bjsl-dropdown-content\"></div>");
+	var $issueContainer = domify("<div class=\"bjsl-issues\"></div>");
+	var $issues = domify("<div class=\"bjsl-current-element-issues\"></div>");
+	var $issueList = domify("<ul></ul>");
+	$html.appendChild($icon);
+	$html.appendChild($dropdown);
+	$dropdown.appendChild($dropdownContent);
+	$dropdownContent.appendChild($issueContainer);
+	$issueContainer.appendChild($issues);
+	$issues.appendChild($issueList);
+	if (errors) this._addErrors($issueList, errors);
+	if (warnings) this._addWarnings($issueList, warnings);
+	if (infos) this._addInfos($issueList, infos);
+	if (childErrors || childWarnings || childInfos) {
+		var $childIssues = domify("<div class=\"bjsl-child-issues\"></div>");
+		var $childIssueList = domify("<ul></ul>");
+		var childLabel = this._translate("Issues for child elements");
+		var $childIssueLabel = domify("<a class=\"bjsl-issue-heading\">" + childLabel + ":</a>");
+		if (childErrors) this._addErrors($childIssueList, childErrors);
+		if (childWarnings) this._addWarnings($childIssueList, childWarnings);
+		if (childInfos) this._addInfos($childIssueList, childInfos);
+		if (errors || warnings) {
+			var $childIssuesSeparator = domify("<hr/>");
+			$childIssues.appendChild($childIssuesSeparator);
+		}
+		$childIssues.appendChild($childIssueLabel);
+		$childIssues.appendChild($childIssueList);
+		$issueContainer.appendChild($childIssues);
+	}
+	this._overlayIds[elementId] = this._overlays.add(element, "linting", {
+		position,
+		html: $html,
+		scale: { min: .7 }
+	});
+};
+Linting.prototype._addErrors = function($ul, errors) {
+	var self = this;
+	errors.forEach(function(error) {
+		self._addEntry($ul, "error", error);
+	});
+};
+Linting.prototype._addWarnings = function($ul, warnings) {
+	var self = this;
+	warnings.forEach(function(error) {
+		self._addEntry($ul, "warning", error);
+	});
+};
+Linting.prototype._addInfos = function($ul, infos) {
+	var self = this;
+	infos.forEach(function(error) {
+		self._addEntry($ul, "info", error);
+	});
+};
+Linting.prototype._addEntry = function($ul, state, entry) {
+	var rule = entry.rule, documentationUrl = entry.meta?.documentation.url, message = this._translate(entry.message), actualElementId = entry.actualElementId;
+	var icon = stateToIcon[state];
+	var $entry = domify(`
+    <li class="${state}" data-rule="${escapeHTML(rule)}">
+      <span class="icon">${icon}</span>
+      <span class="message">${escapeHTML(message)}</span>
+      <span class="rule">(${documentationUrl ? `<a href="${escapeHTML(documentationUrl)}" target="_blank">${escapeHTML(rule)}</a>` : escapeHTML(rule)})</span>
+      ${actualElementId ? `<span class="bjsl-id-hint"><code>${escapeHTML(actualElementId)}</code></span>` : ""}
+    </li>
+  `);
+	$ul.appendChild($entry);
+};
+Linting.prototype._clearOverlays = function() {
+	this._overlays.remove({ type: "linting" });
+	this._overlayIds = {};
+};
+Linting.prototype._clearIssues = function() {
+	this._issues = {};
+	this._clearOverlays();
+};
+Linting.prototype._setButtonState = function(issues) {
+	var { errors, warnings, infos } = issues;
+	var button = this._button;
+	var state = errors && "error" || warnings && "warning" || "success";
+	var html = `
+    <span class="icon">${stateToIcon[state]}</span>
+    <span>${this._translate(errors || warnings ? "{errors} Errors, {warnings} Warnings" : "No Issues", {
+		errors: String(errors),
+		warnings: String(warnings),
+		infos: String(infos)
+	})}</span>`;
+	state = this.isActive() ? state : "inactive";
+	[
+		"error",
+		"inactive",
+		"success",
+		"warning"
+	].forEach(function(s) {
+		if (state === s) button.classList.add("bjsl-button-" + s);
+		else button.classList.remove("bjsl-button-" + s);
+	});
+	button.innerHTML = html;
+};
+Linting.prototype._updateButton = function() {
+	var errors = 0, warnings = 0, infos = 0;
+	for (var id in this._issues) this._issues[id].forEach(function(issue) {
+		if (issue.category === "error") errors++;
+		else if (issue.category === "warn") warnings++;
+		else if (issue.category === "info") infos++;
+	});
+	this._setButtonState({
+		errors,
+		warnings,
+		infos
+	});
+};
+Linting.prototype._createButton = function() {
+	var self = this;
+	this._button = domify("<button class=\"bjsl-button bjsl-button-inactive\" title=\"" + this._translate("Toggle linting overlays") + "\"></button>");
+	this._button.addEventListener("click", function() {
+		self.toggle();
+	});
+	this._canvas.getContainer().appendChild(this._button);
+};
+Linting.prototype.lint = function() {
+	var definitions = this._bpmnjs.getDefinitions();
+	return new import_lib.Linter(this._linterConfig).lint(definitions);
+};
+Linting.$inject = [
+	"bpmnjs",
+	"canvas",
+	"config.linting",
+	"elementRegistry",
+	"eventBus",
+	"overlays",
+	"translate"
+];
+var index = {
+	__init__: ["linting", "lintingEditorActions"],
+	linting: ["type", Linting],
+	lintingEditorActions: ["type", EditorActions]
+};
 // ../../packages/bpmn-modeler/src/bpmnlint/browserResolver.ts
 var NOOP_RULE = () => ({ check: () => void 0 });
 var NOOP_CONFIG = { rules: {} };
@@ -11402,6 +11403,9 @@ function createLintModule(tier, callbacks) {
 		lintCallbacks: ["value", callbacks]
 	};
 }
-export { createLintModule };
+function createElementIdConvention(options) {
+	return new naming_exports.ElementIdConvention(options);
+}
+export { createElementIdConvention, createLintModule };
 
-//# sourceMappingURL=bpmnlint-B7ABP232.js.map
+//# sourceMappingURL=bpmnlint-BymumoxW.js.map
