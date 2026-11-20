@@ -36464,7 +36464,7 @@ var WARDLEY_THEMES = Object.freeze([
   "light"
 ]);
 
-// ../../../../packages/api/dist/chunk-NROWWN6X.js
+// ../../../../packages/api/dist/chunk-IENIHDCI.js
 var MERGE_CONFLICT = "MergeConflictError";
 var MergeConflictError = class extends Error {
   name = MERGE_CONFLICT;
@@ -36513,11 +36513,11 @@ function indexById(items, idOf) {
   }
   return { byId, order, duplicates };
 }
-function sameSequence(a3, b3) {
-  return a3.length === b3.length && a3.every((id, index2) => id === b3[index2]);
+function sameStrings(a3, b3) {
+  return a3.length === b3.length && a3.every((value, index2) => value === b3[index2]);
 }
 function mergedOrder(lastSynced, external, draft, kept) {
-  const externalKeptTheOrder = sameSequence(lastSynced, external);
+  const externalKeptTheOrder = sameStrings(lastSynced, external);
   const leading = externalKeptTheOrder ? draft : external;
   const following = externalKeptTheOrder ? external : draft;
   const order = leading.filter((id) => kept.has(id));
@@ -36536,8 +36536,10 @@ function mergedOrder(lastSynced, external, draft, kept) {
 function mergeItemsById(lastSynced, external, draft, options = {}) {
   const idOf = options.idOf ?? ((item) => item.id);
   const isSameItem = options.isSameItem ?? sameJsonValue;
-  const sides = [lastSynced, external, draft].map((items) => indexById(items, idOf));
-  const [base, outside2, mine] = sides;
+  const base = indexById(lastSynced, idOf);
+  const outside2 = indexById(external, idOf);
+  const mine = indexById(draft, idOf);
+  const sides = [base, outside2, mine];
   const allIds = [.../* @__PURE__ */ new Set([...base.order, ...outside2.order, ...mine.order])];
   const conflictingIds = [];
   const mergedById = /* @__PURE__ */ new Map();
@@ -36559,8 +36561,33 @@ function mergeItemsById(lastSynced, external, draft, options = {}) {
   const order = mergedOrder(base.order, outside2.order, mine.order, new Set(mergedById.keys()));
   return { merged: order.map((id) => mergedById.get(id)) };
 }
+function keyedByOccurrence(items, keyOf2) {
+  const occurrences = /* @__PURE__ */ new Map();
+  return items.map((item) => {
+    const key = keyOf2(item);
+    const occurrence = (occurrences.get(key) ?? 0) + 1;
+    occurrences.set(key, occurrence);
+    return { key: `${key}#${occurrence}`, item };
+  });
+}
+function mergeItemsByOccurrence(lastSynced, external, draft, keyOf2, options = {}) {
+  const isSameItem = options.isSameItem ?? sameJsonValue;
+  const result = mergeItemsById(
+    keyedByOccurrence(lastSynced, keyOf2),
+    keyedByOccurrence(external, keyOf2),
+    keyedByOccurrence(draft, keyOf2),
+    {
+      idOf: (entry) => entry.key,
+      isSameItem: (entry, otherEntry) => isSameItem(entry.item, otherEntry.item)
+    }
+  );
+  if (result.conflictingIds) return { conflictingIds: result.conflictingIds };
+  return { merged: result.merged.map((entry) => entry.item) };
+}
 function mergeRecord(lastSynced, external, draft, options = {}) {
-  const [base, outside2, mine] = [lastSynced, external, draft];
+  const base = lastSynced;
+  const outside2 = external;
+  const mine = draft;
   const lists = new Set(options.keyedLists ?? []);
   const keys2 = /* @__PURE__ */ new Set([...Object.keys(base), ...Object.keys(outside2), ...Object.keys(mine)]);
   const merged = {};
@@ -36579,7 +36606,7 @@ function mergeRecord(lastSynced, external, draft, options = {}) {
   }
   return conflictingIds.length > 0 ? { conflictingIds } : { merged };
 }
-var MODELER_API_VERSION = "1.7.0";
+var MODELER_API_VERSION = "2.0.0";
 
 // ../../packages/renderer/src/collaborative/CollaborativeWardley.ts
 var WARDLEY_NOTATION = "wardley";
@@ -36907,24 +36934,6 @@ function isFiniteNumber(value) {
 }
 
 // ../../packages/renderer/src/collaborative/merge.ts
-function keyedByOccurrence(values2, keyOf2) {
-  const seen = /* @__PURE__ */ new Map();
-  return values2.map((value) => {
-    const base = keyOf2(value);
-    const occurrence = (seen.get(base) ?? 0) + 1;
-    seen.set(base, occurrence);
-    return { key: `${base}#${occurrence}`, value };
-  });
-}
-function mergeKeyed(lists, keyOf2, conflicts) {
-  const [base, external, draft] = lists.map((list) => keyedByOccurrence(list, keyOf2));
-  const result = mergeItemsById(base, external, draft, { idOf: (item) => item.key });
-  if (result.conflictingIds) {
-    conflicts.push(...result.conflictingIds);
-    return [];
-  }
-  return result.merged.map((item) => item.value);
-}
 function withoutPositionalId(edge) {
   const { id: _positional, ...rest } = edge;
   return rest;
@@ -36947,20 +36956,26 @@ var mergeOwmText = (lastSyncedText, externalText, draftText) => {
   conflicts.push(...(config2.conflictingIds ?? []).map((field2) => `config.${field2}`));
   const elements = mergeItemsById(base.elements, external.elements, draft.elements);
   conflicts.push(...elements.conflictingIds ?? []);
-  const edges = mergeKeyed(
-    [base.edges, external.edges, draft.edges].map((list) => list.map(withoutPositionalId)),
-    edgeEnds,
-    conflicts
+  const edges = mergeItemsByOccurrence(
+    base.edges.map(withoutPositionalId),
+    external.edges.map(withoutPositionalId),
+    draft.edges.map(withoutPositionalId),
+    edgeEnds
   );
-  const rawPassthrough = mergeKeyed(
-    [base.rawPassthrough ?? [], external.rawPassthrough ?? [], draft.rawPassthrough ?? []],
-    (line3) => line3,
-    conflicts
+  conflicts.push(...edges.conflictingIds ?? []);
+  const rawPassthrough = mergeItemsByOccurrence(
+    base.rawPassthrough ?? [],
+    external.rawPassthrough ?? [],
+    draft.rawPassthrough ?? [],
+    (line3) => line3
   );
+  conflicts.push(...rawPassthrough.conflictingIds ?? []);
+  const mergedEdges = edges.merged ?? [];
+  const mergedRawPassthrough = rawPassthrough.merged ?? [];
   if (conflicts.length === 0) {
     const ids3 = new Set((elements.merged ?? []).map((element2) => element2.id));
     conflicts.push(
-      ...edges.filter((edge) => !ids3.has(edge.from) || !ids3.has(edge.to)).map(edgeEnds)
+      ...mergedEdges.filter((edge) => !ids3.has(edge.from) || !ids3.has(edge.to)).map(edgeEnds)
     );
   }
   if (conflicts.length > 0) throw new MergeConflictError(conflicts);
@@ -36968,8 +36983,8 @@ var mergeOwmText = (lastSyncedText, externalText, draftText) => {
     schemaVersion: draft.schemaVersion,
     config: config2.merged,
     elements: elements.merged ?? [],
-    edges: numbered(edges),
-    ...rawPassthrough.length > 0 ? { rawPassthrough } : {}
+    edges: numbered(mergedEdges),
+    ...mergedRawPassthrough.length > 0 ? { rawPassthrough: mergedRawPassthrough } : {}
   };
   return patchDSL(draftText, merged, { previous: draft });
 };
