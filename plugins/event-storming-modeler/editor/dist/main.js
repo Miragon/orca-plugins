@@ -31182,7 +31182,7 @@ var Modeler = class extends NavigatedViewer {
   }
 };
 
-// ../../../../packages/api/dist/chunk-NROWWN6X.js
+// ../../../../packages/api/dist/chunk-IENIHDCI.js
 var MERGE_CONFLICT = "MergeConflictError";
 var MergeConflictError = class extends Error {
   name = MERGE_CONFLICT;
@@ -31231,11 +31231,11 @@ function indexById(items, idOf) {
   }
   return { byId, order, duplicates };
 }
-function sameSequence(a3, b3) {
-  return a3.length === b3.length && a3.every((id, index2) => id === b3[index2]);
+function sameStrings(a3, b3) {
+  return a3.length === b3.length && a3.every((value, index2) => value === b3[index2]);
 }
 function mergedOrder(lastSynced, external, draft, kept) {
-  const externalKeptTheOrder = sameSequence(lastSynced, external);
+  const externalKeptTheOrder = sameStrings(lastSynced, external);
   const leading = externalKeptTheOrder ? draft : external;
   const following = externalKeptTheOrder ? external : draft;
   const order = leading.filter((id) => kept.has(id));
@@ -31254,8 +31254,10 @@ function mergedOrder(lastSynced, external, draft, kept) {
 function mergeItemsById(lastSynced, external, draft, options = {}) {
   const idOf = options.idOf ?? ((item) => item.id);
   const isSameItem = options.isSameItem ?? sameJsonValue;
-  const sides = [lastSynced, external, draft].map((items) => indexById(items, idOf));
-  const [base, outside2, mine] = sides;
+  const base = indexById(lastSynced, idOf);
+  const outside2 = indexById(external, idOf);
+  const mine = indexById(draft, idOf);
+  const sides = [base, outside2, mine];
   const allIds = [.../* @__PURE__ */ new Set([...base.order, ...outside2.order, ...mine.order])];
   const conflictingIds = [];
   const mergedById = /* @__PURE__ */ new Map();
@@ -31277,7 +31279,30 @@ function mergeItemsById(lastSynced, external, draft, options = {}) {
   const order = mergedOrder(base.order, outside2.order, mine.order, new Set(mergedById.keys()));
   return { merged: order.map((id) => mergedById.get(id)) };
 }
-var MODELER_API_VERSION = "1.7.0";
+function keyedByOccurrence(items, keyOf) {
+  const occurrences = /* @__PURE__ */ new Map();
+  return items.map((item) => {
+    const key = keyOf(item);
+    const occurrence = (occurrences.get(key) ?? 0) + 1;
+    occurrences.set(key, occurrence);
+    return { key: `${key}#${occurrence}`, item };
+  });
+}
+function mergeItemsByOccurrence(lastSynced, external, draft, keyOf, options = {}) {
+  const isSameItem = options.isSameItem ?? sameJsonValue;
+  const result = mergeItemsById(
+    keyedByOccurrence(lastSynced, keyOf),
+    keyedByOccurrence(external, keyOf),
+    keyedByOccurrence(draft, keyOf),
+    {
+      idOf: (entry2) => entry2.key,
+      isSameItem: (entry2, otherEntry) => isSameItem(entry2.item, otherEntry.item)
+    }
+  );
+  if (result.conflictingIds) return { conflictingIds: result.conflictingIds };
+  return { merged: result.merged.map((entry2) => entry2.item) };
+}
+var MODELER_API_VERSION = "2.0.0";
 
 // ../../packages/renderer/src/collaborative/CollaborativeEventStorming.ts
 var EVENT_STORMING_NOTATION = "event-storming";
@@ -31508,15 +31533,6 @@ function isFiniteNumber(value) {
 }
 
 // ../../packages/renderer/src/collaborative/merge.ts
-function keyedByOccurrence(values2, keyOf) {
-  const seen = /* @__PURE__ */ new Map();
-  return values2.map((value) => {
-    const base = keyOf(value);
-    const occurrence = (seen.get(base) ?? 0) + 1;
-    seen.set(base, occurrence);
-    return { key: `${base}#${occurrence}`, value };
-  });
-}
 var arrowEnds = (edge) => `${edge.from}->${edge.to}`;
 function withoutPositionalId(edge) {
   return edge.label === void 0 ? { from: edge.from, to: edge.to } : { from: edge.from, to: edge.to, label: edge.label };
@@ -31529,15 +31545,6 @@ function mergeConfig(base, external, draft, conflicts) {
     else if (result.merged !== void 0) merged[field] = result.merged;
   }
   return merged;
-}
-function mergeKeyed(lists, keyOf, conflicts) {
-  const [base, external, draft] = lists.map((list) => keyedByOccurrence(list, keyOf));
-  const result = mergeItemsById(base, external, draft, { idOf: (item) => item.key });
-  if (result.conflictingIds) {
-    conflicts.push(...result.conflictingIds);
-    return [];
-  }
-  return result.merged.map((item) => item.value);
 }
 function danglingReferences(elements, edges) {
   const ids3 = new Set(elements.map((element2) => element2.id));
@@ -31553,16 +31560,26 @@ var mergeStormText = (lastSyncedText, externalText, draftText) => {
   const config2 = mergeConfig(base.config, external.config, draft.config, conflicts);
   const elements = mergeItemsById(base.elements, external.elements, draft.elements);
   conflicts.push(...elements.conflictingIds ?? []);
-  const edges = mergeKeyed(
-    [base.edges, external.edges, draft.edges].map((list) => list.map(withoutPositionalId)),
-    arrowEnds,
-    conflicts
-  ).map((edge, index2) => ({ id: `arrow_${index2 + 1}`, edgeType: "arrow", ...edge }));
-  const rawPassthrough = mergeKeyed(
-    [base.rawPassthrough ?? [], external.rawPassthrough ?? [], draft.rawPassthrough ?? []],
-    (line) => line,
-    conflicts
+  const arrows = mergeItemsByOccurrence(
+    base.edges.map(withoutPositionalId),
+    external.edges.map(withoutPositionalId),
+    draft.edges.map(withoutPositionalId),
+    arrowEnds
   );
+  conflicts.push(...arrows.conflictingIds ?? []);
+  const edges = (arrows.merged ?? []).map((edge, index2) => ({
+    id: `arrow_${index2 + 1}`,
+    edgeType: "arrow",
+    ...edge
+  }));
+  const rawPassthrough = mergeItemsByOccurrence(
+    base.rawPassthrough ?? [],
+    external.rawPassthrough ?? [],
+    draft.rawPassthrough ?? [],
+    (line) => line
+  );
+  conflicts.push(...rawPassthrough.conflictingIds ?? []);
+  const mergedRawPassthrough = rawPassthrough.merged ?? [];
   const mergedElements = elements.merged ?? [];
   if (conflicts.length === 0) conflicts.push(...danglingReferences(mergedElements, edges));
   if (conflicts.length > 0) throw new MergeConflictError(conflicts);
@@ -31571,7 +31588,7 @@ var mergeStormText = (lastSyncedText, externalText, draftText) => {
     config: config2,
     elements: mergedElements,
     edges,
-    ...rawPassthrough.length > 0 ? { rawPassthrough } : {}
+    ...mergedRawPassthrough.length > 0 ? { rawPassthrough: mergedRawPassthrough } : {}
   });
 };
 

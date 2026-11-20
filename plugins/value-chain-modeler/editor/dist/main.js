@@ -32548,7 +32548,7 @@ var Modeler = class extends NavigatedViewer {
   }
 };
 
-// ../../../../packages/api/dist/chunk-NROWWN6X.js
+// ../../../../packages/api/dist/chunk-IENIHDCI.js
 var MERGE_CONFLICT = "MergeConflictError";
 var MergeConflictError = class extends Error {
   name = MERGE_CONFLICT;
@@ -32597,11 +32597,11 @@ function indexById(items, idOf) {
   }
   return { byId, order, duplicates };
 }
-function sameSequence(a3, b3) {
-  return a3.length === b3.length && a3.every((id, index2) => id === b3[index2]);
+function sameStrings(a3, b3) {
+  return a3.length === b3.length && a3.every((value, index2) => value === b3[index2]);
 }
 function mergedOrder(lastSynced, external, draft, kept) {
-  const externalKeptTheOrder = sameSequence(lastSynced, external);
+  const externalKeptTheOrder = sameStrings(lastSynced, external);
   const leading = externalKeptTheOrder ? draft : external;
   const following = externalKeptTheOrder ? external : draft;
   const order = leading.filter((id) => kept.has(id));
@@ -32620,8 +32620,10 @@ function mergedOrder(lastSynced, external, draft, kept) {
 function mergeItemsById(lastSynced, external, draft, options = {}) {
   const idOf = options.idOf ?? ((item) => item.id);
   const isSameItem = options.isSameItem ?? sameJsonValue;
-  const sides = [lastSynced, external, draft].map((items) => indexById(items, idOf));
-  const [base, outside2, mine] = sides;
+  const base = indexById(lastSynced, idOf);
+  const outside2 = indexById(external, idOf);
+  const mine = indexById(draft, idOf);
+  const sides = [base, outside2, mine];
   const allIds = [.../* @__PURE__ */ new Set([...base.order, ...outside2.order, ...mine.order])];
   const conflictingIds = [];
   const mergedById = /* @__PURE__ */ new Map();
@@ -32644,7 +32646,9 @@ function mergeItemsById(lastSynced, external, draft, options = {}) {
   return { merged: order.map((id) => mergedById.get(id)) };
 }
 function mergeRecord(lastSynced, external, draft, options = {}) {
-  const [base, outside2, mine] = [lastSynced, external, draft];
+  const base = lastSynced;
+  const outside2 = external;
+  const mine = draft;
   const lists = new Set(options.keyedLists ?? []);
   const keys2 = /* @__PURE__ */ new Set([...Object.keys(base), ...Object.keys(outside2), ...Object.keys(mine)]);
   const merged = {};
@@ -32663,7 +32667,7 @@ function mergeRecord(lastSynced, external, draft, options = {}) {
   }
   return conflictingIds.length > 0 ? { conflictingIds } : { merged };
 }
-var MODELER_API_VERSION = "1.7.0";
+var MODELER_API_VERSION = "2.0.0";
 
 // ../../packages/renderer/src/appearance/themes.ts
 var LIGHT_ONLY = ["light"];

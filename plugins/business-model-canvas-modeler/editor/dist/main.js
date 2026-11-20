@@ -32992,7 +32992,7 @@ var Modeler = class extends NavigatedViewer {
   }
 };
 
-// ../../../../packages/api/dist/chunk-NROWWN6X.js
+// ../../../../packages/api/dist/chunk-IENIHDCI.js
 var MERGE_CONFLICT = "MergeConflictError";
 var MergeConflictError = class extends Error {
   name = MERGE_CONFLICT;
@@ -33041,11 +33041,11 @@ function indexById(items, idOf) {
   }
   return { byId, order, duplicates };
 }
-function sameSequence(a3, b3) {
-  return a3.length === b3.length && a3.every((id, index2) => id === b3[index2]);
+function sameStrings(a3, b3) {
+  return a3.length === b3.length && a3.every((value, index2) => value === b3[index2]);
 }
 function mergedOrder(lastSynced, external, draft, kept) {
-  const externalKeptTheOrder = sameSequence(lastSynced, external);
+  const externalKeptTheOrder = sameStrings(lastSynced, external);
   const leading = externalKeptTheOrder ? draft : external;
   const following = externalKeptTheOrder ? external : draft;
   const order = leading.filter((id) => kept.has(id));
@@ -33064,8 +33064,10 @@ function mergedOrder(lastSynced, external, draft, kept) {
 function mergeItemsById(lastSynced, external, draft, options = {}) {
   const idOf = options.idOf ?? ((item) => item.id);
   const isSameItem = options.isSameItem ?? sameJsonValue;
-  const sides = [lastSynced, external, draft].map((items) => indexById(items, idOf));
-  const [base, outside2, mine] = sides;
+  const base = indexById(lastSynced, idOf);
+  const outside2 = indexById(external, idOf);
+  const mine = indexById(draft, idOf);
+  const sides = [base, outside2, mine];
   const allIds = [.../* @__PURE__ */ new Set([...base.order, ...outside2.order, ...mine.order])];
   const conflictingIds = [];
   const mergedById = /* @__PURE__ */ new Map();
@@ -33087,7 +33089,30 @@ function mergeItemsById(lastSynced, external, draft, options = {}) {
   const order = mergedOrder(base.order, outside2.order, mine.order, new Set(mergedById.keys()));
   return { merged: order.map((id) => mergedById.get(id)) };
 }
-var MODELER_API_VERSION = "1.7.0";
+function keyedByOccurrence(items, keyOf2) {
+  const occurrences = /* @__PURE__ */ new Map();
+  return items.map((item) => {
+    const key = keyOf2(item);
+    const occurrence = (occurrences.get(key) ?? 0) + 1;
+    occurrences.set(key, occurrence);
+    return { key: `${key}#${occurrence}`, item };
+  });
+}
+function mergeItemsByOccurrence(lastSynced, external, draft, keyOf2, options = {}) {
+  const isSameItem = options.isSameItem ?? sameJsonValue;
+  const result = mergeItemsById(
+    keyedByOccurrence(lastSynced, keyOf2),
+    keyedByOccurrence(external, keyOf2),
+    keyedByOccurrence(draft, keyOf2),
+    {
+      idOf: (entry) => entry.key,
+      isSameItem: (entry, otherEntry) => isSameItem(entry.item, otherEntry.item)
+    }
+  );
+  if (result.conflictingIds) return { conflictingIds: result.conflictingIds };
+  return { merged: result.merged.map((entry) => entry.item) };
+}
+var MODELER_API_VERSION = "2.0.0";
 
 // ../../packages/renderer/src/themes.ts
 var THEMES = Object.freeze(["light"]);
@@ -33311,25 +33336,19 @@ function isViewState(state) {
 function mapVersions(versions, change) {
   return [change(versions[0]), change(versions[1]), change(versions[2])];
 }
-function mergeById(lists, idOf, conflicts) {
-  const result = mergeItemsById(...lists, { idOf });
+function collectConflicts(result, conflicts) {
   if (result.conflictingIds) {
     conflicts.push(...result.conflictingIds);
     return [];
   }
   return result.merged;
 }
+function mergeById(lists, idOf, conflicts) {
+  return collectConflicts(mergeItemsById(...lists, { idOf }), conflicts);
+}
 function mergeNotes(lists, owner, conflicts) {
-  const keyed = mapVersions(lists, (notes) => {
-    const seen = /* @__PURE__ */ new Map();
-    return notes.map((note) => {
-      const base = `${owner}.note:${JSON.stringify([note.text, note.attributes])}`;
-      const occurrence = (seen.get(base) ?? 0) + 1;
-      seen.set(base, occurrence);
-      return { id: `${base}#${occurrence}`, note };
-    });
-  });
-  return mergeById(keyed, (entry) => entry.id, conflicts).map((entry) => entry.note);
+  const noteKey = (note) => `${owner}.note:${JSON.stringify([note.text, note.attributes])}`;
+  return collectConflicts(mergeItemsByOccurrence(...lists, noteKey), conflicts);
 }
 var idOfField = (owner) => (field) => `${owner}.${field.key}`;
 function mergeBlock(blockId, versions, conflicts) {
