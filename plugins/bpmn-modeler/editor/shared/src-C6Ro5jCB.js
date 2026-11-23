@@ -1,11 +1,12 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./c7-DnBrPmIx.js","./rolldown-runtime-DQp2zzRu.js","./ModelUtil-BGe9jbj7.js","./EscapeUtil-B1jzPlMc.js","./jsxRuntime.module-awBdvHUy.js","./sharedModules-DMC-1xpc.js","./editorLayout-Dxr4ugLL.js","./editorLayout-3p6pELEt.css","./createSurface-CzjA2jEt.js","../bpmn/main.js","./bpmn-BvXu8wGO.css","./clipboard-Bznk3d97.js","./index.esm-DgBSptNj.js","./dist-BWHN8Och.js","./moddle-utils-CKD1iZGs.js","./lib-CIY0Qhue.js","./reporting-Bgp2TgWv.js","./reporting-B1SMpZVh.css","./index.esm-CXJiDiAL.js","./c8-Dz0CRAzg.js"])))=>i.map(i=>d[i]);
-import { _ as _defineProperty, g as i18n, h as TranslateModule, m as extras } from "./editorLayout-Dxr4ugLL.js";
-import { a as surfaceModeSupports, c as engineSupports, l as executionPlatformAttributeNames, o as ENGINE_EXECUTION_PLATFORM, s as MODELER_NAMESPACE_URI, t as __vitePreload, u as isEngine } from "../bpmn/main.js";
-import { A as isTemplatePopupEntry, C as AppendMenuModule, D as propertyDisplayLabel, E as partitionVisibleProperties, F as elementIdSettingsOf, M as modeler_default, O as templatePropertyDisplayText, P as Modeler, S as FlowNavigationModule, T as fallbackTranslate, _ as buildLintModules, a as createSurfaceLintHandle, b as ElementIdsModule, c as proposeSurfaceElementIds, d as subscribeFormatted, f as wireContentSaved, g as ELEMENT_POPUP_MENUS, h as BPMN_TAB, i as cleanupSurfaceDiagram, j as templateIdOfEntryKey, k as u, l as renameSurfaceElementIds, m as createPopupMenuAnnotationsModule, n as applyElementIdSettings, o as formatSurfaceDiagram, p as ReplaceTemplatesTabModule, r as applyFavouriteBpmnElements, s as installClipboardSupport, t as createReporter, u as subscribeCommandStackChanged, v as lintElementIdConvention, w as extractImplementationDetail, x as createBpmnLayoutModule, y as createDefinitionSearchModule } from "./reporting-Bgp2TgWv.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./c7-C6_ryaYM.js","./rolldown-runtime-DQp2zzRu.js","./ModelUtil-BGe9jbj7.js","./EscapeUtil-B1jzPlMc.js","./jsxRuntime.module-awBdvHUy.js","./popupMenuAnnotationOverrides-CzWLbB-D.js","./editorLayout-lsihKWWK.js","./editorLayout-3p6pELEt.css","./createSurface-CMRA57M3.js","../bpmn/main.js","./bpmn-CyjxrKnM.css","./clipboard-Bznk3d97.js","./index.esm-DgBSptNj.js","./dist-BWHN8Och.js","./moddle-utils-CKD1iZGs.js","./lib-CQF8SUcy.js","./reporting-hneEWqz9.js","./reporting-B1SMpZVh.css","./index.esm-CXJiDiAL.js","./c8-CqKi7MOe.js"])))=>i.map(i=>d[i]);
+import { _ as _defineProperty, g as i18n, h as TranslateModule, m as extras } from "./editorLayout-lsihKWWK.js";
+import { a as surfaceModeSupports, c as engineSupports, l as executionPlatformAttributeNames, o as ENGINE_EXECUTION_PLATFORM, t as __vitePreload, u as isEngine } from "../bpmn/main.js";
+import { A as TEMPLATE_DETAIL_TEXTS, C as AppendMenuModule, D as isTemplatePopupEntry, E as u, I as Modeler, L as elementIdSettingsOf, M as extractImplementationDetail, N as partitionVisibleProperties, O as templateIdOfEntryKey, P as modeler_default, S as FlowNavigationModule, T as ParameterSection, _ as buildLintModules, a as createSurfaceLintHandle, b as ElementIdsModule, c as proposeSurfaceElementIds, d as subscribeFormatted, f as wireContentSaved, g as ELEMENT_POPUP_MENUS, h as BPMN_TAB, i as cleanupSurfaceDiagram, j as TEMPLATE_LIST_TEXTS, k as CHOOSER_TEXTS, l as renameSurfaceElementIds, m as createPopupMenuAnnotationsModule, n as applyElementIdSettings, o as formatSurfaceDiagram, p as ReplaceTemplatesTabModule, r as applyFavouriteBpmnElements, s as installClipboardSupport, t as createReporter, u as subscribeCommandStackChanged, v as lintElementIdConvention, w as fallbackTranslate, x as createBpmnLayoutModule, y as createDefinitionSearchModule } from "./reporting-hneEWqz9.js";
 import { B as d, H as q, K as k, L as A, R as T, V as h, W as R } from "./clipboard-Bznk3d97.js";
 import { a as is, i as init_ModelUtil, n as getBusinessObject } from "./ModelUtil-BGe9jbj7.js";
-import { a as exportSvg, f as CustomGroupsModule, i as exportFormattedXml, m as FlushableDebounceInputModule, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, r as DrilldownFitModule, s as createModelNavigationModule, t as createSurface } from "./createSurface-CzjA2jEt.js";
+import { a as exportSvg, f as CustomGroupsModule, i as exportFormattedXml, m as FlushableDebounceInputModule, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, r as DrilldownFitModule, s as createModelNavigationModule, t as createSurface } from "./createSurface-CMRA57M3.js";
 import { _ as S, hn as subscribe, pn as DisposableStore, t as u$1, yn as UnsupportedEngineError } from "./jsxRuntime.module-awBdvHUy.js";
+import { t as ExecutionPlatformAttributes } from "./executionPlatformAttributes-BJWbeLxc.js";
 var VERSIONS = {
 	c7: [
 		"7.24.0",
@@ -1094,6 +1095,11 @@ var TemplateSearchIndex = class {
 	}
 };
 // ../../libs/element-template-chooser/src/components/TemplatePreview.tsx
+var PREVIEW_PARAMETERS = {
+	classPrefix: "etc-param",
+	badgeClass: "etc-badge",
+	heading: "h4"
+};
 function TemplatePreview({ template, translate, onApply }) {
 	const { properties, inputs, outputs } = partitionVisibleProperties(template.properties);
 	const implDetail = extractImplementationDetail(template.properties);
@@ -1136,7 +1142,7 @@ function TemplatePreview({ template, translate, onApply }) {
 								viewBox: "0 0 16 16",
 								fill: "currentColor",
 								children: [u("path", { d: "M4.715 6.542L3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.001 1.001 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" }), u("path", { d: "M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 0 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 0 0-4.243-4.243L6.586 4.672z" })]
-							}), translate("Documentation")]
+							}), translate(TEMPLATE_DETAIL_TEXTS.documentation)]
 						}),
 						u("div", {
 							class: "etc-preview-meta",
@@ -1154,23 +1160,26 @@ function TemplatePreview({ template, translate, onApply }) {
 					class: "etc-preview-params",
 					children: [
 						properties.length > 0 && u(ParameterSection, {
-							title: translate("Properties"),
+							title: translate(TEMPLATE_DETAIL_TEXTS.properties),
 							items: properties,
-							translate
+							translate,
+							variant: PREVIEW_PARAMETERS
 						}),
 						inputs.length > 0 && u(ParameterSection, {
-							title: translate("Input Parameters"),
+							title: translate(TEMPLATE_DETAIL_TEXTS.inputParameters),
 							items: inputs,
-							translate
+							translate,
+							variant: PREVIEW_PARAMETERS
 						}),
 						outputs.length > 0 && u(ParameterSection, {
-							title: translate("Output Parameters"),
+							title: translate(TEMPLATE_DETAIL_TEXTS.outputParameters),
 							items: outputs,
-							translate
+							translate,
+							variant: PREVIEW_PARAMETERS
 						}),
 						properties.length === 0 && inputs.length === 0 && outputs.length === 0 && u("div", {
 							class: "etc-preview-no-params",
-							children: u("p", { children: translate("No visible parameters") })
+							children: u("p", { children: translate(TEMPLATE_DETAIL_TEXTS.noVisibleParameters) })
 						})
 					]
 				})
@@ -1181,57 +1190,7 @@ function TemplatePreview({ template, translate, onApply }) {
 				class: "etc-apply-btn",
 				onClick: onApply,
 				type: "button",
-				children: translate("Apply Template")
-			})
-		})]
-	});
-}
-function ParameterSection({ title, items, translate }) {
-	return u("div", {
-		class: "etc-param-section",
-		children: [u("h4", {
-			class: "etc-param-title",
-			children: title
-		}), u("ul", {
-			class: "etc-param-list",
-			children: items.map((p, i) => {
-				const displayText = templatePropertyDisplayText(p);
-				return u("li", {
-					class: "etc-param-item",
-					children: [
-						u("div", {
-							class: "etc-param-header",
-							children: [u("span", {
-								class: "etc-param-label",
-								children: propertyDisplayLabel(p) ?? translate("Unnamed")
-							}), u("div", {
-								class: "etc-param-badges",
-								children: [
-									p.constraints?.notEmpty && u("span", {
-										class: "etc-badge etc-badge--required",
-										children: translate("required")
-									}),
-									p.editable === false && u("span", {
-										class: "etc-badge etc-badge--readonly",
-										children: translate("read-only")
-									}),
-									p.optional && u("span", {
-										class: "etc-badge etc-badge--optional",
-										children: translate("optional")
-									})
-								]
-							})]
-						}),
-						p.description && u("p", {
-							class: "etc-param-desc",
-							children: p.description
-						}),
-						displayText && u("code", {
-							class: "etc-param-value",
-							children: displayText
-						})
-					]
-				}, i);
+				children: translate(CHOOSER_TEXTS.apply)
 			})
 		})]
 	});
@@ -1306,7 +1265,7 @@ function ChooserOverlay({ templates, translate, onSelect, onCancel }) {
 	const visiblePropertyCount = (t) => t.properties.filter((p) => p.type !== "Hidden").length;
 	const propertyCountLabel = (t) => {
 		const count = visiblePropertyCount(t);
-		return translate(count === 1 ? "{count} property" : "{count} properties", { count: String(count) });
+		return translate(count === 1 ? CHOOSER_TEXTS.oneProperty : CHOOSER_TEXTS.manyProperties, { count: String(count) });
 	};
 	return u("div", {
 		class: "etc-backdrop",
@@ -1320,11 +1279,11 @@ function ChooserOverlay({ templates, translate, onSelect, onCancel }) {
 					class: "etc-header",
 					children: [u("h2", {
 						class: "etc-title",
-						children: translate("Element Templates")
+						children: translate(CHOOSER_TEXTS.title)
 					}), u("button", {
 						class: "etc-close-btn",
 						onClick: onCancel,
-						"aria-label": translate("Close"),
+						"aria-label": translate(CHOOSER_TEXTS.close),
 						type: "button",
 						children: u("svg", {
 							width: "16",
@@ -1350,7 +1309,7 @@ function ChooserOverlay({ templates, translate, onSelect, onCancel }) {
 							ref: searchRef,
 							class: "etc-search-input",
 							type: "text",
-							placeholder: translate("Search templates..."),
+							placeholder: translate(CHOOSER_TEXTS.search),
 							value: search,
 							onInput: (e) => setSearch(e.target.value)
 						}),
@@ -1361,7 +1320,7 @@ function ChooserOverlay({ templates, translate, onSelect, onCancel }) {
 								searchRef.current?.focus();
 							},
 							type: "button",
-							"aria-label": translate("Clear search"),
+							"aria-label": translate(TEMPLATE_LIST_TEXTS.clearSearch),
 							children: "×"
 						})
 					]
@@ -1372,7 +1331,7 @@ function ChooserOverlay({ templates, translate, onSelect, onCancel }) {
 						class: `etc-chip ${activeCategory === null ? "etc-chip--active" : ""}`,
 						onClick: () => setActiveCategory(null),
 						type: "button",
-						children: translate("All")
+						children: translate(TEMPLATE_LIST_TEXTS.allCategories)
 					}), categories.map((cat) => u("button", {
 						class: `etc-chip ${activeCategory === cat.id ? "etc-chip--active" : ""}`,
 						onClick: () => setActiveCategory(activeCategory === cat.id ? null : cat.id),
@@ -1389,10 +1348,10 @@ function ChooserOverlay({ templates, translate, onSelect, onCancel }) {
 							class: "etc-empty",
 							children: [u("p", {
 								class: "etc-empty-text",
-								children: translate("No templates found")
+								children: translate(TEMPLATE_LIST_TEXTS.noTemplates)
 							}), search && u("p", {
 								class: "etc-empty-hint",
-								children: translate("Try a different search term")
+								children: translate(TEMPLATE_LIST_TEXTS.noTemplatesHint)
 							})]
 						}) : filtered.map((t, idx) => u("div", {
 							class: [
@@ -1467,7 +1426,7 @@ function ChooserOverlay({ templates, translate, onSelect, onCancel }) {
 								fill: "currentColor",
 								opacity: "0.2",
 								children: u("path", { d: "M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4zm1 2h6v1H5V3zm0 3h6v1H5V6zm0 3h4v1H5V9z" })
-							}), u("p", { children: translate("Select a template to see its details") })]
+							}), u("p", { children: translate(CHOOSER_TEXTS.noSelection) })]
 						})
 					})]
 				})
@@ -2282,29 +2241,14 @@ function deriveEngines(definitionsAttributes) {
 	if (platform === ENGINE_EXECUTION_PLATFORM.c8 && version) return { camunda: version };
 	return {};
 }
-// ../../packages/bpmn-modeler/src/executionPlatformAttributes.ts
-function executionPlatformAttributes(definitions) {
-	const registeredPrefix = definitions.$model.getPackage(MODELER_NAMESPACE_URI)?.prefix;
-	if (registeredPrefix === void 0) return definitions.$attrs;
-	const names = executionPlatformAttributeNames([{
-		name: `xmlns:${registeredPrefix}`,
-		value: MODELER_NAMESPACE_URI
-	}]);
-	const attributes = { [names.namespace]: MODELER_NAMESPACE_URI };
-	for (const name of [names.platform, names.version]) {
-		const value = definitions.get(name);
-		if (typeof value === "string") attributes[name] = value;
-	}
-	return attributes;
-}
 // ../../packages/bpmn-modeler/src/engineStacks/index.ts
 var ENGINE_STACK_LOADERS = {
 	c7: async () => (await __vitePreload(async () => {
-		const { c7Stack } = await import("./c7-DnBrPmIx.js");
+		const { c7Stack } = await import("./c7-C6_ryaYM.js");
 		return { c7Stack };
 	}, __vite__mapDeps([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]), import.meta.url)).c7Stack,
 	c8: async () => (await __vitePreload(async () => {
-		const { c8Stack } = await import("./c8-Dz0CRAzg.js");
+		const { c8Stack } = await import("./c8-CqKi7MOe.js");
 		return { c8Stack };
 	}, __vite__mapDeps([19,4,3,1,2,5,6,7,8,9,10,11,12,13,14,15,16,17,18]), import.meta.url)).c8Stack
 };
@@ -2756,7 +2700,7 @@ var BpmnModeler = class {
 	}
 	applyEnginesFromDefinitions() {
 		const definitions = this.getModeler().getDefinitions();
-		const engines = deriveEngines(definitions ? executionPlatformAttributes(definitions) : {});
+		const engines = deriveEngines(definitions ? new ExecutionPlatformAttributes(definitions).read() : {});
 		this.getModeler().get("elementTemplates", false)?.setEngines(engines);
 	}
 	getModeler() {
@@ -2776,4 +2720,4 @@ async function createModeler(container, options) {
 }
 export { createModeler };
 
-//# sourceMappingURL=src-DgHcs8_T.js.map
+//# sourceMappingURL=src-C6Ro5jCB.js.map

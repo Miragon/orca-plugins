@@ -1,4 +1,4 @@
-import { H as SimpleBpmnModdle } from "./createSurface-CzjA2jEt.js";
+import { H as SimpleBpmnModdle } from "./createSurface-CMRA57M3.js";
 import { A as pick, D as map, _ as init_dist, i as assign } from "./EscapeUtil-B1jzPlMc.js";
 // ../../node_modules/bpmn-auto-layout/dist/index.js
 init_dist();
@@ -4432,4 +4432,4 @@ function layoutProcess(xml) {
 }
 export { LayoutError, LayoutWarning, layoutProcess };
 
-//# sourceMappingURL=dist-DtYzSTQ6.js.map
+//# sourceMappingURL=dist-DZqjNsVC.js.map

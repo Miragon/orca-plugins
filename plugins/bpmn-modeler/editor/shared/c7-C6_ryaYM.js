@@ -1,9 +1,9 @@
 import { i as __toCommonJS, t as __commonJSMin } from "./rolldown-runtime-DQp2zzRu.js";
 import { a as is, i as init_ModelUtil, n as getBusinessObject, o as isAny, t as ModelUtil_exports } from "./ModelUtil-BGe9jbj7.js";
-import { C as isObject$1, O as matchPattern, P as some, T as isUndefined$1, _ as init_dist, g as has$1, u as find, y as isDefined } from "./EscapeUtil-B1jzPlMc.js";
+import { C as isObject, O as matchPattern, P as some, T as isUndefined, _ as init_dist, g as has, i as assign, p as forEach, u as find, y as isDefined } from "./EscapeUtil-B1jzPlMc.js";
 import { Ct as add, Tt as remove, k as CommandInterceptor } from "./jsxRuntime.module-awBdvHUy.js";
-import { c as TooltipProvider, h as removeExtensionElements, m as getExtensionElementsList, n as colors_default, o as index$2, p as DeleteParticipantBehaviour, r as CamundaVariableResolverModule, t as composeUpstreamModules, u as index } from "./sharedModules-DMC-1xpc.js";
-import { i as index$1, n as RemoveTemplatesModule, r as index$3 } from "./lib-CIY0Qhue.js";
+import { _ as removeExtensionElements, a as CamundaVariableResolverModule, c as index$2, f as index, g as getExtensionElementsList, h as DeleteParticipantBehaviour, i as colors_default, r as composeUpstreamModules, t as C7_POPUP_MENU_ANNOTATIONS, u as TooltipProvider } from "./popupMenuAnnotationOverrides-CzWLbB-D.js";
+import { i as index$1, n as RemoveTemplatesModule, r as index$3 } from "./lib-CQF8SUcy.js";
 var camunda_default = {
 	name: "Camunda",
 	uri: "http://camunda.org/schema/1.0/bpmn",
@@ -980,7 +980,7 @@ var CopyPasteBehavior = class {
 		});
 	}
 	canCopyProperty(property, parent) {
-		if (isObject$1(property) && !isAllowedInParent(property, parent)) return false;
+		if (isObject(property) && !isAllowedInParent(property, parent)) return false;
 		if (is(property, "camunda:InputOutput") && !this.canHostInputOutput(parent)) return false;
 		if (isAny(property, ["camunda:Connector", "camunda:Field"]) && !this.canHostConnector(parent)) return false;
 		if (is(property, "camunda:In") && !this.canHostIn(parent)) return false;
@@ -1325,7 +1325,7 @@ var UpdateResultVariableBehavior = class extends CommandInterceptor {
 		this.preExecute(["element.updateProperties", "element.updateModdleProperties"], HIGH_PRIORITY, function(context) {
 			const { element, moddleElement, properties } = context;
 			const businessObject = moddleElement || getBusinessObject(element);
-			if (is(element, "camunda:DmnCapable") && is(businessObject, "camunda:DmnCapable") && has$1(properties, "camunda:resultVariable") && isEmpty(properties["camunda:resultVariable"])) properties["camunda:mapDecisionResult"] = void 0;
+			if (is(element, "camunda:DmnCapable") && is(businessObject, "camunda:DmnCapable") && has(properties, "camunda:resultVariable") && isEmpty(properties["camunda:resultVariable"])) properties["camunda:mapDecisionResult"] = void 0;
 		}, true);
 	}
 };
@@ -1342,20 +1342,20 @@ var UserTaskFormsBehavior$1 = class extends CommandInterceptor {
 		this.preExecute(["element.updateProperties", "element.updateModdleProperties"], function(context) {
 			const { element, moddleElement, properties } = context;
 			const businessObject = moddleElement || getBusinessObject(element);
-			if (has$1(properties, "camunda:formKey")) Object.assign(properties, {
+			if (has(properties, "camunda:formKey")) Object.assign(properties, {
 				"camunda:formRef": void 0,
 				"camunda:formRefBinding": void 0,
 				"camunda:formRefVersion": void 0
 			});
-			else if (has$1(properties, "camunda:formRef")) {
+			else if (has(properties, "camunda:formRef")) {
 				Object.assign(properties, { "camunda:formKey": void 0 });
-				if (isUndefined$1(properties["camunda:formRef"])) Object.assign(properties, {
+				if (isUndefined(properties["camunda:formRef"])) Object.assign(properties, {
 					"camunda:formRefBinding": void 0,
 					"camunda:formRefVersion": void 0
 				});
-				if (!has$1(properties, "camunda:formRefBinding") && isUndefined$1(businessObject.get("camunda:formRefBinding"))) Object.assign(properties, { "camunda:formRefBinding": "latest" });
+				if (!has(properties, "camunda:formRefBinding") && isUndefined(businessObject.get("camunda:formRefBinding"))) Object.assign(properties, { "camunda:formRefBinding": "latest" });
 			}
-			if (has$1(properties, "camunda:formRefBinding") && properties["camunda:formRefBinding"] !== "version") Object.assign(properties, { "camunda:formRefVersion": void 0 });
+			if (has(properties, "camunda:formRefBinding") && properties["camunda:formRefBinding"] !== "version") Object.assign(properties, { "camunda:formRefVersion": void 0 });
 		}, true);
 	}
 };
@@ -1373,14 +1373,14 @@ var UserTaskFormsBehavior = class extends CommandInterceptor {
 		}, true);
 		this.preExecute("element.updateModdleProperties", function(context) {
 			const { element, moddleElement, properties } = context;
-			if (!is(moddleElement, "camunda:FormField") || !has$1(properties, "id") && !has$1(properties, "camunda:id")) return;
+			if (!is(moddleElement, "camunda:FormField") || !has(properties, "id") && !has(properties, "camunda:id")) return;
 			const formData = getFormData(element);
 			if (!formData.get("camunda:businessKey")) return;
-			if (isBusinessKey(moddleElement, formData)) modeling.updateModdleProperties(element, formData, { "camunda:businessKey": has$1(properties, "id") ? properties.id : properties["camunda:id"] });
+			if (isBusinessKey(moddleElement, formData)) modeling.updateModdleProperties(element, formData, { "camunda:businessKey": has(properties, "id") ? properties.id : properties["camunda:id"] });
 		}, true);
 		this.postExecute("element.updateModdleProperties", function(context) {
 			const { element, moddleElement, properties } = context;
-			if (!is(moddleElement, "camunda:FormData") || !has$1(properties, "fields")) return;
+			if (!is(moddleElement, "camunda:FormData") || !has(properties, "fields")) return;
 			const businessKey = moddleElement.get("camunda:businessKey");
 			if (!businessKey) return;
 			if (!moddleElement.get("fields").find((field) => {
@@ -1517,7 +1517,7 @@ var require_TemplateElementFactory = __commonJSMin(((exports) => {
 		return value;
 	}
 }));
-// ../../node_modules/camunda-transaction-boundaries/node_modules/min-dash/dist/index.esm.js
+// ../../node_modules/camunda-transaction-boundaries/lib/Util.js
 var import_dist = __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.CreateAppendC7ElementTemplatesModule = void 0;
@@ -1531,51 +1531,7 @@ var import_dist = __commonJSMin(((exports) => {
 		c7ApplyTemplateOnShapeCreateBehavior: ["type", ApplyTemplateOnShapeCreateBehavior_1.ApplyTemplateOnShapeCreateBehavior]
 	};
 }))();
-var nativeToString = Object.prototype.toString;
-var nativeHasOwnProperty = Object.prototype.hasOwnProperty;
-function isUndefined(obj) {
-	return obj === void 0;
-}
-function isArray(obj) {
-	return nativeToString.call(obj) === "[object Array]";
-}
-function isObject(obj) {
-	return nativeToString.call(obj) === "[object Object]";
-}
-function has(target, key) {
-	return nativeHasOwnProperty.call(target, key);
-}
-function forEach(collection, iterator) {
-	var val, result;
-	if (isUndefined(collection)) return;
-	var convertKey = isArray(collection) ? toNum : identity;
-	for (var key in collection) if (has(collection, key)) {
-		val = collection[key];
-		result = iterator(val, convertKey(key));
-		if (result === false) return val;
-	}
-}
-function identity(arg) {
-	return arg;
-}
-function toNum(arg) {
-	return Number(arg);
-}
-function _extends() {
-	_extends = Object.assign || function(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = arguments[i];
-			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
-		}
-		return target;
-	};
-	return _extends.apply(this, arguments);
-}
-function assign(target) {
-	for (var _len = arguments.length, others = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) others[_key - 1] = arguments[_key];
-	return _extends.apply(void 0, [target].concat(others));
-}
-// ../../node_modules/camunda-transaction-boundaries/lib/Util.js
+init_dist();
 function asTRBL(bounds) {
 	return {
 		top: bounds.y,
@@ -1597,6 +1553,7 @@ function getOrientation(rect, reference, padding) {
 	else return horizontal || vertical || "intersect";
 }
 // ../../node_modules/camunda-transaction-boundaries/lib/TransactionBoundaries.js
+init_dist();
 function TransactionBoundaries(elementRegistry, overlays, eventBus, canvas) {
 	this._overlays = overlays;
 	this._elementRegistry = elementRegistry;
@@ -1680,7 +1637,7 @@ TransactionBoundaries.prototype._getMark = function(shape, waypoint) {
 TransactionBoundaries.prototype._addOverlay = function(shape, mark) {
 	return this._overlays.add(shape, "transaction-boundaries", {
 		position: mark.position,
-		html: "<div style=\"width: " + mark.width + "px; height: " + mark.height + "px; background: #ee0000; \"> </div>"
+		html: "<div class=\"transaction-boundary bio-theme-parent\" style=\"width: " + mark.width + "px; height: " + mark.height + "px;\"> </div>"
 	});
 };
 TransactionBoundaries.prototype._getMarks = function(shape, boundaries) {
@@ -1755,7 +1712,6 @@ var lib_default = {
 	"transactionBoundaries": ["type", TransactionBoundaries]
 };
 // ../../packages/bpmn-modeler/src/engineStacks/c7.ts
-var JAVA_IMPLEMENTATION_KEYWORDS = ["Java delegate", "External task"];
 var c7Stack = {
 	upstreamModules: composeUpstreamModules([
 		camunda_platform_default,
@@ -1773,16 +1729,8 @@ var c7Stack = {
 	],
 	moddleExtensions: { camunda: camunda_default },
 	propertiesPanelDefaults: { tooltip: TooltipProvider },
-	popupMenuAnnotations: {
-		descriptions: { "service-task": "Automated work carried out by a Java delegate, expression, or external task" },
-		additionalKeywords: {
-			"service-task": JAVA_IMPLEMENTATION_KEYWORDS,
-			"send-task": JAVA_IMPLEMENTATION_KEYWORDS,
-			"message-intermediate-throw": JAVA_IMPLEMENTATION_KEYWORDS,
-			"message-end": JAVA_IMPLEMENTATION_KEYWORDS
-		}
-	}
+	popupMenuAnnotations: C7_POPUP_MENU_ANNOTATIONS
 };
 export { c7Stack };
 
-//# sourceMappingURL=c7-DnBrPmIx.js.map
+//# sourceMappingURL=c7-C6_ryaYM.js.map

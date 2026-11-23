@@ -1,9 +1,9 @@
-import { _ as _defineProperty, g as i18n, h as TranslateModule, m as extras } from "./editorLayout-Dxr4ugLL.js";
-import { C as AppendMenuModule, M as modeler_default, P as Modeler, S as FlowNavigationModule, _ as buildLintModules, a as createSurfaceLintHandle, b as ElementIdsModule, c as proposeSurfaceElementIds, d as subscribeFormatted, f as wireContentSaved, i as cleanupSurfaceDiagram, l as renameSurfaceElementIds, m as createPopupMenuAnnotationsModule, n as applyElementIdSettings, o as formatSurfaceDiagram, r as applyFavouriteBpmnElements, s as installClipboardSupport, t as createReporter, u as subscribeCommandStackChanged, v as lintElementIdConvention, x as createBpmnLayoutModule, y as createDefinitionSearchModule } from "./reporting-Bgp2TgWv.js";
-import { n as render_default, t as provider_default } from "./provider-CE2pkzJX.js";
+import { _ as _defineProperty, g as i18n, h as TranslateModule, m as extras } from "./editorLayout-lsihKWWK.js";
+import { C as AppendMenuModule, I as Modeler, P as modeler_default, S as FlowNavigationModule, _ as buildLintModules, a as createSurfaceLintHandle, b as ElementIdsModule, c as proposeSurfaceElementIds, d as subscribeFormatted, f as wireContentSaved, i as cleanupSurfaceDiagram, l as renameSurfaceElementIds, m as createPopupMenuAnnotationsModule, n as applyElementIdSettings, o as formatSurfaceDiagram, r as applyFavouriteBpmnElements, s as installClipboardSupport, t as createReporter, u as subscribeCommandStackChanged, v as lintElementIdConvention, x as createBpmnLayoutModule, y as createDefinitionSearchModule } from "./reporting-hneEWqz9.js";
+import { n as render_default, t as provider_default } from "./provider-Du5gVit0.js";
 import { pn as DisposableStore } from "./jsxRuntime.module-awBdvHUy.js";
-import { a as exportSvg, f as CustomGroupsModule, i as exportFormattedXml, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, s as createModelNavigationModule, t as createSurface } from "./createSurface-CzjA2jEt.js";
-import { i as index$1, t as lib_default } from "./lib-CIY0Qhue.js";
+import { a as exportSvg, f as CustomGroupsModule, i as exportFormattedXml, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, s as createModelNavigationModule, t as createSurface } from "./createSurface-CMRA57M3.js";
+import { i as index$1, t as lib_default } from "./lib-CQF8SUcy.js";
 import { t as index } from "./index.esm-CXJiDiAL.js";
 // ../../packages/bpmn-modeler/src/design/designer.ts
 var BpmnDesigner = class {
@@ -180,4 +180,4 @@ async function createDesigner(container, options) {
 }
 export { createDesigner };
 
-//# sourceMappingURL=design-BGxvG83h.js.map
+//# sourceMappingURL=design-BzMY9XEO.js.map

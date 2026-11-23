@@ -1,7 +1,7 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./createSurface-CzjA2jEt.js","./rolldown-runtime-DQp2zzRu.js","./editorLayout-Dxr4ugLL.js","./editorLayout-3p6pELEt.css","./jsxRuntime.module-awBdvHUy.js","./EscapeUtil-B1jzPlMc.js","../bpmn/main.js","./bpmn-BvXu8wGO.css","./ModelUtil-BGe9jbj7.js","./dist-DtYzSTQ6.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./createSurface-CMRA57M3.js","./rolldown-runtime-DQp2zzRu.js","./editorLayout-lsihKWWK.js","./editorLayout-3p6pELEt.css","./jsxRuntime.module-awBdvHUy.js","./EscapeUtil-B1jzPlMc.js","../bpmn/main.js","./bpmn-CyjxrKnM.css","./ModelUtil-BGe9jbj7.js","./dist-DZqjNsVC.js"])))=>i.map(i=>d[i]);
 import { r as __exportAll } from "./rolldown-runtime-DQp2zzRu.js";
-import { _ as _defineProperty, l as isTextEditingSurface, p as asyncDebounce } from "./editorLayout-Dxr4ugLL.js";
-import { A as hasExternalLabel, B as isInterrupting, C as getCirclePath, D as DEFAULT_LABEL_SIZE, E as getElementAnnotations, F as hasEscalationEventDefinition, I as hasEventDefinition$2, L as isEventSubProcess, M as setLabel, N as hasCompensateEventDefinition, O as getExternalLabelMid, P as hasErrorEventDefinition, R as isExpanded, S as toPlaneId, T as collectElementsAnnotations, V as BaseViewer, _ as keep_selection_visible_default, b as getShapeIdFromPlane, c as base_default, d as TOGGLE_MODE_EVENT, g as NavigatedViewer, h as outline_default, j as isLabelExternal, k as getLabel, l as ToggleOffIcon, u as ToggleOnIcon, v as Viewer, w as getRoundRectPath, x as isPlane, y as getPlaneIdFromShape, z as isHorizontal$1 } from "./createSurface-CzjA2jEt.js";
+import { _ as _defineProperty, l as isTextEditingSurface, p as asyncDebounce } from "./editorLayout-lsihKWWK.js";
+import { A as hasExternalLabel, B as isInterrupting, C as getCirclePath, D as DEFAULT_LABEL_SIZE, E as getElementAnnotations, F as hasEscalationEventDefinition, I as hasEventDefinition$2, L as isEventSubProcess, M as setLabel, N as hasCompensateEventDefinition, O as getExternalLabelMid, P as hasErrorEventDefinition, R as isExpanded, S as toPlaneId, T as collectElementsAnnotations, V as BaseViewer, _ as keep_selection_visible_default, b as getShapeIdFromPlane, c as base_default, d as TOGGLE_MODE_EVENT, g as NavigatedViewer, h as outline_default, j as isLabelExternal, k as getLabel, l as ToggleOffIcon, u as ToggleOnIcon, v as Viewer, w as getRoundRectPath, x as isPlane, y as getPlaneIdFromShape, z as isHorizontal$1 } from "./createSurface-CMRA57M3.js";
 import { A as isCmd, At as getParents$1, B as delta, Bt as clear, C as outline_default$1, Ct as add, D as KeyboardBindings$1, Dt as getBBox, E as keyboard_default$1, Et as eachElement, Ft as updateLine, G as hasPrimaryModifier, H as IdGenerator, Ht as create, I as set, It as append, Jt as all, K as hasSecondaryModifier, Kt as e, Mt as selfAndChildren, O as context_pad_default$1, P as movecanvas_default, Pt as createLine, R as zoomscroll_default, Rt as attr, St as pointsOnLine, T as keyboard_move_default, Tt as remove, U as selection_default, Wt as remove$1, Xt as attr$1, Yt as assign, Z as translate_default, Zt as classes$1, bt as pointInRect, ct as asTRBL, dt as getMid, en as delegate, ft as getOrientation, gt as isLabel, hn as subscribe, ht as isConnection, in as remove$2, it as ElementFactory$1, jt as selfAndAllChildren, k as CommandInterceptor, kt as getEnclosedElements, l as h, mt as roundPoint, n as A, nt as translate, pn as DisposableStore, pt as roundBounds, qt as Ids, rn as query, rt as getVisual, s as d, t as u$1, tn as event, ut as getElementLineIntersection, w as change_support_default, wt as indexOf, x as k, xt as pointsAligned, yt as pointDistance, zt as classes } from "./jsxRuntime.module-awBdvHUy.js";
 import { t as __vitePreload } from "../bpmn/main.js";
 import { A as pick, B as without, C as isObject, D as map, E as keys, F as sortBy, L as unionBy, O as matchPattern, P as some, S as isNumber, T as isUndefined, _ as init_dist, c as every, d as findIndex, f as flatten, g as has, h as groupBy, i as assign$1, j as reduce, k as omit, l as filter, p as forEach, r as domify, t as escapeCSS, u as find, v as isArray, w as isString, x as isNil, y as isDefined, z as values } from "./EscapeUtil-B1jzPlMc.js";
@@ -18,6 +18,61 @@ var DEFINITION_KINDS = [
 	"error",
 	"escalation"
 ];
+// ../../libs/modeler-types/src/polyline.ts
+function polylineSegments(points) {
+	return points.slice(1).map((to, index) => {
+		const from = points[index];
+		return {
+			from,
+			to,
+			length: Math.hypot(to.x - from.x, to.y - from.y)
+		};
+	});
+}
+function pointAlongSegment({ from, to }, share) {
+	return {
+		x: from.x + (to.x - from.x) * share,
+		y: from.y + (to.y - from.y) * share
+	};
+}
+function polylineMidpoint(points) {
+	const segments = polylineSegments(points);
+	const half = segments.reduce((sum, { length }) => sum + length, 0) / 2;
+	let travelled = 0;
+	for (const segment of segments) {
+		if (segment.length > 0 && travelled + segment.length >= half) return pointAlongSegment(segment, (half - travelled) / segment.length);
+		travelled += segment.length;
+	}
+	const [first] = points;
+	return first === void 0 ? {
+		x: 0,
+		y: 0
+	} : {
+		x: first.x,
+		y: first.y
+	};
+}
+function isRedundantBend(previous, point, next, tolerance) {
+	const cross = (point.x - previous.x) * (next.y - point.y) - (point.y - previous.y) * (next.x - point.x);
+	if (Math.abs(cross) >= tolerance.collinear) return false;
+	const between = (value, from, to) => value >= Math.min(from, to) - tolerance.beyond && value <= Math.max(from, to) + tolerance.beyond;
+	return between(point.x, previous.x, next.x) && between(point.y, previous.y, next.y);
+}
+function isRepeatedPoint(previous, point, tolerance) {
+	return Math.abs(point.x - previous.x) <= tolerance.beyond && Math.abs(point.y - previous.y) <= tolerance.beyond;
+}
+function withoutRedundantBends(points, tolerance) {
+	const kept = [];
+	points.forEach((point, index) => {
+		const last = kept[kept.length - 1];
+		const isLastPoint = index === points.length - 1;
+		if (last !== void 0 && !isLastPoint && isRepeatedPoint(last, point, tolerance)) return;
+		const beforeLast = kept[kept.length - 2];
+		if (last !== void 0 && beforeLast !== void 0 && isRedundantBend(beforeLast, last, point, tolerance)) kept[kept.length - 1] = point;
+		else kept.push(point);
+	});
+	return kept;
+}
 // ../../node_modules/bpmn-js/lib/BaseModeler.js
 function BaseModeler(options) {
 	BaseViewer.call(this, options);
@@ -10817,6 +10872,143 @@ var modeler_default = { __depends__: [
 		tokenSimulationKeyboardBindings: ["type", KeyboardBindings]
 	}
 ] };
+// ../../libs/element-template-chooser/src/templateProperties.ts
+function applyTemplatePreset(template, presetId) {
+	const preset = presetId ? template.presets?.find(({ id }) => id === presetId) : void 0;
+	if (!preset) return template;
+	return {
+		...template,
+		properties: template.properties.map((property) => property.id !== void 0 && Object.prototype.hasOwnProperty.call(preset.properties, property.id) ? {
+			...property,
+			value: preset.properties[property.id]
+		} : property)
+	};
+}
+function templatePropertyValue(property) {
+	const { choices, optional, type, value } = property;
+	if (value === void 0 && type === "Dropdown" && !optional && choices?.length) return choices[0].value;
+	return value;
+}
+function templatePropertyDisplayText(property) {
+	const value = templatePropertyValue(property);
+	return value === void 0 || value === "" ? void 0 : String(value);
+}
+var IMPLEMENTATION_BINDINGS = [
+	{
+		label: "Topic",
+		bindingType: "property",
+		bindingName: "camunda:topic"
+	},
+	{
+		label: "Delegate",
+		bindingType: "property",
+		bindingName: "camunda:delegateExpression"
+	},
+	{
+		label: "Java class",
+		bindingType: "property",
+		bindingName: "camunda:class"
+	},
+	{
+		label: "Expression",
+		bindingType: "property",
+		bindingName: "camunda:expression"
+	},
+	{
+		label: "Called element",
+		bindingType: "property",
+		bindingName: "calledElement"
+	},
+	{
+		label: "Task Type",
+		bindingType: "zeebe:taskDefinition:type"
+	},
+	{
+		label: "Task Type",
+		bindingType: "zeebe:taskDefinition",
+		bindingProperty: "type"
+	}
+];
+var IMPLEMENTATION_LABELS = [...new Set(IMPLEMENTATION_BINDINGS.map(({ label }) => label))];
+function extractImplementationDetail(properties) {
+	for (const { label, bindingType, bindingName, bindingProperty } of IMPLEMENTATION_BINDINGS) {
+		const value = properties.filter((p) => p.binding.type === bindingType && (!bindingName || p.binding.name === bindingName) && (!bindingProperty || p.binding.property === bindingProperty)).map(templatePropertyDisplayText).find((text) => text !== void 0);
+		if (value) return {
+			label,
+			value
+		};
+	}
+}
+function classifyBinding(binding) {
+	const type = binding.type;
+	if (type === "camunda:out" || type === "camunda:outputParameter" || type === "zeebe:output") return "output";
+	if (type === "camunda:in" || type === "camunda:inputParameter" || type === "camunda:in:businessKey" || type === "zeebe:input") return "input";
+	if (type === "property" || type === "zeebe:property") return "property";
+	if (type === "zeebe:taskHeader") return "property";
+	return "hidden";
+}
+function partitionVisibleProperties(properties) {
+	const visible = properties.filter((property) => property.type !== "Hidden");
+	const inDirection = (direction) => visible.filter((property) => classifyBinding(property.binding) === direction);
+	return {
+		properties: inDirection("property"),
+		inputs: inDirection("input"),
+		outputs: inDirection("output")
+	};
+}
+function propertyDisplayLabel(property) {
+	return property.label ?? property.binding.name ?? property.binding.key;
+}
+function templatePropertyBadges(property) {
+	const badges = [];
+	if (property.constraints?.notEmpty) badges.push("required");
+	if (property.editable === false) badges.push("readOnly");
+	if (property.optional) badges.push("optional");
+	return badges;
+}
+// ../../libs/element-template-chooser/src/chooserTexts.ts
+var TEMPLATE_LIST_TEXTS = {
+	clearSearch: "Clear search",
+	allCategories: "All",
+	noTemplates: "No templates found",
+	noTemplatesHint: "Try a different search term"
+};
+var TEMPLATE_DETAIL_TEXTS = {
+	documentation: "Documentation",
+	properties: "Properties",
+	inputParameters: "Input Parameters",
+	outputParameters: "Output Parameters",
+	noVisibleParameters: "No visible parameters",
+	unnamedProperty: "Unnamed",
+	required: "required",
+	readOnly: "read-only",
+	optional: "optional"
+};
+var CHOOSER_TEXTS = {
+	title: "Element Templates",
+	close: "Close",
+	search: "Search templates...",
+	oneProperty: "{count} property",
+	manyProperties: "{count} properties",
+	noSelection: "Select a template to see its details",
+	apply: "Apply Template"
+};
+var TEMPLATE_KEYS = [
+	...Object.values(TEMPLATE_LIST_TEXTS),
+	...Object.values(TEMPLATE_DETAIL_TEXTS),
+	...IMPLEMENTATION_LABELS
+];
+[...Object.values(CHOOSER_TEXTS), ...TEMPLATE_KEYS];
+// ../../libs/append-menu/src/appendMenuTexts.ts
+var APPEND_MENU_TEXTS = {
+	search: "Search...",
+	paletteTitle: "BPMN",
+	collapse: "Collapse",
+	expand: "Expand",
+	favourites: "Favourites",
+	otherGroup: "Other"
+};
+[...Object.values(APPEND_MENU_TEXTS), ...TEMPLATE_KEYS];
 // ../../libs/append-menu/src/templatePopupEntry.ts
 var TEMPLATE_MARKER = "template-";
 function templateMarkerIndex(key) {
@@ -10873,13 +11065,17 @@ function classifyEntries(entries, allTemplates = []) {
 		if (!entry.action) return;
 		const group = entry.group ?? inheritedGroup;
 		const groupId = group?.id ?? "other";
-		const groupName = group?.name ?? "Other";
 		let bpmnGroup = groupMap.get(groupId);
 		if (!bpmnGroup) {
-			bpmnGroup = {
+			bpmnGroup = group ? {
 				id: groupId,
-				name: groupName,
+				name: group.name,
 				entries: []
+			} : {
+				id: groupId,
+				name: APPEND_MENU_TEXTS.otherGroup,
+				entries: [],
+				isFallback: true
 			};
 			groupMap.set(groupId, bpmnGroup);
 		}
@@ -11232,92 +11428,52 @@ function ExpandableTemplateCard({ enrichedEntry, focused, selected, onClick, onH
 		})
 	});
 }
-// ../../libs/element-template-chooser/src/types.ts
-var fallbackTranslate$1 = (template, replacements = {}) => template.replace(/{([^}]+)}/g, (_, key) => replacements[key] ?? `{${key}}`);
-function applyTemplatePreset(template, presetId) {
-	const preset = presetId ? template.presets?.find(({ id }) => id === presetId) : void 0;
-	if (!preset) return template;
-	return {
-		...template,
-		properties: template.properties.map((property) => property.id !== void 0 && Object.prototype.hasOwnProperty.call(preset.properties, property.id) ? {
-			...property,
-			value: preset.properties[property.id]
-		} : property)
-	};
-}
-function templatePropertyValue(property) {
-	const { choices, optional, type, value } = property;
-	if (value === void 0 && type === "Dropdown" && !optional && choices?.length) return choices[0].value;
-	return value;
-}
-function templatePropertyDisplayText(property) {
-	const value = templatePropertyValue(property);
-	return value === void 0 || value === "" ? void 0 : String(value);
-}
-var IMPLEMENTATION_BINDINGS = [
-	{
-		label: "Topic",
-		bindingType: "property",
-		bindingName: "camunda:topic"
-	},
-	{
-		label: "Delegate",
-		bindingType: "property",
-		bindingName: "camunda:delegateExpression"
-	},
-	{
-		label: "Java class",
-		bindingType: "property",
-		bindingName: "camunda:class"
-	},
-	{
-		label: "Expression",
-		bindingType: "property",
-		bindingName: "camunda:expression"
-	},
-	{
-		label: "Called element",
-		bindingType: "property",
-		bindingName: "calledElement"
-	},
-	{
-		label: "Task Type",
-		bindingType: "zeebe:taskDefinition:type"
-	},
-	{
-		label: "Task Type",
-		bindingType: "zeebe:taskDefinition",
-		bindingProperty: "type"
-	}
-];
-function extractImplementationDetail(properties) {
-	for (const { label, bindingType, bindingName, bindingProperty } of IMPLEMENTATION_BINDINGS) {
-		const value = properties.filter((p) => p.binding.type === bindingType && (!bindingName || p.binding.name === bindingName) && (!bindingProperty || p.binding.property === bindingProperty)).map(templatePropertyDisplayText).find((text) => text !== void 0);
-		if (value) return {
-			label,
-			value
-		};
-	}
-}
-function classifyBinding(binding) {
-	const type = binding.type;
-	if (type === "camunda:out" || type === "camunda:outputParameter" || type === "zeebe:output") return "output";
-	if (type === "camunda:in" || type === "camunda:inputParameter" || type === "camunda:in:businessKey" || type === "zeebe:input") return "input";
-	if (type === "property" || type === "zeebe:property") return "property";
-	if (type === "zeebe:taskHeader") return "property";
-	return "hidden";
-}
-function partitionVisibleProperties(properties) {
-	const visible = properties.filter((property) => property.type !== "Hidden");
-	const inDirection = (direction) => visible.filter((property) => classifyBinding(property.binding) === direction);
-	return {
-		properties: inDirection("property"),
-		inputs: inDirection("input"),
-		outputs: inDirection("output")
-	};
-}
-function propertyDisplayLabel(property) {
-	return property.label ?? property.binding.name ?? property.binding.key;
+// ../../libs/element-template-chooser/src/components/ParameterSection.tsx
+var BADGE_MODIFIERS = {
+	required: "required",
+	readOnly: "readonly",
+	optional: "optional"
+};
+function ParameterSection({ title, items, translate, variant }) {
+	const { classPrefix, badgeClass, heading: Heading } = variant;
+	return u("div", {
+		class: `${classPrefix}-section`,
+		children: [u(Heading, {
+			class: `${classPrefix}-title`,
+			children: title
+		}), u("ul", {
+			class: `${classPrefix}-list`,
+			children: items.map((property, index) => {
+				const displayText = templatePropertyDisplayText(property);
+				return u("li", {
+					class: `${classPrefix}-item`,
+					children: [
+						u("div", {
+							class: `${classPrefix}-header`,
+							children: [u("span", {
+								class: `${classPrefix}-label`,
+								children: propertyDisplayLabel(property) ?? translate(TEMPLATE_DETAIL_TEXTS.unnamedProperty)
+							}), u("div", {
+								class: `${classPrefix}-badges`,
+								children: templatePropertyBadges(property).map((badge) => u("span", {
+									class: `${badgeClass} ${badgeClass}--${BADGE_MODIFIERS[badge]}`,
+									children: translate(TEMPLATE_DETAIL_TEXTS[badge])
+								}, badge))
+							})]
+						}),
+						property.description && u("p", {
+							class: `${classPrefix}-desc`,
+							children: property.description
+						}),
+						displayText && u("code", {
+							class: `${classPrefix}-value`,
+							children: displayText
+						})
+					]
+				}, index);
+			})
+		})]
+	});
 }
 // ../../libs/append-menu/src/components/HoverCard.tsx
 function HoverCard({ position, id, role, onHoverChange, children }) {
@@ -11340,6 +11496,11 @@ function HoverCard({ position, id, role, onHoverChange, children }) {
 	});
 }
 // ../../libs/append-menu/src/components/TemplateHoverCard.tsx
+var HOVER_CARD_PARAMETERS = {
+	classPrefix: "am-hover-param",
+	badgeClass: "am-badge",
+	heading: "h5"
+};
 function TemplateHoverCard({ enrichedEntry, translate, position, onHoverChange }) {
 	const { entry, presetId } = enrichedEntry;
 	const template = enrichedEntry.template && applyTemplatePreset(enrichedEntry.template, presetId);
@@ -11384,7 +11545,7 @@ function TemplateHoverCard({ enrichedEntry, translate, position, onHoverChange }
 							viewBox: "0 0 16 16",
 							fill: "currentColor",
 							children: [u("path", { d: "M4.715 6.542L3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.001 1.001 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" }), u("path", { d: "M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 0 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 0 0-4.243-4.243L6.586 4.672z" })]
-						}), translate("Documentation")]
+						}), translate(TEMPLATE_DETAIL_TEXTS.documentation)]
 					}),
 					u("div", {
 						class: "am-hover-card-meta",
@@ -11402,77 +11563,30 @@ function TemplateHoverCard({ enrichedEntry, translate, position, onHoverChange }
 				class: "am-hover-card-params",
 				children: [
 					properties.length > 0 && u(ParameterSection, {
-						title: translate("Properties"),
+						title: translate(TEMPLATE_DETAIL_TEXTS.properties),
 						items: properties,
-						translate
+						translate,
+						variant: HOVER_CARD_PARAMETERS
 					}),
 					inputs.length > 0 && u(ParameterSection, {
-						title: translate("Input Parameters"),
+						title: translate(TEMPLATE_DETAIL_TEXTS.inputParameters),
 						items: inputs,
-						translate
+						translate,
+						variant: HOVER_CARD_PARAMETERS
 					}),
 					outputs.length > 0 && u(ParameterSection, {
-						title: translate("Output Parameters"),
+						title: translate(TEMPLATE_DETAIL_TEXTS.outputParameters),
 						items: outputs,
-						translate
+						translate,
+						variant: HOVER_CARD_PARAMETERS
 					}),
 					properties.length === 0 && inputs.length === 0 && outputs.length === 0 && u("p", {
 						class: "am-hover-card-no-params",
-						children: translate("No visible parameters")
+						children: translate(TEMPLATE_DETAIL_TEXTS.noVisibleParameters)
 					})
 				]
 			})
 		]
-	});
-}
-function ParameterSection({ title, items, translate }) {
-	return u("div", {
-		class: "am-hover-param-section",
-		children: [u("h5", {
-			class: "am-hover-param-title",
-			children: title
-		}), u("ul", {
-			class: "am-hover-param-list",
-			children: items.map((p, i) => {
-				const displayText = templatePropertyDisplayText(p);
-				return u("li", {
-					class: "am-hover-param-item",
-					children: [
-						u("div", {
-							class: "am-hover-param-header",
-							children: [u("span", {
-								class: "am-hover-param-label",
-								children: propertyDisplayLabel(p) ?? translate("Unnamed")
-							}), u("div", {
-								class: "am-hover-param-badges",
-								children: [
-									p.constraints?.notEmpty && u("span", {
-										class: "am-badge am-badge--required",
-										children: translate("required")
-									}),
-									p.editable === false && u("span", {
-										class: "am-badge am-badge--readonly",
-										children: translate("read-only")
-									}),
-									p.optional && u("span", {
-										class: "am-badge am-badge--optional",
-										children: translate("optional")
-									})
-								]
-							})]
-						}),
-						p.description && u("p", {
-							class: "am-hover-param-desc",
-							children: p.description
-						}),
-						displayText && u("code", {
-							class: "am-hover-param-value",
-							children: displayText
-						})
-					]
-				}, i);
-			})
-		})]
 	});
 }
 // ../../libs/append-menu/src/components/useHoverCardPosition.ts
@@ -11529,7 +11643,7 @@ function TemplatePanel({ entries, categories, translate, search, activeCategory,
 					class: `am-chip ${activeCategory === null ? "am-chip--active" : ""}`,
 					onClick: () => onCategoryChange(null),
 					type: "button",
-					children: translate("All")
+					children: translate(TEMPLATE_LIST_TEXTS.allCategories)
 				}), categories.map((cat) => u("button", {
 					class: `am-chip ${activeCategory === cat.id ? "am-chip--active" : ""}`,
 					onClick: () => onCategoryChange(activeCategory === cat.id ? null : cat.id),
@@ -11544,10 +11658,10 @@ function TemplatePanel({ entries, categories, translate, search, activeCategory,
 					class: "am-empty",
 					children: [u("p", {
 						class: "am-empty-text",
-						children: translate("No templates found")
+						children: translate(TEMPLATE_LIST_TEXTS.noTemplates)
 					}), search && u("p", {
 						class: "am-empty-hint",
-						children: translate("Try a different search term")
+						children: translate(TEMPLATE_LIST_TEXTS.noTemplatesHint)
 					})]
 				}) : entries.map((enriched, idx) => u(ExpandableTemplateCard, {
 					enrichedEntry: enriched,
@@ -11609,11 +11723,11 @@ function BpmnElementPalette({ favouriteEntries, groups, translate, expanded, hig
 			class: "am-palette-header",
 			children: [u("h3", {
 				class: "am-palette-title",
-				children: translate("BPMN")
+				children: translate(APPEND_MENU_TEXTS.paletteTitle)
 			}), u("button", {
 				class: "am-palette-toggle",
 				onClick: onToggleExpand,
-				title: expanded ? translate("Collapse") : translate("Expand"),
+				title: expanded ? translate(APPEND_MENU_TEXTS.collapse) : translate(APPEND_MENU_TEXTS.expand),
 				type: "button",
 				children: u("svg", {
 					width: "12",
@@ -11630,7 +11744,7 @@ function BpmnElementPalette({ favouriteEntries, groups, translate, expanded, hig
 				class: "am-bpmn-group am-bpmn-group--favourites",
 				children: [expanded && u("h4", {
 					class: "am-bpmn-group-title",
-					children: translate("Favourites")
+					children: translate(APPEND_MENU_TEXTS.favourites)
 				}), u("div", {
 					class: `am-bpmn-grid ${expanded ? "" : "am-bpmn-grid--compact"}`,
 					children: favouriteEntries.filter((processed) => !processed.hidden).map((processed) => renderButton(processed, favouriteNavKey(processed.id)))
@@ -11642,7 +11756,7 @@ function BpmnElementPalette({ favouriteEntries, groups, translate, expanded, hig
 					class: "am-bpmn-group",
 					children: [expanded && u("h4", {
 						class: "am-bpmn-group-title",
-						children: group.id === "other" ? translate(group.name) : group.name
+						children: group.isFallback ? translate(group.name) : group.name
 					}), u("div", {
 						class: `am-bpmn-grid ${expanded ? "" : "am-bpmn-grid--compact"}`,
 						children: visibleEntries.map((processed) => renderButton(processed, groupNavKey(group.id, processed.id)))
@@ -11900,7 +12014,7 @@ function AppendMenuOverlay({ templateEntries, bpmnGroups, favourites, translate,
 						ref: searchRef,
 						class: "am-search-input",
 						type: "text",
-						placeholder: translate("Search..."),
+						placeholder: translate(APPEND_MENU_TEXTS.search),
 						value: search,
 						onInput: (e) => setSearch(e.target.value)
 					}),
@@ -11911,7 +12025,7 @@ function AppendMenuOverlay({ templateEntries, bpmnGroups, favourites, translate,
 							searchRef.current?.focus();
 						},
 						type: "button",
-						"aria-label": translate("Clear search"),
+						"aria-label": translate(TEMPLATE_LIST_TEXTS.clearSearch),
 						children: "×"
 					})
 				]
@@ -11959,6 +12073,8 @@ function getPopupMenuContext(popupMenu, target, providerId) {
 	if (!context || typeof context.entries !== "object" || context.entries === null) throw new Error("diagram-js popupMenu._getContext result shape changed: expected an object carrying `entries`. Update popupMenuInternals.ts and its shape test.");
 	return context;
 }
+// ../../libs/element-template-chooser/src/translate.ts
+var fallbackTranslate$1 = (template, replacements = {}) => template.replace(/{([^}]+)}/g, (_, key) => replacements[key] ?? `{${key}}`);
 // ../../libs/append-menu/src/AppendMenuOverride.ts
 var _AppendMenuOverride;
 var INTERCEPTED_PROVIDERS = new Set(["bpmn-append", "bpmn-create"]);
@@ -12496,47 +12612,14 @@ var FlowNavigationModule = {
 	planeNavigation: ["type", PlaneNavigation],
 	linkNavigation: ["type", LinkNavigation]
 };
-// ../../libs/bpmn-layout/src/apply/LayoutApplyHandler.ts
-var _LayoutApplyHandler;
-var MOVE_HINTS = {
-	layout: false,
-	recurse: false
-};
-var RESIZE_HINTS = {
-	layout: false,
-	attachSupport: false
-};
-var WAYPOINT_HINTS = { createElementsBehavior: false };
-var LayoutApplyHandler = class {
-	constructor(modeling, elementRegistry) {
-		this.modeling = modeling;
-		this.elementRegistry = elementRegistry;
-	}
-	preExecute(context) {
-		for (const operation of context.operations) {
-			const element = this.elementRegistry.get(operation.id);
-			if (!element) continue;
-			switch (operation.kind) {
-				case "move":
-					this.modeling.moveShape(element, operation.delta, void 0, MOVE_HINTS);
-					break;
-				case "resize":
-					this.modeling.resizeShape(element, operation.bounds, void 0, RESIZE_HINTS);
-					break;
-				case "waypoints":
-					this.modeling.updateWaypoints(element, operation.waypoints, WAYPOINT_HINTS);
-					break;
-				case "move-label": this.modeling.moveShape(element, operation.delta);
-			}
-		}
-	}
-};
-_LayoutApplyHandler = LayoutApplyHandler;
-_LayoutApplyHandler.$inject = ["modeling", "elementRegistry"];
 // ../../libs/bpmn-layout/src/apply/CleanupHandlers.ts
 var _CleanupApplyHandler;
 var CLEANUP_COMMAND = "layout.cleanup";
 var CLEANUP_MODDLE_COMMAND = "layout.cleanupModdle";
+var TIDY_WAYPOINT_HINTS = {
+	createElementsBehavior: false,
+	labelBehavior: false
+};
 var CleanupApplyHandler = class {
 	constructor(modeling, elementRegistry, commandStack) {
 		this.modeling = modeling;
@@ -12554,7 +12637,7 @@ var CleanupApplyHandler = class {
 			}
 			case "set-waypoints": {
 				const element = this.elementRegistry.get(action.id);
-				if (element) this.modeling.updateWaypoints(element, action.waypoints, WAYPOINT_HINTS);
+				if (element) this.modeling.updateWaypoints(element, action.waypoints, TIDY_WAYPOINT_HINTS);
 				break;
 			}
 			default: moddleActions.push(action);
@@ -12604,8 +12687,10 @@ var CleanupModdleHandler = class {
 	}
 };
 // ../../libs/bpmn-layout/src/cleanup/rules.ts
-var WAYPOINT_EPSILON = .5;
-var COLLINEAR_EPSILON = 1;
+var CLEANUP_BEND_TOLERANCE = {
+	collinear: 1,
+	beyond: .5
+};
 var CONNECTION_TYPES = new Set([
 	"bpmn:SequenceFlow",
 	"bpmn:MessageFlow",
@@ -12724,35 +12809,8 @@ function idsWithDi(definitions) {
 	}
 	return withDi;
 }
-function isDuplicatePoint(a, b) {
-	return Math.abs(a.x - b.x) < WAYPOINT_EPSILON && Math.abs(a.y - b.y) < WAYPOINT_EPSILON;
-}
-function isRedundantBend(previous, point, next) {
-	const ax = point.x - previous.x;
-	const ay = point.y - previous.y;
-	const bx = next.x - point.x;
-	const by = next.y - point.y;
-	if (Math.abs(ax * by - ay * bx) >= COLLINEAR_EPSILON) return false;
-	const withinX = point.x >= Math.min(previous.x, next.x) - WAYPOINT_EPSILON && point.x <= Math.max(previous.x, next.x) + WAYPOINT_EPSILON;
-	const withinY = point.y >= Math.min(previous.y, next.y) - WAYPOINT_EPSILON && point.y <= Math.max(previous.y, next.y) + WAYPOINT_EPSILON;
-	return withinX && withinY;
-}
 function tidyWaypoints(waypoints) {
-	if (waypoints.length < 2) return waypoints;
-	const withoutDuplicates = [waypoints[0]];
-	for (let i = 1; i < waypoints.length; i++) {
-		const point = waypoints[i];
-		const isLast = i === waypoints.length - 1;
-		if (!isDuplicatePoint(withoutDuplicates[withoutDuplicates.length - 1], point) || isLast) withoutDuplicates.push(point);
-	}
-	const tidied = [withoutDuplicates[0]];
-	for (let i = 1; i < withoutDuplicates.length - 1; i++) {
-		const previous = tidied[tidied.length - 1];
-		if (isRedundantBend(previous, withoutDuplicates[i], withoutDuplicates[i + 1])) continue;
-		tidied.push(withoutDuplicates[i]);
-	}
-	tidied.push(withoutDuplicates[withoutDuplicates.length - 1]);
-	return tidied;
+	return withoutRedundantBends(waypoints, CLEANUP_BEND_TOLERANCE);
 }
 function inspectWaypoints(edge, elementId, label) {
 	const waypoints = asArray$1(edge.waypoint);
@@ -12760,7 +12818,7 @@ function inspectWaypoints(edge, elementId, label) {
 	const findings = [];
 	const tidied = tidyWaypoints(waypoints);
 	if (tidied.length === waypoints.length) return findings;
-	const hasDuplicate = waypoints.some((point, i) => i > 0 && isDuplicatePoint(waypoints[i - 1], point));
+	const hasDuplicate = waypoints.some((point, i) => i > 0 && isRepeatedPoint(waypoints[i - 1], point, CLEANUP_BEND_TOLERANCE));
 	const action = {
 		kind: "set-waypoints",
 		id: elementId,
@@ -13031,6 +13089,46 @@ _CleanupService.$inject = [
 	"commandStack",
 	"bpmnjs"
 ];
+// ../../libs/bpmn-layout/src/apply/LayoutApplyHandler.ts
+var _LayoutApplyHandler;
+var MOVE_HINTS = {
+	layout: false,
+	recurse: false
+};
+var RESIZE_HINTS = {
+	layout: false,
+	attachSupport: false
+};
+var WAYPOINT_HINTS = {
+	createElementsBehavior: false,
+	labelBehavior: false
+};
+var LayoutApplyHandler = class {
+	constructor(modeling, elementRegistry) {
+		this.modeling = modeling;
+		this.elementRegistry = elementRegistry;
+	}
+	preExecute(context) {
+		for (const operation of context.operations) {
+			const element = this.elementRegistry.get(operation.id);
+			if (!element) continue;
+			switch (operation.kind) {
+				case "move":
+					this.modeling.moveShape(element, operation.delta, void 0, MOVE_HINTS);
+					break;
+				case "resize":
+					this.modeling.resizeShape(element, operation.bounds, void 0, RESIZE_HINTS);
+					break;
+				case "waypoints":
+					this.modeling.updateWaypoints(element, operation.waypoints, WAYPOINT_HINTS);
+					break;
+				case "move-label": this.modeling.moveShape(element, operation.delta);
+			}
+		}
+	}
+};
+_LayoutApplyHandler = LayoutApplyHandler;
+_LayoutApplyHandler.$inject = ["modeling", "elementRegistry"];
 // ../../libs/bpmn-layout/src/apply/LayoutKeyboard.ts
 var _LayoutKeyboard;
 var FORMAT_KEY = "l";
@@ -13108,72 +13206,60 @@ function sameWaypoints(a, b) {
 function isAssociation(type) {
 	return type.includes("Association");
 }
-function polylineMidpoint(waypoints) {
-	if (waypoints.length === 0) return {
-		x: 0,
-		y: 0
-	};
-	if (waypoints.length === 1) return { ...waypoints[0] };
-	const segments = waypoints.slice(1).map((point, i) => {
-		const previous = waypoints[i];
-		return Math.hypot(point.x - previous.x, point.y - previous.y);
-	});
-	const total = segments.reduce((sum, length) => sum + length, 0);
-	if (total === 0) return { ...waypoints[0] };
-	let travelled = 0;
-	for (let i = 0; i < segments.length; i++) {
-		const length = segments[i];
-		if (travelled + length >= total / 2) {
-			const ratio = length === 0 ? 0 : (total / 2 - travelled) / length;
-			const from = waypoints[i];
-			const to = waypoints[i + 1];
-			return {
-				x: from.x + (to.x - from.x) * ratio,
-				y: from.y + (to.y - from.y) * ratio
-			};
-		}
-		travelled += length;
-	}
-	return { ...waypoints[waypoints.length - 1] };
-}
 function computeLayoutPlan(snapshot, target) {
 	const byId = new Map(snapshot.map((element) => [element.id, element]));
-	const shapeOperations = [];
-	const shapeDeltas = new Map();
-	for (const shape of target.shapes) {
+	const shapes = planShapes(byId, target.shapes);
+	const edges = planEdges(byId, target.edges);
+	const labelFollow = new Map([...shapes.labelFollow, ...edges.labelFollow]);
+	return [
+		...shapes.operations,
+		...edges.operations,
+		...planLabelMoves(snapshot, labelFollow)
+	];
+}
+function planShapes(byId, shapes) {
+	const operations = [];
+	const labelFollow = new Map();
+	for (const shape of shapes) {
 		const current = byId.get(shape.id);
 		if (!current || current.waypoints) continue;
 		const moved = !samePoint(current, shape);
 		const resized = !sameSize(current, shape);
 		if (!moved && !resized) continue;
-		shapeDeltas.set(shape.id, {
-			x: shape.x - current.x,
-			y: shape.y - current.y
-		});
-		if (resized) shapeOperations.push({
+		if (resized) operations.push({
 			kind: "resize",
 			id: shape.id,
 			bounds: clampSize(shape)
 		});
-		else shapeOperations.push({
-			kind: "move",
-			id: shape.id,
-			delta: {
+		else {
+			const delta = {
 				x: shape.x - current.x,
 				y: shape.y - current.y
-			}
-		});
+			};
+			labelFollow.set(shape.id, delta);
+			operations.push({
+				kind: "move",
+				id: shape.id,
+				delta
+			});
+		}
 	}
+	return {
+		operations,
+		labelFollow
+	};
+}
+function planEdges(byId, edges) {
 	const edgeOperations = [];
 	const associationOperations = [];
-	const edgeDeltas = new Map();
-	for (const edge of target.edges) {
+	const labelFollow = new Map();
+	for (const edge of edges) {
 		const current = byId.get(edge.id);
 		if (!current?.waypoints) continue;
 		if (sameWaypoints(current.waypoints, edge.waypoints)) continue;
 		const before = polylineMidpoint(current.waypoints);
 		const after = polylineMidpoint(edge.waypoints);
-		edgeDeltas.set(edge.id, {
+		labelFollow.set(edge.id, {
 			x: after.x - before.x,
 			y: after.y - before.y
 		});
@@ -13185,26 +13271,27 @@ function computeLayoutPlan(snapshot, target) {
 		if (isAssociation(current.type)) associationOperations.push(operation);
 		else edgeOperations.push(operation);
 	}
-	const labelOperations = [];
+	return {
+		operations: [...edgeOperations, ...associationOperations],
+		labelFollow
+	};
+}
+function planLabelMoves(snapshot, labelFollow) {
+	const operations = [];
 	for (const element of snapshot) {
 		if (!element.labelTargetId) continue;
-		const delta = shapeDeltas.get(element.labelTargetId) ?? edgeDeltas.get(element.labelTargetId);
+		const delta = labelFollow.get(element.labelTargetId);
 		if (!delta || samePoint(delta, {
 			x: 0,
 			y: 0
 		})) continue;
-		labelOperations.push({
+		operations.push({
 			kind: "move-label",
 			id: element.id,
 			delta
 		});
 	}
-	return [
-		...shapeOperations,
-		...edgeOperations,
-		...associationOperations,
-		...labelOperations
-	];
+	return operations;
 }
 function clampSize(bounds) {
 	return {
@@ -13358,7 +13445,7 @@ function messageOf$1(error) {
 }
 // ../../libs/bpmn-diff/src/bpmnModdleFactory.ts
 async function loadBpmnModdle() {
-	return resolveBpmnModdleFactory(await __vitePreload(() => import("./createSurface-CzjA2jEt.js").then((n) => n.U), __vite__mapDeps([0,1,2,3,4,5,6,7,8]), import.meta.url));
+	return resolveBpmnModdleFactory(await __vitePreload(() => import("./createSurface-CMRA57M3.js").then((n) => n.U), __vite__mapDeps([0,1,2,3,4,5,6,7,8]), import.meta.url));
 }
 function resolveBpmnModdleFactory(module) {
 	const moddleModule = module;
@@ -13444,7 +13531,7 @@ var BpmnAutoLayoutEngine = class {
 	async computeLayout(xml) {
 		let laidOutXml;
 		let diagnostics;
-		const autoLayout = await __vitePreload(() => import("./dist-DtYzSTQ6.js"), __vite__mapDeps([9,0,1,2,3,4,5,6,7,8]), import.meta.url).catch((error) => {
+		const autoLayout = await __vitePreload(() => import("./dist-DZqjNsVC.js"), __vite__mapDeps([9,0,1,2,3,4,5,6,7,8]), import.meta.url).catch((error) => {
 			throw new LayoutEngineError(`Could not load the layout engine: ${messageOf(error)}`, error);
 		});
 		try {
@@ -14029,11 +14116,20 @@ var FollowNameBehavior = class {
 };
 _FollowNameBehavior = FollowNameBehavior;
 _FollowNameBehavior.$inject = ["eventBus", "elementIds"];
+// ../../libs/element-ids/src/idFromNameTexts.ts
+var ID_FROM_NAME_TEXTS = {
+	generate: "Generate from name",
+	review: "Review all IDs…",
+	rename: "Rename the ID to {id}",
+	nameMissing: "Add a name to generate the ID from it.",
+	alreadyFollowsName: "The ID already follows the name."
+};
+Object.values(ID_FROM_NAME_TEXTS);
 // ../../libs/element-ids/src/IdFromNameEntry.ts
 var DISABLED_REASONS = {
-	none: "Add a name to generate the ID from it.",
-	skipped: "Add a name to generate the ID from it.",
-	matches: "The ID already follows the name."
+	none: ID_FROM_NAME_TEXTS.nameMissing,
+	skipped: ID_FROM_NAME_TEXTS.nameMissing,
+	matches: ID_FROM_NAME_TEXTS.alreadyFollowsName
 };
 function IdFromNameEntry({ element, proposalFor, renameFromName, openReview, translate }) {
 	const proposal = proposalFor(element);
@@ -14045,16 +14141,16 @@ function IdFromNameEntry({ element, proposalFor, renameFromName, openReview, tra
 		type: "button",
 		class: "eid-link",
 		disabled: disabledReason !== void 0,
-		title: disabledReason ? translate(disabledReason) : translate("Rename the ID to {id}", { id: proposal?.newId ?? "" }),
+		title: disabledReason ? translate(disabledReason) : translate(ID_FROM_NAME_TEXTS.rename, { id: proposal?.newId ?? "" }),
 		onClick: () => renameFromName(element)
-	}, translate("Generate from name")), openReview && k("span", {
+	}, translate(ID_FROM_NAME_TEXTS.generate)), openReview && k("span", {
 		"class": "eid-separator",
 		"aria-hidden": "true"
 	}, "·"), openReview && k("button", {
 		type: "button",
 		class: "eid-link",
 		onClick: openReview
-	}, translate("Review all IDs…")));
+	}, translate(ID_FROM_NAME_TEXTS.review)));
 }
 // ../../libs/element-ids/src/translate.ts
 var fallbackTranslate = (template, replacements = {}) => template.replace(/{([^}]+)}/g, (_, key) => replacements[key] ?? `{${key}}`);
@@ -14108,14 +14204,22 @@ var ElementIdsModule = {
 	followNameBehavior: ["type", FollowNameBehavior],
 	idFromNamePropertiesProvider: ["type", IdFromNamePropertiesProvider]
 };
-// ../../libs/definition-search/src/DefinitionSearchEntry.tsx
-var SEARCH_DEBOUNCE_MS = 150;
-var MAX_LISTED_USAGES = 3;
-var HINTS = {
+// ../../libs/definition-search/src/definitionSearchTexts.ts
+var DEFINITION_SEARCH_TEXTS = {
+	label: "Search other models",
+	placeholder: "Name or code",
+	thrownBy: "thrown by {elements}",
+	caughtBy: "caught by {elements}"
+};
+var SEARCH_STATUS_HINTS = {
 	searching: "Searching…",
 	done: "No matches in other models",
 	failed: "Search failed"
 };
+[...Object.values(DEFINITION_SEARCH_TEXTS), ...Object.values(SEARCH_STATUS_HINTS)];
+// ../../libs/definition-search/src/DefinitionSearchEntry.tsx
+var SEARCH_DEBOUNCE_MS = 150;
+var MAX_LISTED_USAGES = 3;
 function DefinitionSearchEntry(props) {
 	const { id, kind, search, pick, translate } = props;
 	const [text, setText] = d("");
@@ -14150,7 +14254,7 @@ function DefinitionSearchEntry(props) {
 		};
 		const thrownBy = byRole("throw");
 		const caughtBy = byRole("catch");
-		return [thrownBy && translate("thrown by {elements}", { elements: thrownBy }), caughtBy && translate("caught by {elements}", { elements: caughtBy })].filter(Boolean).join(" · ");
+		return [thrownBy && translate(DEFINITION_SEARCH_TEXTS.thrownBy, { elements: thrownBy }), caughtBy && translate(DEFINITION_SEARCH_TEXTS.caughtBy, { elements: caughtBy })].filter(Boolean).join(" · ");
 	};
 	const wrap = (index, length) => length === 0 ? 0 : (index + length) % length;
 	h(() => {
@@ -14203,7 +14307,7 @@ function DefinitionSearchEntry(props) {
 				u$1("label", {
 					for: inputId,
 					class: "bio-properties-panel-label",
-					children: translate("Search other models")
+					children: translate(DEFINITION_SEARCH_TEXTS.label)
 				}),
 				u$1("input", {
 					id: inputId,
@@ -14213,7 +14317,7 @@ function DefinitionSearchEntry(props) {
 					role: "combobox",
 					autoComplete: "off",
 					spellcheck: false,
-					placeholder: translate("Name or code"),
+					placeholder: translate(DEFINITION_SEARCH_TEXTS.placeholder),
 					"aria-autocomplete": "list",
 					"aria-expanded": showList,
 					"aria-controls": listId,
@@ -14238,7 +14342,7 @@ function DefinitionSearchEntry(props) {
 						role: "option",
 						"aria-disabled": "true",
 						class: "definition-search-hint",
-						children: translate(HINTS[status])
+						children: translate(SEARCH_STATUS_HINTS[status])
 					}), results.map((definition, index) => {
 						const usages = describeUsages(definition.usages);
 						return u$1("li", {
@@ -14463,7 +14567,7 @@ function annotateEntry(entry, annotation, translate) {
 	const search = annotation.keywords.length === 0 ? entry.search : [...new Set([
 		...searchTermsOf(entry),
 		...annotation.keywords,
-		...annotation.keywords.map(translate)
+		...annotation.keywords.map((keyword) => translate(keyword))
 	])];
 	return {
 		...entry,
@@ -15030,6 +15134,6 @@ function createReporter(sinks) {
 		}
 	};
 }
-export { isTemplatePopupEntry as A, AppendMenuModule as C, propertyDisplayLabel as D, partitionVisibleProperties as E, elementIdSettingsOf as F, modeler_default as M, createReviver as N, templatePropertyDisplayText as O, Modeler as P, FlowNavigationModule as S, fallbackTranslate$1 as T, buildLintModules as _, createSurfaceLintHandle as a, ElementIdsModule as b, proposeSurfaceElementIds as c, subscribeFormatted as d, wireContentSaved as f, ELEMENT_POPUP_MENUS as g, BPMN_TAB as h, cleanupSurfaceDiagram as i, templateIdOfEntryKey as j, u as k, renameSurfaceElementIds as l, createPopupMenuAnnotationsModule as m, applyElementIdSettings as n, formatSurfaceDiagram as o, ReplaceTemplatesTabModule as p, applyFavouriteBpmnElements as r, installClipboardSupport as s, createReporter as t, subscribeCommandStackChanged as u, lintElementIdConvention as v, extractImplementationDetail as w, createBpmnLayoutModule as x, createDefinitionSearchModule as y };
+export { TEMPLATE_DETAIL_TEXTS as A, AppendMenuModule as C, isTemplatePopupEntry as D, u as E, createReviver as F, Modeler as I, elementIdSettingsOf as L, extractImplementationDetail as M, partitionVisibleProperties as N, templateIdOfEntryKey as O, modeler_default as P, FlowNavigationModule as S, ParameterSection as T, buildLintModules as _, createSurfaceLintHandle as a, ElementIdsModule as b, proposeSurfaceElementIds as c, subscribeFormatted as d, wireContentSaved as f, ELEMENT_POPUP_MENUS as g, BPMN_TAB as h, cleanupSurfaceDiagram as i, TEMPLATE_LIST_TEXTS as j, CHOOSER_TEXTS as k, renameSurfaceElementIds as l, createPopupMenuAnnotationsModule as m, applyElementIdSettings as n, formatSurfaceDiagram as o, ReplaceTemplatesTabModule as p, applyFavouriteBpmnElements as r, installClipboardSupport as s, createReporter as t, subscribeCommandStackChanged as u, lintElementIdConvention as v, fallbackTranslate$1 as w, createBpmnLayoutModule as x, createDefinitionSearchModule as y };
 
-//# sourceMappingURL=reporting-Bgp2TgWv.js.map
+//# sourceMappingURL=reporting-hneEWqz9.js.map

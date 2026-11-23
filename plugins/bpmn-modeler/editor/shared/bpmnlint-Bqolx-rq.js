@@ -1,10 +1,11 @@
 import { a as __toESM, i as __toCommonJS, n as __esmMin, r as __exportAll, t as __commonJSMin } from "./rolldown-runtime-DQp2zzRu.js";
-import { _ as _defineProperty } from "./editorLayout-Dxr4ugLL.js";
+import { _ as _defineProperty } from "./editorLayout-lsihKWWK.js";
 import { a as surfaceModeSupports } from "../bpmn/main.js";
 import { D as map, _ as init_dist$2, g as has, h as groupBy, i as assign, j as reduce, n as escapeHTML, r as domify, s as dist_exports$2, x as isNil } from "./EscapeUtil-B1jzPlMc.js";
 import { a as is$1, i as init_ModelUtil } from "./ModelUtil-BGe9jbj7.js";
 import { i as require_semver_compare, n as moddle_utils_exports, t as init_moddle_utils } from "./moddle-utils-CKD1iZGs.js";
 import { a as dist_exports$3, c as init_dist$5, g as tags, i as init_dist$3, m as styleTags, n as ExternalTokenizer, p as init_dist$4, r as LRParser, t as ContextTracker } from "./dist-BWHN8Och.js";
+import { t as ExecutionPlatformAttributes } from "./executionPlatformAttributes-BJWbeLxc.js";
 // ../../libs/modeler-types/src/lint.ts
 var LIVE_MODDLE_PREFIXES = new Set([
 	"bpmn",
@@ -4533,6 +4534,32 @@ var require_cancel_execution_listener = __commonJSMin(((exports, module) => {
 		return { check };
 	});
 }));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/collapsed-subprocess.js
+var require_collapsed_subprocess = __commonJSMin(((exports, module) => {
+	var { is } = __toCommonJS(index_esm_exports);
+	var { ERROR_TYPES } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(di, reporter) {
+			if (!isCollapsedSubProcess(di)) return;
+			const node = di.bpmnElement;
+			reportErrors(node, reporter, {
+				message: `A <${node.$type}> must be expanded`,
+				data: {
+					type: ERROR_TYPES.ELEMENT_COLLAPSED_NOT_ALLOWED,
+					node,
+					parentNode: null,
+					allowedVersion: "8.4"
+				}
+			});
+		}
+		return { check };
+	});
+	function isCollapsedSubProcess(di) {
+		return is(di, "bpmndi:BPMNShape") && is(di.get("bpmnElement"), "bpmn:SubProcess") && di.get("isExpanded") !== true;
+	}
+}));
 // ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/connector-properties/config.js
 var require_config$3 = __commonJSMin(((exports, module) => {
 	var { getPath, pathConcat } = (init_moddle_utils(), __toCommonJS(moddle_utils_exports));
@@ -6751,6 +6778,30 @@ var require_implementation = __commonJSMin(((exports, module) => {
 		return is(node, "bpmn:AdHocSubProcess");
 	}
 }));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/inclusive-gateway.js
+var require_inclusive_gateway = __commonJSMin(((exports, module) => {
+	var { is } = __toCommonJS(index_esm_exports);
+	var { ERROR_TYPES } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			if (!is(node, "bpmn:InclusiveGateway")) return;
+			const incoming = node.get("incoming");
+			if (incoming && incoming.length > 1) reportErrors(node, reporter, {
+				message: `Element of type <${node.$type}> must have one property <incoming> of type <bpmn:SequenceFlow>`,
+				path: ["incoming"],
+				data: {
+					type: ERROR_TYPES.PROPERTY_NOT_ALLOWED,
+					node,
+					parentNode: null,
+					property: "incoming"
+				}
+			});
+		}
+		return { check };
+	});
+}));
 // ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/io-mapping.js
 var require_io_mapping = __commonJSMin(((exports, module) => {
 	var { findExtensionElement, hasProperties } = require_element();
@@ -6918,6 +6969,171 @@ var require_message_reference = __commonJSMin(((exports, module) => {
 		return annotateRule("message-reference", { check });
 	});
 }));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-before-all-execution-listener.js
+var require_no_before_all_execution_listener = __commonJSMin(((exports, module) => {
+	var { getPath, pathConcat } = (init_moddle_utils(), __toCommonJS(moddle_utils_exports));
+	var { findExtensionElement } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	var { ERROR_TYPES } = require_error_types();
+	var ALLOWED_VERSION = "8.10";
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			const executionListeners = findExtensionElement(node, "zeebe:ExecutionListeners");
+			if (!executionListeners) return;
+			const errors = executionListeners.get("listeners").flatMap((listener) => {
+				if (listener.get("eventType") !== "beforeAll") return [];
+				return [{
+					message: `Property <eventType> of <zeebe:ExecutionListener> with value <beforeAll> only allowed by Camunda ${ALLOWED_VERSION} or newer`,
+					path: pathConcat(getPath(listener, node), "eventType"),
+					data: {
+						type: ERROR_TYPES.PROPERTY_VALUE_NOT_ALLOWED,
+						node: listener,
+						parentNode: node,
+						property: "eventType",
+						allowedVersion: ALLOWED_VERSION
+					}
+				}];
+			});
+			if (errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-binding-type.js
+var require_no_binding_type = __commonJSMin(((exports, module) => {
+	var { isAny } = __toCommonJS(index_esm_exports);
+	var { hasProperties, findExtensionElement } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			if (!isAny(node, [
+				"bpmn:BusinessRuleTask",
+				"bpmn:CallActivity",
+				"bpmn:UserTask"
+			])) return;
+			const extensionElement = findExtensionElement(node, [
+				"zeebe:CalledDecision",
+				"zeebe:CalledElement",
+				"zeebe:FormDefinition"
+			]);
+			if (!extensionElement) return;
+			const errors = hasProperties(extensionElement, { bindingType: {
+				allowed: (value) => !value || value === "latest",
+				allowedVersion: "8.6"
+			} }, node);
+			if (errors && errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-business-id.js
+var require_no_business_id = __commonJSMin(((exports, module) => {
+	var { is } = __toCommonJS(index_esm_exports);
+	var { hasProperties, findExtensionElement } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	var ALLOWED_VERSION = "8.10";
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			if (!is(node, "bpmn:CallActivity")) return;
+			const calledElement = findExtensionElement(node, "zeebe:CalledElement");
+			if (!calledElement) return;
+			const errors = hasProperties(calledElement, { businessId: {
+				allowed: false,
+				allowedVersion: ALLOWED_VERSION
+			} }, node);
+			if (errors && errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-cancel-execution-listener.js
+var require_no_cancel_execution_listener = __commonJSMin(((exports, module) => {
+	var { findExtensionElement, hasProperties } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	var ALLOWED_VERSION = "8.10";
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			const executionListeners = findExtensionElement(node, "zeebe:ExecutionListeners");
+			if (!executionListeners) return;
+			const errors = executionListeners.get("listeners").flatMap((listener) => hasProperties(listener, { eventType: {
+				allowed: (value) => value !== "cancel",
+				allowedVersion: ALLOWED_VERSION
+			} }, node));
+			if (errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-candidate-users.js
+var require_no_candidate_users = __commonJSMin(((exports, module) => {
+	var { is } = __toCommonJS(index_esm_exports);
+	var { findExtensionElement, hasProperties } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			if (!is(node, "bpmn:UserTask")) return;
+			const assignmentDefinition = findExtensionElement(node, "zeebe:AssignmentDefinition");
+			if (!assignmentDefinition) return;
+			const errors = hasProperties(assignmentDefinition, { candidateUsers: {
+				allowed: false,
+				allowedVersion: "8.2"
+			} }, node);
+			if (errors && errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-execution-listener-headers.js
+var require_no_execution_listener_headers = __commonJSMin(((exports, module) => {
+	var { findExtensionElement } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	var { ERROR_TYPES } = require_error_types();
+	var { getPath } = (init_moddle_utils(), __toCommonJS(moddle_utils_exports));
+	var ALLOWED_VERSION = "8.10";
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			const executionListeners = findExtensionElement(node, "zeebe:ExecutionListeners");
+			if (!executionListeners) return;
+			const errors = executionListeners.get("listeners").flatMap((listener) => {
+				const headers = listener.get("headers");
+				if (!headers) return [];
+				return [{
+					message: `Property <zeebe:TaskHeaders> of <zeebe:ExecutionListener> only allowed by Camunda ${ALLOWED_VERSION}`,
+					path: getPath(headers, node),
+					data: {
+						type: ERROR_TYPES.PROPERTY_NOT_ALLOWED,
+						node: listener,
+						parentNode: node,
+						property: "headers",
+						allowedVersion: ALLOWED_VERSION
+					}
+				}];
+			});
+			if (errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-execution-listeners.js
+var require_no_execution_listeners = __commonJSMin(((exports, module) => {
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	var { hasNoExtensionElement } = require_element();
+	var ALLOWED_VERSION = "8.6";
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			const errors = hasNoExtensionElement(node, "zeebe:ExecutionListeners", node, ALLOWED_VERSION);
+			if (errors && errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
+}));
 // ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-expression.js
 var require_no_expression = __commonJSMin(((exports, module) => {
 	var { is } = __toCommonJS(index_esm_exports);
@@ -7023,6 +7239,19 @@ var require_no_interrupting_event_subprocess = __commonJSMin(((exports, module) 
 	function isEventSubProcess(node) {
 		return is(node, "bpmn:SubProcess") && node.get("triggeredByEvent");
 	}
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-job-priority-definition.js
+var require_no_job_priority_definition = __commonJSMin(((exports, module) => {
+	var { hasNoExtensionElement } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			const errors = hasNoExtensionElement(node, "zeebe:JobPriorityDefinition", node, "8.10");
+			if (errors && errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
 }));
 // ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-loop.js
 var require_no_loop = __commonJSMin(((exports, module) => {
@@ -7229,6 +7458,178 @@ var require_no_multiple_none_start_events = __commonJSMin(((exports, module) => 
 					}
 				});
 			});
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-priority-definition.js
+var require_no_priority_definition = __commonJSMin(((exports, module) => {
+	var { hasNoExtensionElement } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			const errors = hasNoExtensionElement(node, "zeebe:PriorityDefinition", node, "8.6");
+			if (errors && errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-propagate-all-parent-variables.js
+var require_no_propagate_all_parent_variables = __commonJSMin(((exports, module) => {
+	var { is } = __toCommonJS(index_esm_exports);
+	var { findExtensionElement, hasProperties } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			if (!is(node, "bpmn:CallActivity")) return;
+			const calledElement = findExtensionElement(node, "zeebe:CalledElement");
+			if (!calledElement) return;
+			const errors = hasProperties(calledElement, { propagateAllParentVariables: {
+				allowed: function(value) {
+					return value;
+				},
+				allowedVersion: "8.2"
+			} }, node);
+			if (errors && errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-signal-event-sub-process.js
+var require_no_signal_event_sub_process = __commonJSMin(((exports, module) => {
+	var { is } = __toCommonJS(index_esm_exports);
+	var { reportErrors } = require_reporter();
+	var { getEventDefinition } = require_element();
+	var { ERROR_TYPES } = require_error_types();
+	var { skipInNonExecutableProcess } = require_rule();
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			if (!is(node, "bpmn:StartEvent")) return;
+			const eventDefinition = getEventDefinition(node);
+			if (!eventDefinition || !is(eventDefinition, "bpmn:SignalEventDefinition")) return;
+			const { $parent: parent } = node;
+			if (parent && is(parent, "bpmn:SubProcess")) reportErrors(node, reporter, {
+				message: "Element of type <bpmn:StartEvent> with event definition of type <bpmn:SignalEventDefinition> not allowed as child of <bpmn:SubProcess>",
+				path: null,
+				data: {
+					type: ERROR_TYPES.CHILD_ELEMENT_TYPE_NOT_ALLOWED,
+					node,
+					parentNode: null,
+					eventDefinition,
+					parent,
+					allowedVersion: "8.3"
+				}
+			});
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-task-listeners.js
+var require_no_task_listeners = __commonJSMin(((exports, module) => {
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	var { hasNoExtensionElement } = require_element();
+	var ALLOWED_VERSION = "8.8";
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			const errors = hasNoExtensionElement(node, "zeebe:TaskListeners", node, ALLOWED_VERSION);
+			if (errors && errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-task-schedule.js
+var require_no_task_schedule = __commonJSMin(((exports, module) => {
+	var { getPath, pathConcat } = (init_moddle_utils(), __toCommonJS(moddle_utils_exports));
+	var { hasNoExtensionElement } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			const errors = hasNoExtensionElement(node, "zeebe:TaskSchedule", node, "8.2");
+			if (errors && errors.length) {
+				errors.forEach((error) => {
+					const { extensionElement: taskSchedule } = error.data;
+					const path = getPath(taskSchedule, node);
+					const paths = [];
+					if (path && taskSchedule.get("dueDate")) paths.push(pathConcat(path, "dueDate"));
+					if (path && taskSchedule.get("followUpDate")) paths.push(pathConcat(path, "followUpDate"));
+					if (paths.length) error.paths = paths;
+				});
+				reportErrors(node, reporter, errors);
+			}
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-template.js
+var require_no_template = __commonJSMin(((exports, module) => {
+	var { hasProperties } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			const errors = hasProperties(node, { modelerTemplate: {
+				allowed: false,
+				allowedVersion: "8.0"
+			} }, node);
+			if (errors && errors.length) reportErrors(node, reporter, errors);
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-version-tag.js
+var require_no_version_tag = __commonJSMin(((exports, module) => {
+	var { is } = __toCommonJS(index_esm_exports);
+	var { hasNoExtensionElement } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	var ALLOWED_VERSION = "8.6";
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			if (is(node, "bpmn:Process")) {
+				const errors = hasNoExtensionElement(node, "zeebe:VersionTag", node, ALLOWED_VERSION);
+				if (errors && errors.length) reportErrors(node, reporter, errors);
+			}
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-zeebe-properties.js
+var require_no_zeebe_properties = __commonJSMin(((exports, module) => {
+	var { getPath, pathConcat } = (init_moddle_utils(), __toCommonJS(moddle_utils_exports));
+	var { hasNoExtensionElement } = require_element();
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			const errors = hasNoExtensionElement(node, "zeebe:Properties", node, "8.1");
+			if (errors && errors.length) {
+				errors.forEach((error) => {
+					const { extensionElement } = error.data;
+					const paths = extensionElement.get("properties").map((property) => getPath(property, node)).filter((path) => path).map((path) => pathConcat(path, "name"));
+					if (paths.length) error.paths = paths;
+				});
+				reportErrors(node, reporter, errors);
+			}
+		}
+		return { check };
+	});
+}));
+// ../../node_modules/bpmnlint-plugin-camunda-compat/rules/camunda-cloud/no-zeebe-user-task.js
+var require_no_zeebe_user_task = __commonJSMin(((exports, module) => {
+	var { is } = __toCommonJS(index_esm_exports);
+	var { reportErrors } = require_reporter();
+	var { skipInNonExecutableProcess } = require_rule();
+	var { hasNoExtensionElement } = require_element();
+	var ALLOWED_VERSION = "8.5";
+	module.exports = skipInNonExecutableProcess(function() {
+		function check(node, reporter) {
+			if (!is(node, "bpmn:UserTask")) return;
+			const errors = hasNoExtensionElement(node, "zeebe:UserTask", node, ALLOWED_VERSION);
+			if (errors && errors.length) reportErrors(node, reporter, errors);
 		}
 		return { check };
 	});
@@ -8182,6 +8583,7 @@ var import_agent_tool_output_key = __toESM(require_agent_tool_output_key(), 1);
 var import_before_all_execution_listener = __toESM(require_before_all_execution_listener(), 1);
 var import_called_element = __toESM(require_called_element(), 1);
 var import_cancel_execution_listener = __toESM(require_cancel_execution_listener(), 1);
+var import_collapsed_subprocess = __toESM(require_collapsed_subprocess(), 1);
 var import_connector_properties = __toESM(require_connector_properties(), 1);
 var import_duplicate_execution_listener_headers = __toESM(require_duplicate_execution_listener_headers(), 1);
 var import_duplicate_execution_listeners = __toESM(require_duplicate_execution_listeners(), 1);
@@ -8196,14 +8598,32 @@ var import_execution_listener = __toESM(require_execution_listener(), 1);
 var import_feel = __toESM(require_feel(), 1);
 var import_feel_compatibility = __toESM(require_feel_compatibility(), 1);
 var import_implementation = __toESM(require_implementation(), 1);
+var import_inclusive_gateway = __toESM(require_inclusive_gateway(), 1);
 var import_io_mapping = __toESM(require_io_mapping(), 1);
 var import_link_event$1 = __toESM(require_link_event(), 1);
 var import_loop_characteristics = __toESM(require_loop_characteristics(), 1);
 var import_message_reference = __toESM(require_message_reference(), 1);
+var import_no_before_all_execution_listener = __toESM(require_no_before_all_execution_listener(), 1);
+var import_no_binding_type = __toESM(require_no_binding_type(), 1);
+var import_no_business_id = __toESM(require_no_business_id(), 1);
+var import_no_cancel_execution_listener = __toESM(require_no_cancel_execution_listener(), 1);
+var import_no_candidate_users = __toESM(require_no_candidate_users(), 1);
+var import_no_execution_listener_headers = __toESM(require_no_execution_listener_headers(), 1);
+var import_no_execution_listeners = __toESM(require_no_execution_listeners(), 1);
 var import_no_expression = __toESM(require_no_expression(), 1);
 var import_no_interrupting_event_subprocess = __toESM(require_no_interrupting_event_subprocess(), 1);
+var import_no_job_priority_definition = __toESM(require_no_job_priority_definition(), 1);
 var import_no_loop = __toESM(require_no_loop(), 1);
 var import_no_multiple_none_start_events = __toESM(require_no_multiple_none_start_events(), 1);
+var import_no_priority_definition = __toESM(require_no_priority_definition(), 1);
+var import_no_propagate_all_parent_variables = __toESM(require_no_propagate_all_parent_variables(), 1);
+var import_no_signal_event_sub_process = __toESM(require_no_signal_event_sub_process(), 1);
+var import_no_task_listeners = __toESM(require_no_task_listeners(), 1);
+var import_no_task_schedule = __toESM(require_no_task_schedule(), 1);
+var import_no_template = __toESM(require_no_template(), 1);
+var import_no_version_tag = __toESM(require_no_version_tag(), 1);
+var import_no_zeebe_properties = __toESM(require_no_zeebe_properties(), 1);
+var import_no_zeebe_user_task = __toESM(require_no_zeebe_user_task(), 1);
 var import_priority_definition = __toESM(require_priority_definition(), 1);
 var import_secrets = __toESM(require_secrets(), 1);
 var import_sequence_flow_condition = __toESM(require_sequence_flow_condition(), 1);
@@ -9223,15 +9643,18 @@ var camunda_default = {
 	emumerations: []
 };
 var PLUGIN = "bpmnlint-plugin-camunda-compat";
+var FAMILY = "camunda-platform";
 var CONFIG = "camunda-platform-7-24";
-var extendsLayer2 = `plugin:camunda-compat/${CONFIG}`;
+var configName = CONFIG;
+var configFamily = FAMILY;
+var configNames = Object.keys(import_bpmnlint_plugin_camunda_compat.default.configs).filter((name) => name.startsWith(`${FAMILY}-`));
 var moddleExtension = {
 	prefix: "camunda",
 	descriptor: camunda_default
 };
 var camunda7Rules = import_bpmnlint_plugin_camunda_compat.default.configs[CONFIG];
 var resolverEntries2 = {
-	[`config:${PLUGIN}/${CONFIG}`]: import_bpmnlint_plugin_camunda_compat.default.configs[CONFIG],
+	...Object.fromEntries(configNames.map((name) => [`config:${PLUGIN}/${name}`, import_bpmnlint_plugin_camunda_compat.default.configs[name]])),
 	[`rule:${PLUGIN}/history-time-to-live`]: import_history_time_to_live.default
 };
 var zeebe_default = {
@@ -9827,15 +10250,18 @@ var zeebe_default = {
 	]
 };
 var PLUGIN2 = "bpmnlint-plugin-camunda-compat";
+var FAMILY2 = "camunda-cloud";
 var CONFIG2 = "camunda-cloud-8-11";
-var extendsLayer3 = `plugin:camunda-compat/${CONFIG2}`;
+var configName2 = CONFIG2;
+var configFamily2 = FAMILY2;
+var configNames2 = Object.keys(import_bpmnlint_plugin_camunda_compat.default.configs).filter((name) => name.startsWith(`${FAMILY2}-`));
 var moddleExtension2 = {
 	prefix: "zeebe",
 	descriptor: zeebe_default
 };
 var camunda8Rules = import_bpmnlint_plugin_camunda_compat.default.configs[CONFIG2];
 var resolverEntries3 = {
-	[`config:${PLUGIN2}/${CONFIG2}`]: import_bpmnlint_plugin_camunda_compat.default.configs[CONFIG2],
+	...Object.fromEntries(configNames2.map((name) => [`config:${PLUGIN2}/${name}`, import_bpmnlint_plugin_camunda_compat.default.configs[name]])),
 	[`rule:${PLUGIN2}/ad-hoc-sub-process`]: import_ad_hoc_sub_process$1.default,
 	[`rule:${PLUGIN2}/agent-fromai-contract`]: import_agent_fromai_contract.default,
 	[`rule:${PLUGIN2}/agent-tool-documentation`]: import_agent_tool_documentation.default,
@@ -9843,6 +10269,7 @@ var resolverEntries3 = {
 	[`rule:${PLUGIN2}/before-all-execution-listener`]: import_before_all_execution_listener.default,
 	[`rule:${PLUGIN2}/called-element`]: import_called_element.default,
 	[`rule:${PLUGIN2}/cancel-execution-listener`]: import_cancel_execution_listener.default,
+	[`rule:${PLUGIN2}/collapsed-subprocess`]: import_collapsed_subprocess.default,
 	[`rule:${PLUGIN2}/connector-properties`]: import_connector_properties.default,
 	[`rule:${PLUGIN2}/duplicate-execution-listener-headers`]: import_duplicate_execution_listener_headers.default,
 	[`rule:${PLUGIN2}/duplicate-execution-listeners`]: import_duplicate_execution_listeners.default,
@@ -9857,14 +10284,32 @@ var resolverEntries3 = {
 	[`rule:${PLUGIN2}/feel`]: import_feel.default,
 	[`rule:${PLUGIN2}/feel-compatibility`]: import_feel_compatibility.default,
 	[`rule:${PLUGIN2}/implementation`]: import_implementation.default,
+	[`rule:${PLUGIN2}/inclusive-gateway`]: import_inclusive_gateway.default,
 	[`rule:${PLUGIN2}/io-mapping`]: import_io_mapping.default,
 	[`rule:${PLUGIN2}/link-event`]: import_link_event$1.default,
 	[`rule:${PLUGIN2}/loop-characteristics`]: import_loop_characteristics.default,
 	[`rule:${PLUGIN2}/message-reference`]: import_message_reference.default,
+	[`rule:${PLUGIN2}/no-before-all-execution-listener`]: import_no_before_all_execution_listener.default,
+	[`rule:${PLUGIN2}/no-binding-type`]: import_no_binding_type.default,
+	[`rule:${PLUGIN2}/no-business-id`]: import_no_business_id.default,
+	[`rule:${PLUGIN2}/no-cancel-execution-listener`]: import_no_cancel_execution_listener.default,
+	[`rule:${PLUGIN2}/no-candidate-users`]: import_no_candidate_users.default,
+	[`rule:${PLUGIN2}/no-execution-listener-headers`]: import_no_execution_listener_headers.default,
+	[`rule:${PLUGIN2}/no-execution-listeners`]: import_no_execution_listeners.default,
 	[`rule:${PLUGIN2}/no-expression`]: import_no_expression.default,
 	[`rule:${PLUGIN2}/no-interrupting-event-subprocess`]: import_no_interrupting_event_subprocess.default,
+	[`rule:${PLUGIN2}/no-job-priority-definition`]: import_no_job_priority_definition.default,
 	[`rule:${PLUGIN2}/no-loop`]: import_no_loop.default,
 	[`rule:${PLUGIN2}/no-multiple-none-start-events`]: import_no_multiple_none_start_events.default,
+	[`rule:${PLUGIN2}/no-priority-definition`]: import_no_priority_definition.default,
+	[`rule:${PLUGIN2}/no-propagate-all-parent-variables`]: import_no_propagate_all_parent_variables.default,
+	[`rule:${PLUGIN2}/no-signal-event-sub-process`]: import_no_signal_event_sub_process.default,
+	[`rule:${PLUGIN2}/no-task-listeners`]: import_no_task_listeners.default,
+	[`rule:${PLUGIN2}/no-task-schedule`]: import_no_task_schedule.default,
+	[`rule:${PLUGIN2}/no-template`]: import_no_template.default,
+	[`rule:${PLUGIN2}/no-version-tag`]: import_no_version_tag.default,
+	[`rule:${PLUGIN2}/no-zeebe-properties`]: import_no_zeebe_properties.default,
+	[`rule:${PLUGIN2}/no-zeebe-user-task`]: import_no_zeebe_user_task.default,
 	[`rule:${PLUGIN2}/priority-definition`]: import_priority_definition.default,
 	[`rule:${PLUGIN2}/secrets`]: import_secrets.default,
 	[`rule:${PLUGIN2}/sequence-flow-condition`]: import_sequence_flow_condition.default,
@@ -9970,29 +10415,42 @@ var MIRAGON_LAYER = {
 };
 var ENGINE_LAYER = {
 	c7: {
-		extendsLayer: extendsLayer2,
+		configFamily,
+		configNames,
+		latestConfigName: configName,
 		moddleExtension,
 		rules: camunda7Rules
 	},
 	c8: {
-		extendsLayer: extendsLayer3,
+		configFamily: configFamily2,
+		configNames: configNames2,
+		latestConfigName: configName2,
 		moddleExtension: moddleExtension2,
 		rules: camunda8Rules
 	}
 };
-var EngineConfig = class {
+var MAJOR_MINOR = /^(\d+)\.(\d+)/;
+var EngineConfig = class _EngineConfig {
 	static defaultLintConfig(options = {}) {
-		const { engine } = options;
+		const { engine, engineVersion } = options;
 		const base = [extendsLayer, MIRAGON_LAYER[options.preset ?? (engine ? "automation" : "modeling")]];
 		if (!engine) return { extends: base };
-		const { extendsLayer: extendsLayer4, moddleExtension: moddleExtension3 } = ENGINE_LAYER[engine];
+		const { moddleExtension: moddleExtension3 } = ENGINE_LAYER[engine];
+		const configName3 = _EngineConfig.configNameFor(engine, engineVersion);
 		return {
-			extends: [...base, extendsLayer4],
+			extends: [...base, `plugin:camunda-compat/${configName3}`],
 			moddleExtensions: { [moddleExtension3.prefix]: moddleExtension3.descriptor }
 		};
 	}
 	static rulesForEngine(engine) {
 		return engine ? ENGINE_LAYER[engine].rules : commonRules;
+	}
+	static configNameFor(engine, engineVersion) {
+		const { configFamily: configFamily3, configNames: configNames3, latestConfigName } = ENGINE_LAYER[engine];
+		const majorMinor = MAJOR_MINOR.exec(engineVersion ?? "");
+		if (!majorMinor) return latestConfigName;
+		const versionConfigName = `${configFamily3}-${Number(majorMinor[1])}-${Number(majorMinor[2])}`;
+		return configNames3.includes(versionConfigName) ? versionConfigName : latestConfigName;
 	}
 };
 `${MIRAGON_NAME}`;
@@ -10677,149 +11135,147 @@ var BrowserLinter = class {
 		};
 	}
 };
-// ../../packages/bpmn-modeler/src/bpmnlint/lintConfigResolution.ts
-function isLintConfigByMode(config) {
-	return "design" in config || "implement" in config;
-}
-function resolveLintConfig(mode, engine, config) {
-	if (config !== void 0 && !isLintConfigByMode(config)) return config;
-	const perMode = config?.[mode];
-	if (perMode !== void 0) return perMode;
-	return getDefaultLintConfig({
-		engine: surfaceModeSupports(mode, "engineLintRules") ? engine : void 0,
-		preset: "modeling"
-	});
-}
 // ../../packages/bpmn-modeler/src/bpmnlint/lintTierMachine.ts
-var ACTIVATE_IN_PAGE = { kind: "activateInPage" };
-var RENDER_DISABLED = { kind: "renderDisabled" };
-function startLintTier(init, diagramLoaded) {
-	const state = {
-		tier: init.tier === "in-page" ? "in-page" : "external",
-		mode: init.mode,
-		engine: init.engine,
-		explicitConfig: init.config
-	};
-	return {
-		state,
-		effects: state.tier === "in-page" ? lintInPage(state, diagramLoaded) : []
-	};
-}
-function lintsInPage(state) {
-	return state.tier === "in-page";
-}
-function reduceLintTier(state, event, diagramLoaded) {
-	switch (event.type) {
-		case "diagramImported": return {
-			state,
-			effects: state.tier === "in-page" ? [ACTIVATE_IN_PAGE] : []
-		};
-		case "inPageLintingRequested": return requestInPageLinting(state, event.config, event.configToken, diagramLoaded);
-		case "modeChanged": return changeMode(state, event.mode, diagramLoaded);
-		case "hostResultsPushed": return {
-			state: {
-				...state,
-				tier: "external"
-			},
-			effects: [{
-				kind: "renderResults",
-				results: event.results
-			}]
-		};
-		case "hostDisabledLinting": return {
-			state: {
-				...state,
-				tier: "external"
-			},
-			effects: [RENDER_DISABLED]
-		};
-		case "userTurnedLintingOff": return state.tier === "in-page" ? {
-			state: {
-				...state,
-				tier: "in-page-disabled"
-			},
-			effects: [RENDER_DISABLED]
-		} : {
-			state,
-			effects: []
-		};
-		case "userTurnedLintingOn": return state.tier === "in-page-disabled" ? turnOnInPage(state) : {
-			state,
-			effects: []
+var LintTierMachine = class LintTierMachine {
+	constructor(state) {
+		_defineProperty(this, "state", void 0);
+		this.state = state;
+	}
+	static start(init, diagramLoaded) {
+		const machine = new LintTierMachine({
+			tier: init.tier === "in-page" ? "in-page" : "external",
+			mode: init.mode,
+			engine: init.engine,
+			explicitConfig: init.config
+		});
+		return {
+			machine,
+			effects: machine.lintsInPage() ? machine.lintInPage(diagramLoaded) : []
 		};
 	}
-}
-function requestInPageLinting(state, config, configToken, diagramLoaded) {
-	if (state.tier === "in-page-disabled") return {
-		state: {
-			...state,
+	lintsInPage() {
+		return this.state.tier === "in-page";
+	}
+	reduce(event, diagramLoaded) {
+		switch (event.type) {
+			case "diagramImported": return this.importDiagram(event.engineVersion);
+			case "inPageLintingRequested": return this.requestInPageLinting(event.config, event.configToken, diagramLoaded);
+			case "modeChanged": return this.changeMode(event.mode, diagramLoaded);
+			case "hostResultsPushed": return this.moveTo({ tier: "external" }, [{
+				kind: "renderResults",
+				results: event.results
+			}]);
+			case "hostDisabledLinting": return this.moveTo({ tier: "external" }, [LintTierMachine.RENDER_DISABLED]);
+			case "userTurnedLintingOff": return this.lintsInPage() ? this.moveTo({ tier: "in-page-disabled" }, [LintTierMachine.RENDER_DISABLED]) : this.stay();
+			case "userTurnedLintingOn": return this.state.tier === "in-page-disabled" ? this.turnOnInPage() : this.stay();
+		}
+	}
+	importDiagram(engineVersion) {
+		if (!this.lintsInPage()) return this.moveTo({ engineVersion }, []);
+		if (engineVersion === this.state.engineVersion) return this.stay([LintTierMachine.ACTIVATE_IN_PAGE]);
+		const next = this.with({ engineVersion });
+		return {
+			machine: next,
+			effects: next.resolvesOwnConfig() ? next.lintInPage(true) : [LintTierMachine.ACTIVATE_IN_PAGE]
+		};
+	}
+	requestInPageLinting(config, configToken, diagramLoaded) {
+		if (this.state.tier === "in-page-disabled") return this.moveTo({
 			hostConfig: config,
 			configToken
-		},
-		effects: []
-	};
-	if (state.tier === "in-page" && repeatsLiveConfig(state, config, configToken)) return {
-		state,
-		effects: []
-	};
-	const next = {
-		...state,
-		tier: "in-page",
-		hostConfig: config,
-		configToken
-	};
-	return {
-		state: next,
-		effects: lintInPage(next, diagramLoaded)
-	};
-}
-function repeatsLiveConfig(state, config, configToken) {
-	if (configToken !== void 0) return configToken === state.configToken;
-	return config === void 0 && state.hostConfig === void 0;
-}
-function changeMode(state, mode, diagramLoaded) {
-	if (mode === state.mode) return {
-		state,
-		effects: []
-	};
-	const next = {
-		...state,
-		mode
-	};
-	return {
-		state: next,
-		effects: next.tier === "in-page" && next.hostConfig === void 0 ? lintInPage(next, diagramLoaded) : []
-	};
-}
-function turnOnInPage(state) {
-	const next = {
-		...state,
-		tier: "in-page"
-	};
-	return {
-		state: next,
-		effects: [buildLinter(next), ACTIVATE_IN_PAGE]
-	};
-}
-function lintInPage(state, diagramLoaded) {
-	return diagramLoaded ? [buildLinter(state), ACTIVATE_IN_PAGE] : [buildLinter(state)];
-}
-function buildLinter(state) {
-	return {
-		kind: "buildLinter",
-		config: state.hostConfig ?? resolveLintConfig(state.mode, state.engine, state.explicitConfig)
-	};
-}
+		}, []);
+		if (this.lintsInPage() && this.repeatsLiveConfig(config, configToken)) return this.stay();
+		const next = this.with({
+			tier: "in-page",
+			hostConfig: config,
+			configToken
+		});
+		return {
+			machine: next,
+			effects: next.lintInPage(diagramLoaded)
+		};
+	}
+	repeatsLiveConfig(config, configToken) {
+		if (configToken !== void 0) return configToken === this.state.configToken;
+		return config === void 0 && this.state.hostConfig === void 0;
+	}
+	changeMode(mode, diagramLoaded) {
+		if (mode === this.state.mode) return this.stay();
+		const next = this.with({ mode });
+		return {
+			machine: next,
+			effects: next.lintsInPage() && next.resolvesOwnConfig() ? next.lintInPage(diagramLoaded) : []
+		};
+	}
+	turnOnInPage() {
+		const next = this.with({ tier: "in-page" });
+		return {
+			machine: next,
+			effects: [next.buildLinter(), LintTierMachine.ACTIVATE_IN_PAGE]
+		};
+	}
+	lintInPage(diagramLoaded) {
+		return diagramLoaded ? [this.buildLinter(), LintTierMachine.ACTIVATE_IN_PAGE] : [this.buildLinter()];
+	}
+	buildLinter() {
+		return {
+			kind: "buildLinter",
+			config: this.state.hostConfig ?? this.resolveConfig()
+		};
+	}
+	resolvesOwnConfig() {
+		return this.state.hostConfig === void 0;
+	}
+	resolveConfig() {
+		return this.explicitConfigForMode() ?? this.defaultConfig();
+	}
+	explicitConfigForMode() {
+		const { explicitConfig, mode } = this.state;
+		if (explicitConfig === void 0) return;
+		return LintTierMachine.isByMode(explicitConfig) ? explicitConfig[mode] : explicitConfig;
+	}
+	defaultConfig() {
+		const { mode, engine, engineVersion } = this.state;
+		if (!surfaceModeSupports(mode, "engineLintRules")) return getDefaultLintConfig({ preset: "modeling" });
+		return getDefaultLintConfig({
+			engine,
+			engineVersion,
+			preset: "modeling"
+		});
+	}
+	static isByMode(config) {
+		return "design" in config || "implement" in config;
+	}
+	with(changes) {
+		return new LintTierMachine({
+			...this.state,
+			...changes
+		});
+	}
+	moveTo(changes, effects) {
+		return {
+			machine: this.with(changes),
+			effects
+		};
+	}
+	stay(effects = []) {
+		return {
+			machine: this,
+			effects
+		};
+	}
+};
+_defineProperty(LintTierMachine, "ACTIVATE_IN_PAGE", { kind: "activateInPage" });
+_defineProperty(LintTierMachine, "RENDER_DISABLED", { kind: "renderDisabled" });
 // ../../packages/bpmn-modeler/src/bpmnlint/LintConfigService.ts
-var OFF_ICON = `<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><line x1="4" y1="4" x2="12" y2="12"/></svg>`;
-var LintConfigService = class {
+var LintConfigService = class LintConfigService {
 	constructor(linting, tierInit, callbacks, translate, canvas, bpmnjs, eventBus) {
 		_defineProperty(this, "linting", void 0);
 		_defineProperty(this, "callbacks", void 0);
 		_defineProperty(this, "translate", void 0);
 		_defineProperty(this, "canvas", void 0);
 		_defineProperty(this, "bpmnjs", void 0);
-		_defineProperty(this, "state", void 0);
+		_defineProperty(this, "machine", void 0);
 		_defineProperty(this, "browserLinter", void 0);
 		_defineProperty(this, "results", {});
 		_defineProperty(this, "toolbar", void 0);
@@ -10830,11 +11286,14 @@ var LintConfigService = class {
 		this.translate = translate;
 		this.canvas = canvas;
 		this.bpmnjs = bpmnjs;
-		const start = startLintTier(tierInit, this.isDiagramLoaded());
-		this.state = start.state;
+		const start = LintTierMachine.start(tierInit, this.isDiagramLoaded());
+		this.machine = start.machine;
 		this.linting.lint = () => this.runLint();
 		eventBus.on("import.done", () => {
-			this.dispatch({ type: "diagramImported" });
+			this.dispatch({
+				type: "diagramImported",
+				engineVersion: this.importedEngineVersion()
+			});
 		});
 		this.runEffects(start.effects);
 	}
@@ -10861,8 +11320,8 @@ var LintConfigService = class {
 		this.dispatch({ type: "hostDisabledLinting" });
 	}
 	dispatch(event) {
-		const transition = reduceLintTier(this.state, event, this.isDiagramLoaded());
-		this.state = transition.state;
+		const transition = this.machine.reduce(event, this.isDiagramLoaded());
+		this.machine = transition.machine;
 		this.runEffects(transition.effects);
 	}
 	runEffects(effects) {
@@ -10882,8 +11341,12 @@ var LintConfigService = class {
 	isDiagramLoaded() {
 		return Boolean(this.bpmnjs.getDefinitions());
 	}
+	importedEngineVersion() {
+		const definitions = this.bpmnjs.getDefinitions();
+		return definitions ? new ExecutionPlatformAttributes(definitions).version() : void 0;
+	}
 	async runLint() {
-		if (lintsInPage(this.state) && this.browserLinter) {
+		if (this.machine.lintsInPage() && this.browserLinter) {
 			const event = await this.browserLinter.run(this.bpmnjs.getDefinitions());
 			this.callbacks.onLintResults?.(event);
 			return event.results;
@@ -10950,7 +11413,7 @@ var LintConfigService = class {
 			const button = document.createElement("button");
 			button.type = "button";
 			button.className = "lint-off-button";
-			button.innerHTML = OFF_ICON;
+			button.innerHTML = LintConfigService.OFF_ICON;
 			const label = this.translate("Turn off linting");
 			button.title = label;
 			button.setAttribute("aria-label", label);
@@ -11004,6 +11467,7 @@ _defineProperty(LintConfigService, "$inject", [
 	"bpmnjs",
 	"eventBus"
 ]);
+_defineProperty(LintConfigService, "OFF_ICON", `<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><line x1="4" y1="4" x2="12" y2="12"/></svg>`);
 // ../../packages/bpmn-modeler/src/bpmnlint/lintPopoverPlacement.ts
 function choosePopoverPlacement(anchor, popover, bounds) {
 	const roomAbove = anchor.top - bounds.top;
@@ -11408,4 +11872,4 @@ function createElementIdConvention(options) {
 }
 export { createElementIdConvention, createLintModule };
 
-//# sourceMappingURL=bpmnlint-BymumoxW.js.map
+//# sourceMappingURL=bpmnlint-Bqolx-rq.js.map
