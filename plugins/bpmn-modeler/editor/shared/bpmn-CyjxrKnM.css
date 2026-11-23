@@ -106,6 +106,7 @@ body.vscode-high-contrast :is(.diff-legend, .diff-legend-theme) {
     background: var(--diff-legend-surface);
     border-bottom: 1px solid var(--diff-legend-border);
     user-select: none;
+    container-type: inline-size;
 }
 
 .diff-legend[hidden],
@@ -122,13 +123,29 @@ body.vscode-high-contrast :is(.diff-legend, .diff-legend-theme) {
     white-space: nowrap;
 }
 
+/* One row in every pane, so the halves of a bar split across two panes keep one height. */
 .diff-legend__counts {
     display: flex;
     flex: 1 1 auto;
-    flex-wrap: wrap;
     align-items: center;
-    gap: 4px 16px;
+    gap: 16px;
     min-width: 0;
+    overflow: hidden;
+}
+
+/* Too narrow for the words: the swatch and the count stay, the slot's title names it. */
+@container (max-width: 380px) {
+    .diff-legend__counts {
+        gap: 12px;
+    }
+
+    .diff-legend__counts > .diff-legend__slot:not(.diff-legend__slot--status) .diff-legend__label {
+        font-size: 0;
+    }
+
+    .diff-legend__counts > .diff-legend__slot:not(.diff-legend__slot--status) .diff-legend__count {
+        font-size: 13px;
+    }
 }
 
 .diff-legend__slot {
@@ -331,9 +348,10 @@ body.vscode-high-contrast :is(.diff-legend, .diff-legend-theme) {
     stroke-width: 2px !important;
 }
 
-/* An added connection is dark like any other; a green glow tells it apart. */
+/* An added connection is dark like any other and, as in Diagit, heavier: a tight
+   shadow thickens it without scaling its arrowhead the way a wider stroke would. */
 .djs-connection.diff-added:not([data-bpmn-theme="dark"] *) .djs-visual > path {
-    filter: drop-shadow(0 0 1.5px #00e676) drop-shadow(0 0 1.5px #00e676);
+    filter: drop-shadow(0 0 0.5px #1d1d1d) drop-shadow(0 0 0.5px #1d1d1d);
 }
 
 .djs-connection.diff-layout-changed .djs-visual > path {
@@ -4537,6 +4555,24 @@ textarea.bio-properties-panel-input.auto-resize {
   background-color: var(--configuration-chooser-option-hover-background-color);
 }
 
+/**
+ * Semantic tokens, copied from `@bpmn-io/theme` to style the components
+ * according to this theme.
+ *
+ * Names and values of the tokens should stay intact with the `@bpmn-io/theme`
+ * source of truth, to ensure matching styles and allow overrides with an
+ * alternative theme.
+ */
+.bio-theme-parent {
+  --bio-primary: hsl(205, 100%, 40%);
+}
+
+.transaction-boundary {
+  --transaction-boundary-background-color: var(--bio-primary);
+
+  background-color: var(--transaction-boundary-background-color);
+}
+
 /* The described create/append/replace entries need more room than the 300px default. */
 .djs-popup-parent[data-popup="bpmn-create"] {
     --bpmn-create-popup-width: 360px;
@@ -4550,6 +4586,10 @@ textarea.bio-properties-panel-input.auto-resize {
     --bpmn-replace-popup-width: 360px;
 }
 
+/* Miragon blue (--cd-ui-interaktion), as in diagit; the overlay scope out-specifies the plugin's own rule. */
+.djs-overlay .transaction-boundary {
+    --transaction-boundary-background-color: #335de5;
+}
 /**
  * Semantic tokens, copied from `@bpmn-io/theme` to style the components
  * according to this theme.
@@ -5423,6 +5463,11 @@ textarea.bio-properties-panel-input.auto-resize {
 [data-bpmn-theme="dark"] .bjs-powered-by {
     color: var(--dt-surface-a60) !important;
 }
+
+[data-bpmn-theme="dark"] .djs-overlay .transaction-boundary {
+    --transaction-boundary-background-color: #6b8aff;
+}
+
 [data-bpmn-theme="dark"] .bio-properties-panel {
     --text-base-color: var(--dt-surface-a70);
     --text-error-color: var(--dt-color-red-a10);

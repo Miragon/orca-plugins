@@ -1,5 +1,5 @@
 import { a as __toESM, r as __exportAll, t as __commonJSMin } from "./rolldown-runtime-DQp2zzRu.js";
-import { _ as _defineProperty, d as focusCanvasFromKeystroke, f as createFlushableDebounceInput } from "./editorLayout-Dxr4ugLL.js";
+import { _ as _defineProperty, d as focusCanvasFromKeystroke, f as createFlushableDebounceInput } from "./editorLayout-lsihKWWK.js";
 import { $ as Diagram, C as outline_default$1, Dt as getBBox, Gt as BaseRenderer, Ht as create, It as append, Jt as all, Kt as e, Lt as appendTo, Mt as selfAndChildren, Nt as componentsToPath, P as movecanvas_default, Pt as createLine, Q as Text, Qt as clear, R as zoomscroll_default, Rt as attr, T as keyboard_move_default, U as selection_default, Ut as innerSVG, V as overlays_default, Wt as remove$1, Yt as assign, Z as translate_default, Zt as classes, _n as observeCanvasSize, an as Reader, ct as asTRBL, dn as fitCanvasToContent, dt as getMid, en as delegate, et as rotate, fn as isCanvasSized, gn as isUsableViewbox, gt as isLabel$3, in as remove, k as CommandInterceptor, ln as ThemeController, mn as MutableDisposable, nt as translate, on as Writer, pn as DisposableStore, qt as Ids, rn as query, sn as Moddle, st as asBounds, tn as event, tt as transform, un as installFitViewportButton, vn as NoModelerError, w as change_support_default, zt as classes$1 } from "./jsxRuntime.module-awBdvHUy.js";
 import { a as surfaceModeSupports, i as parseEditableMode } from "../bpmn/main.js";
 import { C as isObject, D as map, P as some, S as isNumber, _ as init_dist, g as has, i as assign$1, k as omit, l as filter, n as escapeHTML, o as debounce, p as forEach, r as domify, u as find, w as isString } from "./EscapeUtil-B1jzPlMc.js";
@@ -11150,6 +11150,12 @@ _FormPreviewController.$inject = [
 	"modelNavigationPort",
 	"formReferenceStatusClient"
 ];
+// ../../libs/model-navigation/src/modelNavigationTexts.ts
+var MODEL_NAVIGATION_TEXTS = {
+	navigate: "Navigate to referenced model",
+	previewForm: "Preview linked form"
+};
+Object.values(MODEL_NAVIGATION_TEXTS);
 // ../../libs/model-navigation/src/NavigateContextPadProvider.ts
 var _NavigateContextPadProvider;
 var NAVIGATE_ICON_SVG = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>`;
@@ -11169,14 +11175,14 @@ var NavigateContextPadProvider = class {
 		const entries = { "navigate-to-referenced-model": {
 			group: "connect",
 			html: `<div class="entry">${NAVIGATE_ICON_SVG}</div>`,
-			title: this.translate("Navigate to referenced model"),
+			title: this.translate(MODEL_NAVIGATION_TEXTS.navigate),
 			action: { click: (_event, clickedElement) => {
 				const current = extractModelReference(clickedElement.businessObject, kind);
 				if (current && this.isAvailable(current)) this.port.openReference(current);
 			} }
 		} };
 		if (referenceKindSupports(kind, "preview") && this.port.formPreview && !this.formPreviewController?.isVisible(element)) {
-			const title = this.translate("Preview linked form");
+			const title = this.translate(MODEL_NAVIGATION_TEXTS.previewForm);
 			entries["preview-linked-form"] = {
 				group: "connect",
 				html: `<button type="button" class="entry linked-form-preview-action" aria-label="${title.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;")}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>`,
@@ -11691,4 +11697,4 @@ async function createSurface(allocate, applyInitialOptions) {
 }
 export { hasExternalLabel as A, isInterrupting$1 as B, getCirclePath as C, DEFAULT_LABEL_SIZE as D, getElementAnnotations as E, hasEscalationEventDefinition as F, SimpleBpmnModdle as H, hasEventDefinition as I, isEventSubProcess$1 as L, setLabel as M, hasCompensateEventDefinition as N, getExternalLabelMid as O, hasErrorEventDefinition as P, isExpanded as R, toPlaneId as S, collectElementsAnnotations as T, dist_exports as U, BaseViewer as V, keep_selection_visible_default as _, exportSvg as a, getShapeIdFromPlane as b, base_default as c, TOGGLE_MODE_EVENT as d, CustomGroupsModule as f, NavigatedViewer as g, outline_default as h, exportFormattedXml as i, isLabelExternal as j, getLabel as k, ToggleOffIcon as l, FlushableDebounceInputModule as m, SurfaceCore as n, importDiagram as o, ModeFilterModule as p, DrilldownFitModule as r, createModelNavigationModule as s, createSurface as t, ToggleOnIcon as u, Viewer as v, getRoundRectPath as w, isPlane as x, getPlaneIdFromShape as y, isHorizontal as z };
 
-//# sourceMappingURL=createSurface-CzjA2jEt.js.map
+//# sourceMappingURL=createSurface-CMRA57M3.js.map

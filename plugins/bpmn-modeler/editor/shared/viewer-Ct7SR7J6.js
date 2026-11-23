@@ -1,9 +1,9 @@
-import { _ as _defineProperty } from "./editorLayout-Dxr4ugLL.js";
-import { a as exportSvg, c as base_default, d as TOGGLE_MODE_EVENT, f as CustomGroupsModule, g as NavigatedViewer, h as outline_default, i as exportFormattedXml, l as ToggleOffIcon, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, s as createModelNavigationModule, t as createSurface, u as ToggleOnIcon } from "./createSurface-CzjA2jEt.js";
+import { _ as _defineProperty } from "./editorLayout-lsihKWWK.js";
+import { a as exportSvg, c as base_default, d as TOGGLE_MODE_EVENT, f as CustomGroupsModule, g as NavigatedViewer, h as outline_default, i as exportFormattedXml, l as ToggleOffIcon, n as SurfaceCore, o as importDiagram, p as ModeFilterModule, s as createModelNavigationModule, t as createSurface, u as ToggleOnIcon } from "./createSurface-CMRA57M3.js";
 import { O as context_pad_default, Zt as classes, pn as DisposableStore, rn as query, tn as event } from "./jsxRuntime.module-awBdvHUy.js";
 import { r as domify } from "./EscapeUtil-B1jzPlMc.js";
 import { t as index } from "./index.esm-CXJiDiAL.js";
-import { n as render_default, t as provider_default } from "./provider-CE2pkzJX.js";
+import { n as render_default, t as provider_default } from "./provider-Du5gVit0.js";
 // ../../node_modules/bpmn-js-token-simulation/lib/features/toggle-mode/viewer/ToggleMode.js
 function ToggleMode(eventBus, canvas, translate) {
 	this._eventBus = eventBus;
@@ -150,4 +150,4 @@ async function createViewer(container, options = {}) {
 }
 export { createViewer };
 
-//# sourceMappingURL=viewer-BUq8qEEg.js.map
+//# sourceMappingURL=viewer-Ct7SR7J6.js.map

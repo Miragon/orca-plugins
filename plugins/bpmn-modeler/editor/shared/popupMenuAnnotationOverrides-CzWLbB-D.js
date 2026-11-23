@@ -1,6 +1,6 @@
 import { a as __toESM, t as __commonJSMin } from "./rolldown-runtime-DQp2zzRu.js";
-import { _ as _defineProperty } from "./editorLayout-Dxr4ugLL.js";
-import { B as isInterrupting$1, L as isEventSubProcess, M as setLabel, R as isExpanded, b as getShapeIdFromPlane, k as getLabel, x as isPlane$1 } from "./createSurface-CzjA2jEt.js";
+import { _ as _defineProperty } from "./editorLayout-lsihKWWK.js";
+import { B as isInterrupting$1, L as isEventSubProcess, M as setLabel, R as isExpanded, b as getShapeIdFromPlane, k as getLabel, x as isPlane$1 } from "./createSurface-CMRA57M3.js";
 import { Bt as clear, Ct as add$2, Ht as create, It as append, M as isRedo, N as isUndo, Rt as attr, Z as translate_default, _ as S, a as T$1, b as X, d as x, dt as getMid, g as R, k as CommandInterceptor, l as h$1, n as A, p as C, qt as Ids, rn as query, s as d, t as u$1, tn as event, u as q, x as k } from "./jsxRuntime.module-awBdvHUy.js";
 import { A as pick, B as without, C as isObject, D as map, E as keys, F as sortBy, M as set, S as isNumber, T as isUndefined$1, _ as init_dist, a as bind, b as isFunction, d as findIndex, f as flatten, g as has$1, h as groupBy, i as assign, j as reduce, l as filter, p as forEach$1, r as domify, u as find, v as isArray$1, w as isString, x as isNil$1, y as isDefined, z as values } from "./EscapeUtil-B1jzPlMc.js";
 import { k as quantize$1 } from "./clipboard-Bznk3d97.js";
@@ -8,7 +8,7 @@ import { A as isEdited$3, B as require_classnames, C as TextfieldEntry, D as ind
 import { c as init_dist$1, i as init_dist$2, o as getCoerced, s as getCompatible, t as ContextTracker, u as isSatisfied } from "./dist-BWHN8Och.js";
 import { i as require_semver_compare, r as pathEquals, t as init_moddle_utils } from "./moddle-utils-CKD1iZGs.js";
 import { a as is$3, i as init_ModelUtil, n as getBusinessObject$1, o as isAny } from "./ModelUtil-BGe9jbj7.js";
-import { t as lib_default$1 } from "./lib-CIY0Qhue.js";
+import { t as lib_default$1 } from "./lib-CQF8SUcy.js";
 import { t as index$5 } from "./index.esm-CXJiDiAL.js";
 // ../../node_modules/camunda-bpmn-js-behaviors/lib/util/ExtensionElementsUtil.js
 init_ModelUtil();
@@ -68288,6 +68288,28 @@ function composeUpstreamModules(engineUpstreamModules) {
 		...sharedTrailingModules
 	];
 }
-export { VariableProvider as a, TooltipProvider as c, index$1$3 as d, useService as f, removeExtensionElements$1 as h, ZeebeVariableResolverModule as i, TooltipProvider$1 as l, getExtensionElementsList$2 as m, colors_default as n, index$2 as o, DeleteParticipantBehaviour as p, CamundaVariableResolverModule as r, index$1 as s, composeUpstreamModules as t, index$4 as u };
+// ../../packages/bpmn-modeler/src/engineStacks/popupMenuAnnotationOverrides.ts
+var JAVA_IMPLEMENTATION_KEYWORDS = ["Java delegate", "External task"];
+var JOB_WORKER_KEYWORDS = ["Job worker"];
+var C7_POPUP_MENU_ANNOTATIONS = {
+	descriptions: { "service-task": "Automated work carried out by a Java delegate, expression, or external task" },
+	additionalKeywords: {
+		"service-task": JAVA_IMPLEMENTATION_KEYWORDS,
+		"send-task": JAVA_IMPLEMENTATION_KEYWORDS,
+		"message-intermediate-throw": JAVA_IMPLEMENTATION_KEYWORDS,
+		"message-end": JAVA_IMPLEMENTATION_KEYWORDS
+	}
+};
+var C8_POPUP_MENU_ANNOTATIONS = {
+	descriptions: { "service-task": "Automated work carried out by a job worker or connector" },
+	additionalKeywords: {
+		"service-task": JOB_WORKER_KEYWORDS,
+		"script-task": JOB_WORKER_KEYWORDS,
+		"send-task": JOB_WORKER_KEYWORDS,
+		"message-intermediate-throw": JOB_WORKER_KEYWORDS,
+		"message-end": JOB_WORKER_KEYWORDS
+	}
+};
+export { removeExtensionElements$1 as _, CamundaVariableResolverModule as a, index$2 as c, TooltipProvider$1 as d, index$4 as f, getExtensionElementsList$2 as g, DeleteParticipantBehaviour as h, colors_default as i, index$1 as l, useService as m, C8_POPUP_MENU_ANNOTATIONS as n, ZeebeVariableResolverModule as o, index$1$3 as p, composeUpstreamModules as r, VariableProvider as s, C7_POPUP_MENU_ANNOTATIONS as t, TooltipProvider as u };
 
-//# sourceMappingURL=sharedModules-DMC-1xpc.js.map
+//# sourceMappingURL=popupMenuAnnotationOverrides-CzWLbB-D.js.map

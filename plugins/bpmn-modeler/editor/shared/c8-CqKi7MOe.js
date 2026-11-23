@@ -1,10 +1,10 @@
 import { Gt as BaseRenderer, Ht as create, It as append, Kt as e, Rt as attr, gt as isLabel, k as CommandInterceptor, qt as Ids } from "./jsxRuntime.module-awBdvHUy.js";
 import { a as is, i as init_ModelUtil, n as getBusinessObject, o as isAny } from "./ModelUtil-BGe9jbj7.js";
 import { B as without, C as isObject, P as some, T as isUndefined, _ as init_dist, g as has, u as find, y as isDefined } from "./EscapeUtil-B1jzPlMc.js";
-import { a as VariableProvider, d as index$1, f as useService, h as removeExtensionElements, i as ZeebeVariableResolverModule, l as TooltipProvider$1, m as getExtensionElementsList, n as colors_default, p as DeleteParticipantBehaviour, s as index$1$1, t as composeUpstreamModules } from "./sharedModules-DMC-1xpc.js";
+import { _ as removeExtensionElements, d as TooltipProvider$1, g as getExtensionElementsList, h as DeleteParticipantBehaviour, i as colors_default, l as index$1$1, m as useService, n as C8_POPUP_MENU_ANNOTATIONS, o as ZeebeVariableResolverModule, p as index$1, r as composeUpstreamModules, s as VariableProvider } from "./popupMenuAnnotationOverrides-CzWLbB-D.js";
 import { U as m } from "./clipboard-Bznk3d97.js";
 import { P as isEdited$8, f as Group, h as JsonEditorEntry } from "./index.esm-DgBSptNj.js";
-import { i as index$1$2, r as index } from "./lib-CIY0Qhue.js";
+import { i as index$1$2, r as index } from "./lib-CQF8SUcy.js";
 var zeebe_default = {
 	name: "zeebe",
 	prefix: "zeebe",
@@ -1873,7 +1873,6 @@ var FEEL_POPUP_LINKS = {
 		href: "https://docs.camunda.io/docs/components/modeler/forms/configuration/forms-config-templating-syntax/"
 	}
 };
-var JOB_WORKER_KEYWORDS = ["Job worker"];
 var c8Stack = {
 	upstreamModules: composeUpstreamModules([
 		src_default,
@@ -1895,17 +1894,8 @@ var c8Stack = {
 			return link ? [link] : void 0;
 		}
 	},
-	popupMenuAnnotations: {
-		descriptions: { "service-task": "Automated work carried out by a job worker or connector" },
-		additionalKeywords: {
-			"service-task": JOB_WORKER_KEYWORDS,
-			"script-task": JOB_WORKER_KEYWORDS,
-			"send-task": JOB_WORKER_KEYWORDS,
-			"message-intermediate-throw": JOB_WORKER_KEYWORDS,
-			"message-end": JOB_WORKER_KEYWORDS
-		}
-	}
+	popupMenuAnnotations: C8_POPUP_MENU_ANNOTATIONS
 };
 export { c8Stack };
 
-//# sourceMappingURL=c8-Dz0CRAzg.js.map
+//# sourceMappingURL=c8-CqKi7MOe.js.map
