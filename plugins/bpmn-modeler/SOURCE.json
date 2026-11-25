@@ -1,6 +1,6 @@
 {
   "repository": "Miragon/bpmn-modeler",
-  "commit": "7bdec8cb7b9fb3d984fbef861b90685b44476d2c",
-  "tag": "orca-v0.6.0",
-  "workflowRun": "https://github.com/Miragon/bpmn-modeler/actions/runs/45201122505"
+  "commit": "1c0f6c554b3d0dffeef66ba7faf47548da61f0f9",
+  "tag": "orca-v0.7.0",
+  "workflowRun": "https://github.com/Miragon/bpmn-modeler/actions/runs/45581394418"
 }
