@@ -1,6 +1,7 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["../shared/bpmnlint-Bqolx-rq.js","../shared/rolldown-runtime-DQp2zzRu.js","../shared/editorLayout-lsihKWWK.js","../shared/editorLayout-3p6pELEt.css","../shared/EscapeUtil-B1jzPlMc.js","../shared/ModelUtil-BGe9jbj7.js","../shared/moddle-utils-CKD1iZGs.js","../shared/dist-BWHN8Och.js","../shared/executionPlatformAttributes-BJWbeLxc.js","../shared/bpmnlint-DoI7vgqE.css","../shared/viewer-Ct7SR7J6.js","../shared/createSurface-CMRA57M3.js","../shared/jsxRuntime.module-awBdvHUy.js","../shared/index.esm-CXJiDiAL.js","../shared/provider-Du5gVit0.js","../shared/index.esm-DgBSptNj.js","../shared/design-BzMY9XEO.js","../shared/reporting-hneEWqz9.js","../shared/clipboard-Bznk3d97.js","../shared/reporting-B1SMpZVh.css","../shared/lib-CQF8SUcy.js","../shared/design-5oiqdf5k.css","../shared/src-C6Ro5jCB.js","../shared/src-CU_wPvE9.css"])))=>i.map(i=>d[i]);
-import { a as openOrcaSession, c as isBlankDocument, g as i18n, i as followOrcaTheme, m as extras, n as syncDocument, o as orcaLanguage, r as currentOrcaTheme, s as applyPageThemeScope, t as mountEditorLayout } from "../shared/editorLayout-lsihKWWK.js";
-// ../../libs/modeler-types/src/engine.ts
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["../shared/lint-DsccugCZ.js","../shared/rolldown-runtime-DQp2zzRu.js","../shared/editorLayout-CIvAyzRC.js","../shared/src-BMjhMR6_.js","../shared/editorLayout-3p6pELEt.css","../shared/EscapeUtil-B1jzPlMc.js","../shared/ModelUtil-BGe9jbj7.js","../shared/moddle-utils-CKD1iZGs.js","../shared/dist-BWHN8Och.js","../shared/executionPlatformAttributes-ub_cH4Lg.js","../shared/lint-DoI7vgqE.css","../shared/viewer-VR61mcJV.js","../shared/createSurface-Dmq0QE2s.js","../shared/jsxRuntime.module-BqOdqqmT.js","../shared/index.esm-CNb8OxsT.js","../shared/provider-D1BM5n6p.js","../shared/index.esm-SjnojCF6.js","../shared/design-CS3jpbGM.js","../shared/reporting-pBZTmtBJ.js","../shared/clipboard-CB2-G70S.js","../shared/reporting-B1SMpZVh.css","../shared/lib-CFIIVJWT.js","../shared/design-5oiqdf5k.css","../shared/src-CV8cZyx0.js","../shared/src-CU_wPvE9.css"])))=>i.map(i=>d[i]);
+import { _ as i18n, a as openOrcaSession, d as isBlankDocument, h as extras, i as followOrcaTheme, n as syncDocument, o as orcaLanguage, r as currentOrcaTheme, s as applyPageThemeScope, t as mountEditorLayout } from "../shared/editorLayout-CIvAyzRC.js";
+import "../shared/src-BMjhMR6_.js";
+// ../../libs/modeler-types/src/engine/domain/engine.ts
 var ENGINES = ["c7", "c8"];
 function isEngine(value) {
 	return ENGINES.includes(value);
@@ -143,7 +144,7 @@ function localName(qualifiedName) {
 function isWhitespace(char) {
 	return char === " " || char === "	" || char === "\n" || char === "\r";
 }
-// ../../libs/modeler-types/src/surfaceMode.ts
+// ../../libs/modeler-types/src/surface/domain/surfaceMode.ts
 var SURFACE_MODES = [
 	"view",
 	"design",
@@ -188,7 +189,7 @@ function planTransition(from, to, engine) {
 	if (from !== "view" && to !== "view" && engine !== void 0) return "toggle";
 	return "recreate";
 }
-// ../../packages/bpmn-modeler/src/modeSession/surfaceCapabilities.ts
+// ../../packages/bpmn-modeler/src/modeSession/service/surfaceCapabilities.ts
 function isModelerSurface(handle) {
 	return "setMode" in handle;
 }
@@ -198,7 +199,7 @@ function isEditableSurface(handle) {
 function holdsPendingSave(handle) {
 	return "flushContentSaved" in handle;
 }
-// ../../packages/bpmn-modeler/src/modeSession/servingSurfaces.ts
+// ../../packages/bpmn-modeler/src/modeSession/domain/servingSurfaces.ts
 function servingSurfaces(surfaces, engine) {
 	const { view, design, implement } = surfaces;
 	const onModeler = (mode) => engine !== void 0 && implement !== void 0 ? (context) => implement({
@@ -212,7 +213,7 @@ function servingSurfaces(surfaces, engine) {
 		implement: onModeler("implement")
 	};
 }
-// ../../packages/bpmn-modeler/src/modeSession/modeSession.ts
+// ../../packages/bpmn-modeler/src/modeSession/service/modeSession.ts
 async function createModeSession(options) {
 	const { container, engine, surfaces } = options;
 	let theme = options.theme ?? "automatic";
@@ -394,188 +395,6 @@ async function createModeSession(options) {
 		}
 	};
 }
-// ../../packages/bpmn-modeler/src/modeSession/modeStrip.ts
-var MODE_LABEL = {
-	view: "View",
-	design: "Design",
-	implement: "Implement"
-};
-var MODE_DESCRIPTION = {
-	view: "Read-only",
-	design: "Engine-neutral modeling",
-	implement: "Camunda properties, templates and lint"
-};
-var IMPLEMENT_UNAVAILABLE_HINT = "Implement needs a Camunda execution platform — this model has none. Assign one to enable it.";
-var CARET_SVG = "<svg class=\"mode-chip-caret\" viewBox=\"0 0 8 8\" aria-hidden=\"true\"><path d=\"M1 2.5l3 3 3-3\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/></svg>";
-var MENU_GAP = 4;
-var TOGGLE_GAP = 8;
-var VIEWPORT_MARGIN = 8;
-function mountModeStrip(opts) {
-	const modes = opts.modes ?? SURFACE_MODES;
-	let translate = opts.translate;
-	let labelDisposer;
-	if (!translate) {
-		i18n.extend(extras);
-		translate = (template, replacements) => i18n.translate(template, replacements);
-	}
-	const t = translate;
-	const registerLabelChange = opts.onLabelChange ?? ((apply) => labelDisposer = i18n.onChange(apply));
-	const stampHost = (state) => {
-		opts.host?.setAttribute("data-surface-mode", state.mode);
-		opts.host?.setAttribute("aria-busy", state.busy ? "true" : "false");
-	};
-	if (modes.length < 2) return {
-		render: stampHost,
-		destroy: () => void 0
-	};
-	const chip = document.createElement("button");
-	chip.type = "button";
-	chip.className = "mode-chip";
-	chip.setAttribute("aria-haspopup", "menu");
-	chip.setAttribute("aria-expanded", "false");
-	const chipLabel = document.createElement("span");
-	chipLabel.className = "mode-chip-label";
-	chip.appendChild(chipLabel);
-	chip.insertAdjacentHTML("beforeend", CARET_SVG);
-	opts.stripEl.appendChild(chip);
-	const menu = document.createElement("div");
-	menu.className = "mode-menu";
-	menu.setAttribute("role", "menu");
-	menu.hidden = true;
-	opts.stripEl.appendChild(menu);
-	const items = new Map();
-	for (const mode of modes) {
-		const item = document.createElement("button");
-		item.type = "button";
-		item.className = "mode-menu-item";
-		item.dataset.mode = mode;
-		item.setAttribute("role", "menuitemradio");
-		item.innerHTML = "<span class=\"mode-menu-item-label\"></span><span class=\"mode-menu-item-description\"></span>";
-		item.addEventListener("click", () => {
-			if (item.getAttribute("aria-disabled") === "true") return;
-			closeMenu();
-			opts.onSelect(mode);
-		});
-		items.set(mode, item);
-		menu.appendChild(item);
-	}
-	let lastState;
-	let open = false;
-	chip.addEventListener("click", (event) => {
-		event.stopPropagation();
-		if (open) closeMenu();
-		else openMenu();
-	});
-	chip.addEventListener("keydown", (event) => {
-		if (event.key === "ArrowDown" && !open) {
-			event.preventDefault();
-			openMenu();
-		} else if (event.key === "Escape" && !open) opts.onEscape?.();
-	});
-	function openMenu() {
-		open = true;
-		chip.setAttribute("aria-expanded", "true");
-		menu.hidden = false;
-		placeMenu();
-		(lastState && items.get(lastState.mode))?.focus();
-		document.addEventListener("mousedown", onOutsidePress, true);
-		window.addEventListener("resize", onViewportResize);
-	}
-	function closeMenu({ restoreFocus = true } = {}) {
-		if (!open) return;
-		open = false;
-		chip.setAttribute("aria-expanded", "false");
-		menu.hidden = true;
-		document.removeEventListener("mousedown", onOutsidePress, true);
-		window.removeEventListener("resize", onViewportResize);
-		if (restoreFocus) chip.focus();
-	}
-	function placeMenu() {
-		const anchor = chip.getBoundingClientRect();
-		const { width, height } = menu.getBoundingClientRect();
-		menu.style.left = `${clamp(anchor.left, window.innerWidth - width)}px`;
-		menu.style.top = `${clamp(anchor.bottom + MENU_GAP, window.innerHeight - height)}px`;
-	}
-	function clamp(position, max) {
-		return Math.max(VIEWPORT_MARGIN, Math.min(position, max - VIEWPORT_MARGIN));
-	}
-	function onOutsidePress(event) {
-		const target = event.target;
-		if (!menu.contains(target) && !chip.contains(target)) closeMenu({ restoreFocus: false });
-	}
-	function onViewportResize() {
-		closeMenu({ restoreFocus: false });
-	}
-	menu.addEventListener("keydown", (event) => {
-		const entries = [...items.values()];
-		const current = entries.indexOf(document.activeElement);
-		const targetByKey = {
-			ArrowDown: (current + 1) % entries.length,
-			ArrowUp: (current - 1 + entries.length) % entries.length,
-			Home: 0,
-			End: entries.length - 1
-		};
-		if (event.key in targetByKey) {
-			event.preventDefault();
-			entries[targetByKey[event.key]].focus();
-		} else if (event.key === "Escape") {
-			event.stopPropagation();
-			closeMenu();
-		} else if (event.key === "Tab") closeMenu({ restoreFocus: false });
-	});
-	const applyLabels = (state) => {
-		const currentLabel = t(MODE_LABEL[state.mode]);
-		const triggerLabel = t("Mode: {mode}", { mode: currentLabel });
-		menu.setAttribute("aria-label", t("Mode"));
-		chipLabel.textContent = currentLabel;
-		chip.setAttribute("aria-label", triggerLabel);
-		chip.title = triggerLabel;
-		for (const [itemMode, item] of items) {
-			item.querySelector(".mode-menu-item-label").textContent = t(MODE_LABEL[itemMode]);
-			item.querySelector(".mode-menu-item-description").textContent = t(MODE_DESCRIPTION[itemMode]);
-			item.setAttribute("aria-checked", itemMode === state.mode ? "true" : "false");
-			if (isModeAvailable(itemMode, state.engine)) {
-				item.removeAttribute("aria-disabled");
-				item.removeAttribute("title");
-			} else {
-				item.setAttribute("aria-disabled", "true");
-				item.title = t(IMPLEMENT_UNAVAILABLE_HINT);
-			}
-		}
-	};
-	let observedToggle;
-	const toggleResize = typeof ResizeObserver === "undefined" ? void 0 : new ResizeObserver(() => alignBesideTokenSimulationToggle());
-	const followToggle = (toggle) => {
-		if (toggle === observedToggle) return;
-		if (observedToggle) toggleResize?.unobserve(observedToggle);
-		if (toggle) toggleResize?.observe(toggle);
-		observedToggle = toggle;
-	};
-	const alignBesideTokenSimulationToggle = () => {
-		const toggle = opts.stripEl.parentElement?.querySelector(".bts-toggle-mode") ?? void 0;
-		followToggle(toggle);
-		opts.stripEl.style.left = toggle ? `${toggle.offsetLeft + toggle.offsetWidth + TOGGLE_GAP}px` : "";
-	};
-	registerLabelChange(() => {
-		if (lastState) applyLabels(lastState);
-	});
-	return {
-		render(state) {
-			lastState = state;
-			stampHost(state);
-			alignBesideTokenSimulationToggle();
-			applyLabels(state);
-		},
-		destroy() {
-			toggleResize?.disconnect();
-			labelDisposer?.();
-			closeMenu({ restoreFocus: false });
-			chip.remove();
-			menu.remove();
-			items.clear();
-		}
-	};
-}
 // src/adapter/out/memoryClipboard.ts
 function memoryClipboard() {
 	let copied = "";
@@ -684,13 +503,13 @@ var __vitePreload = function preload(baseModule, deps, importerUrl) {
 };
 // src/adapter/out/bpmnCanvas.ts
 function surfaceFactories(panelParent, clipboard) {
-	const linting = async () => ({ linting: { module: await __vitePreload(() => import("../shared/bpmnlint-Bqolx-rq.js"), __vite__mapDeps([0,1,2,3,4,5,6,7,8,9]), import.meta.url) } });
+	const linting = async () => ({ linting: { module: await __vitePreload(() => import("../shared/lint-DsccugCZ.js"), __vite__mapDeps([0,1,2,3,4,5,6,7,8,9,10]), import.meta.url) } });
 	return {
 		view: async ({ container, theme }) => {
 			const { createViewer } = await __vitePreload(async () => {
-				const { createViewer } = await import("../shared/viewer-Ct7SR7J6.js");
+				const { createViewer } = await import("../shared/viewer-VR61mcJV.js");
 				return { createViewer };
-			}, __vite__mapDeps([10,2,1,3,11,12,4,5,13,14,15,7]), import.meta.url);
+			}, __vite__mapDeps([11,3,1,12,2,4,13,5,6,14,15,16,8]), import.meta.url);
 			return createViewer(container, {
 				theme,
 				propertiesPanel: { parent: panelParent }
@@ -698,9 +517,9 @@ function surfaceFactories(panelParent, clipboard) {
 		},
 		design: async ({ container, theme }) => {
 			const { createDesigner } = await __vitePreload(async () => {
-				const { createDesigner } = await import("../shared/design-BzMY9XEO.js");
+				const { createDesigner } = await import("../shared/design-CS3jpbGM.js");
 				return { createDesigner };
-			}, __vite__mapDeps([16,2,1,3,17,11,12,4,5,18,19,14,15,7,20,13,21]), import.meta.url);
+			}, __vite__mapDeps([17,2,3,1,4,18,12,13,5,6,19,20,15,16,8,21,14,22]), import.meta.url);
 			return createDesigner(container, {
 				theme,
 				clipboard,
@@ -710,9 +529,9 @@ function surfaceFactories(panelParent, clipboard) {
 		},
 		implement: async ({ container, theme, mode, engine }) => {
 			const { createModeler } = await __vitePreload(async () => {
-				const { createModeler } = await import("../shared/src-C6Ro5jCB.js");
+				const { createModeler } = await import("../shared/src-CV8cZyx0.js");
 				return { createModeler };
-			}, __vite__mapDeps([22,2,1,3,17,11,12,4,5,18,19,8,23]), import.meta.url);
+			}, __vite__mapDeps([23,2,3,1,4,18,12,13,5,6,19,20,9,24]), import.meta.url);
 			return createModeler(container, {
 				engine,
 				mode,
@@ -725,21 +544,16 @@ function surfaceFactories(panelParent, clipboard) {
 	};
 }
 function createBpmnCanvas(options) {
-	const factories = surfaceFactories(options.panelParent, { bridge: memoryClipboard() });
-	const surfaces = options.readOnly ? { view: factories.view } : factories;
+	const { view, design, implement } = surfaceFactories(options.panelParent, { bridge: memoryClipboard() });
+	const surfaces = options.readOnly ? { view } : {
+		design,
+		implement
+	};
 	const editListeners = new Set();
 	let theme = options.theme;
 	let engine;
 	let session;
-	let strip;
 	const canvasFocus = () => session?.getHandle().getService("canvas");
-	const renderStrip = (busy) => {
-		if (session) strip?.render({
-			mode: session.getMode(),
-			engine,
-			busy
-		});
-	};
 	async function startSession(nextEngine) {
 		await session?.destroy();
 		engine = nextEngine;
@@ -747,22 +561,10 @@ function createBpmnCanvas(options) {
 			container: options.container,
 			engine,
 			surfaces,
-			theme,
-			onModeChanged: () => renderStrip(false),
-			onSwitchStateChanged: renderStrip,
-			onError: (error) => console.warn("Unable to switch the BPMN mode", error)
+			theme
 		});
 		const liveSession = session;
 		liveSession.onContentChanged(() => editListeners.forEach((listener) => listener()));
-		strip ??= mountModeStrip({
-			host: options.strip.host,
-			stripEl: options.strip.el,
-			modes: SURFACE_MODES,
-			translate: (template, replacements) => i18n.translate(template, replacements),
-			onLabelChange: (apply) => i18n.onChange(apply),
-			onSelect: (mode) => void session?.requestMode(mode)
-		});
-		renderStrip(false);
 		return liveSession;
 	}
 	async function show(text) {
@@ -808,17 +610,9 @@ async function startBpmnEditor(root) {
 		focusCanvas: () => shortcuts.target?.focusCanvas(),
 		isCanvasFocused: () => shortcuts.target?.isCanvasFocused() ?? false
 	});
-	layout.panelHost.classList.add("panel-host");
-	const strip = document.createElement("div");
-	strip.className = "mode-strip";
-	layout.canvas.prepend(strip);
 	const canvas = createBpmnCanvas({
 		container: layout.canvas,
 		panelParent: layout.panelMount,
-		strip: {
-			el: strip,
-			host: layout.panelHost
-		},
 		readOnly: session.readOnly,
 		theme: currentOrcaTheme()
 	});
